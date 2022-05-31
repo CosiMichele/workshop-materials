@@ -47,14 +47,24 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
     - `sudo apt-get update && sudo apt-get upgrade`
     - `mkdir ~/tools`
 
-- Python:
+!!! Warning "Important"
+        `PATH` is manually unpdated in `/etc/environment` whenever necessary
+
+
+- Python2:
+    - Version: `v2.7.18`
+    - Installation command(s): `sudo apt install python`
+    - Test command: `python --version`
+- Python3:
     - Version: `v3.8.10`
     - Installation command(s): none, pre-installed with Base image.
-    - Test command: `python 3 --version`
+    - Test command: `python3 --version`
 - Java 8:
-    - Version: `openjdk 11.0.15 2022-04-19`
-    - Installation command(s): `sudo apt-get install openjdk-8-jre`
-    - Test command: `java --version`
+    - Version: `openjdk version "1.8.0_312"`
+    - Installation command(s): 
+        1. `sudo apt-get install openjdk-8-jdk`
+        2. `sudo update-alternatives --config java` (selected 2: java 8)
+    - Test command: `java -version`
 - BLAST:
     - Version: `blast 2.13.0`
     - Installation command(s):
@@ -76,7 +86,86 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
         8. `cd easel && make install`
         9. `export /home/exouser/tools/hmmer-3.3.2/bin`
     - Test command: `hmmscan -h`
-    
+- MMSEQS2:
+    - Version: `96b2009982ce686e0b78e226c75c59fd286ba450`
+    - Installation command(s):
+        1. `wget https://mmseqs.com/latest/mmseqs-linux-avx2.tar.gz`
+        2. `tar -xvf mmseqs-linux-avx2.tar.gz && rm mmseqs-linux-avx2.tar.gz`
+        3. `export PATH=$(pwd)/mmseqs/bin/:$PATH`
+    - Test command: `mmseqs --version`
+- MAFFT:
+    - Version: `v7.490`
+    - Installation command(s):
+        1. `wget https://mafft.cbrc.jp/alignment/software/mafft_7.490-1_amd64.deb`
+        2. `dpkg -i mafft_7.490-1_amd64.deb && rm mafft_7.490-1_amd64.deb`
+    - Test command: `mafft -v`
+- FastTree:
+    - Version: `2.1.11 Double precision (No SSE3)`
+    - Installation command(s): `sudo apt-get install fasttree`
+    - Test command: `FastTree`
+- PAML:
+    - Version: `4.9j`
+    - Installation command(s): `sudo apt-get install paml`
+    - Test command: `baseml`
+- Bowtie 2:
+    - Version: `2.3.5.1`
+    - Installation command(s): `sudo apt install bowtie2`
+    - Test command: `bowtie2 --version`
+- Samtools:
+    - Version: `1.10`
+    - Installation command(s): `sudo apt-get install samtools`
+    - Test command: `samtools --version`
+- Tophat2:
+    - Version: `v2.1.1`
+    - Installation command(s):
+        1. Manually downloaded `tophat-2.1.1.Linux_x86_64.tar.gz` using GUI from https://ccb.jhu.edu/software/tophat/downloads/ (`wget` was unable to establish SSL connection)
+        2. `tar -xvf tophat-2.1.1.Linux_x86_64.tar.gz && rm tophat-2.1.1.Linux_x86_64.tar.gz`
+        3. `export PATH=$(pwd)/tophat-2.1.1.Linux_x86_64:$PATH`
+    - Test command: `tophat --version`
+- Entrez Direct:
+    - Installation command(s): 
+        1. `sh -c "$(curl -fsSL ftp://ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/install-edirect.sh)"`
+        2. `export PATH=${PATH}:${HOME}/edirect`
+    - Test command: `esearch` (outputs `ERROR:  Missing -db argument`, which highlights esearch is installed)
+- SRA-Toolkit:
+    - Version: `3.0.0`
+    - Installation command(s):
+        1. `wget https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/3.0.0/sratoolkit.3.0.0-ubuntu64.tar.gz`
+        2. `tar -xvf sratoolkit.3.0.0-ubuntu64.tar.gz && rm sratoolkit.3.0.0-ubuntu64.tar.gz`
+        3. `export PATH=$(pwd)/sratoolkit.3.0.0-ubuntu64/bin:$PATH`
+        4. `vdb-config --interactive` (saved defaults and exited)
+    - Test command: `fasterq-dump --version`
+- GiTools:
+    - Version: `2.3.1`
+    - Installation command(s):
+        1. `wget http://www.gitools.org/downloads/gitools-2.3.1-bin.zip`
+        2. Unzipped with GUI
+        3. `rm gitools-2.3.1-bin.zip` 
+    - Test command: `./gitools`
+    - **Important**: GiTools only accepts JAVA version 7. Although the [website](http://www.gitools.org/download) says that it works with Java 8, this isn't true. Furthermore, Java 7 is not supported on Ubuntu 16+. Further explainations [here](https://stackoverflow.com/questions/16263556/installing-java-7-on-ubuntu) and [here](https://askubuntu.com/questions/761127/how-do-i-install-openjdk-7-on-ubuntu-16-04-or-higher). 
+- Tool:
+    - Version:
+    - Installation command(s):
+    - Test command:
+- Tool:
+    - Version:
+    - Installation command(s):
+    - Test command:
+- Tool:
+    - Version:
+    - Installation command(s):
+    - Test command:
+- Tool:
+    - Version:
+    - Installation command(s):
+    - Test command:
+
+
+
+
+
+
+
 - Tool:
     - Version:
     - Installation command(s):
