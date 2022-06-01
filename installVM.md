@@ -143,6 +143,52 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
         3. `rm gitools-2.3.1-bin.zip` 
     - Test command: `./gitools`
     - **Important**: GiTools only accepts JAVA version 7. Although the [website](http://www.gitools.org/download) says that it works with Java 8, this isn't true. Furthermore, Java 7 is not supported on Ubuntu 16+. Further explainations [here](https://stackoverflow.com/questions/16263556/installing-java-7-on-ubuntu) and [here](https://askubuntu.com/questions/761127/how-do-i-install-openjdk-7-on-ubuntu-16-04-or-higher). 
+- Ambertools22:
+    - Version: Ambertools22
+    - Installation command(s):
+        1. Manually downloaded from https://ambermd.org/GetAmber.php (used own name/institution to download)
+        2. `tar -xvf AmberTools22.tar.bz2 && rm AmberTools22.tar.bz2`
+        3. `cd amber22_src/build`
+        4. `./run_cmake`
+        5. `make install`
+        6. Added (with vim) `export AMBERSOURCE=/home/exouser/tools/amber22_src` and `source /home/exouser/tools/amber22/amber.sh` to `~/.bashrc`
+    - Test command: `pdb4amber`, `antechamber`, `reduce`, `tleap` all give output. 
+- VMD:
+    - **Important**: more information required:
+        - Download link: https://www.ks.uiuc.edu/Development/Download/download.cgi?PackageName=VMD
+        - What version? 1.9.3 or 1.9.4 (alpha)
+        - `Text mode` vs `text mode w/EGL` vs `OpenGL, CUDA, OptiX, OSPray`
+- ChimeraX:
+    - Version: `1.3`
+    - Installation command(s):
+        1. Manually downloaded from `https://www.cgl.ucsf.edu/chimerax/download.html` (accepted terms and conditions)
+        2. `sudo apt-get install -y libxcb-xinerama0`
+        3. `sudo apt --fix-broken install`
+        4. `sudo dpkg -i ucsf-chimerax_1.3ubuntu20.04_amd64.deb && rm ucsf-chimerax_1.3ubuntu20.04_amd64.deb`
+    - Test: Applciation opens when executed (from Desktop)
+- GROMACS:
+    - Version: `2022.1`
+    - Installation command(s):
+        1. `sudo apt-get install libblas-dev liblapack-dev fftw3 fftw3-dev pkg-config`
+        2. `wget ftp://ftp.gromacs.org/gromacs/gromacs-2022.1.tar.gz`
+        3. `tar -xvf gromacs-2022.1.tar.gz && rm gromacs-2022.1.tar.gz`
+        4. `mkdir build && cd build`
+        5. `cmake .. -DGMX_EXTERNAL_BLAS=TRUE -DREGRESSIONTEST_DOWNLOAD=ON -DGMX_FFT_LIBRARY=fftw3`
+        6. `make`
+        7. `sudo make install`
+        8. `source /usr/local/gromacs/bin/GMXRC`
+    - Test command: `gmx -version`
+- g_mmpbsa:
+    - **Important**: more information required:
+        - The latest version of GROMACS is 2022.1, whilst g_mmpbsa is only compatible with GROMACS <= 5.1. Thus a downgrade is necessary if this software is necessary.
+- R:
+    - Version: `4.2.0`
+    - Installation command(s):
+        1. `sudo apt install dirmngr gnupg apt-transport-https ca-certificates software-properties-common`
+        2. `sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9`
+        3. `sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/'`
+        4. `sudo apt install r-base`
+    - Test command: `R --version`
 - Tool:
     - Version:
     - Installation command(s):
@@ -159,13 +205,11 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
     - Version:
     - Installation command(s):
     - Test command:
-
-
-
-
-
-
-
+- Tool:
+    - Version:
+    - Installation command(s):
+    - Test command:
+    
 - Tool:
     - Version:
     - Installation command(s):
