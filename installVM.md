@@ -266,10 +266,19 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
         6. `bash installpackages.sh quantregForest`
         7. `bash installpackages.sh randomForest`
     - Test command: `bash runadmet.sh -f mols.smi -p 1 -a -s 1`
-- Tool:
-    - Version:
+- RDKit:
+    - Version: `2022.03.2`
     - Installation command(s):
-    - Test command:
+        - **Important**: tried and failed to build from source, failed. Reverted to conda.
+        1. `wget https://repo.anaconda.com/miniconda/Miniconda3-py39_4.12.0-Linux-x86_64.sh`
+        2. `chmod 775 Miniconda3-py39_4.12.0-Linux-x86_64.sh`
+        3. `./Miniconda3-py39_4.12.0-Linux-x86_64.sh`
+        4. `conda init`
+        5. `conda create -c conda-forge -n my-rdkit-env rdkit`
+    - Test commands:
+        - `conda activate my-rdkit-env`
+        - `python`
+        - `from rdkit import Chem` 
 
 - Tool:
     - Version:
