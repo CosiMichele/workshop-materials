@@ -221,7 +221,7 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
     - Installation command(s): `git clone https://github.com/TravisWheelerLab/drug-sniffer`
     - Test commands: ` cd ~/tols/drug-sniffer`, `nextflow  run -profile local -params-file examples/3vri_params.yaml .`
 - PDB2PQR:
-    - Version:
+    - Version: `3.5.2`
     - Installation command(s): 
         1. `git clone https://github.com/Electrostatics/pdb2pqr.git`
         2. `cd pbd2pqr && pip install .`
@@ -279,8 +279,3 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
         - `conda activate my-rdkit-env`
         - `python`
         - `from rdkit import Chem` 
-
-- Tool:
-    - Version:
-    - Installation command(s):
-    - Test command:
