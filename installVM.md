@@ -242,14 +242,30 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
         6. `sudo make install`
         7. `sudo apt install openbabel-gui`
     - Test command: `obgui` opens the gui as expected, `obabel` runs in the command line
-- Tool:
-    - Version:
+- Alphafold:
     - Installation command(s):
-    - Test command:
-- Tool:
-    - Version:
+        1. Execute `distribution=$(. /etc/os-release;echo $ID$VERSION_ID) && curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg && curl -s -L https://nvidia.github.io/libnvidia-container/$distribution/libnvidia-container.list | sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list`
+        2. `sudo apt-get install -y nvidia-docker2`
+        3. `sudo docker run --rm --gpus all nvidia/cuda:11.0.3-base-ubuntu20.04 nvidia-smi`
+        4. Test with `docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi`
+        5. `git clone https://github.com/deepmind/alphafold.git && cd alphafold`
+        6. Modify `Dockerfile` (`docker/Dockerfile`) such as first `RUN` statement is `RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/3bf863cc.pub`
+        7. `docker build -f docker/Dockerfile -t alphafold .`
+        8. `cd docker && pip3 install -r requirements.txt`
+        9. `sudo mkdir /tmp/alphafold`
+        10. `sudo chmod 770 /tmp/alphafold/`
+    - Test command: `python3 run_docker.py`
+    - **Important**: although the test command runs, it hasn't been tested with a dataset.
+- FPADMET:
     - Installation command(s):
-    - Test command:
+        1. `sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9`
+        2. `sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran40/'`
+        3. `sudo apt update`
+        4. `bash installpackages.sh ranger`
+        5. `bash installpackages.sh caret`
+        6. `bash installpackages.sh quantregForest`
+        7. `bash installpackages.sh randomForest`
+    - Test command: `bash runadmet.sh -f mols.smi -p 1 -a -s 1`
 - Tool:
     - Version:
     - Installation command(s):
