@@ -143,7 +143,7 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
         3. `rm gitools-2.3.1-bin.zip` 
     - Test command: `./gitools`
     - **Important**: GiTools only accepts JAVA version 7. Although the [website](http://www.gitools.org/download) says that it works with Java 8, this isn't true. Furthermore, Java 7 is not supported on Ubuntu 16+. Further explainations [here](https://stackoverflow.com/questions/16263556/installing-java-7-on-ubuntu) and [here](https://askubuntu.com/questions/761127/how-do-i-install-openjdk-7-on-ubuntu-16-04-or-higher). 
-- Ambertools22:
+- Amber22, Ambertools22:
     - Version: Ambertools22
     - Installation command(s):
         1. Manually downloaded from https://ambermd.org/GetAmber.php (used own name/institution to download)
@@ -154,10 +154,15 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
         6. Added (with vim) `export AMBERSOURCE=/home/exouser/tools/amber22_src` and `source /home/exouser/tools/amber22/amber.sh` to `~/.bashrc`
     - Test command: `pdb4amber`, `antechamber`, `reduce`, `tleap` all give output. 
 - VMD:
-    - **Important**: more information required:
-        - Download link: https://www.ks.uiuc.edu/Development/Download/download.cgi?PackageName=VMD
-        - What version? 1.9.3 or 1.9.4 (alpha)
-        - `Text mode` vs `text mode w/EGL` vs `OpenGL, CUDA, OptiX, OSPray`
+    - Version: `1.9.3`
+    - Installation command(s):
+        1. Manually downloaded the `LINUX_64 OpenGL, CUDA, OptiX, OSPRay` version from `https://www.ks.uiuc.edu/Development/Download/download.cgi?PackageName=VMD` (Created account etc)
+        2. `tar -xvf vmd-1.9.3.bin.LINUXAMD64-CUDA8-OptiX4-OSPRay111p1.opengl.tar.gz && rm vmd-1.9.3.bin.LINUXAMD64-CUDA8-OptiX4-OSPRay111p1.opengl.tar.gz`
+        3. `cd vm-1.9.3`
+        4. `./configure`
+        5. `cd src`
+        6. `make install`
+    - Test command: `vmd` opens the expected GUI
 - ChimeraX:
     - Version: `1.3`
     - Installation command(s):
@@ -169,7 +174,7 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
 - GROMACS:
     - Version: `2022.1`
     - Installation command(s):
-        1. `sudo apt-get install libblas-dev liblapack-dev fftw3 fftw3-dev pkg-config`
+        1. `sudo apt-get  install -y libblas-dev liblapack-dev fftw3 fftw3-dev pkg-config`
         2. `wget ftp://ftp.gromacs.org/gromacs/gromacs-2022.1.tar.gz`
         3. `tar -xvf gromacs-2022.1.tar.gz && rm gromacs-2022.1.tar.gz`
         4. `mkdir build && cd build`
@@ -189,6 +194,54 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
         3. `sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/'`
         4. `sudo apt install r-base`
     - Test command: `R --version`
+- DESeq2 (R):
+    - Version: `DESeq2_1.36.0`
+    - Installation command(s):
+        1. `sudo apt-get -y install libcurl4-openssl-dev libxml2-dev`
+        2. `sudo apt-get -y install libcurl4-gnutls-dev libxml2-dev libssl-dev`
+        3. Open R as superuser `sudo R` (required to update packages)
+        4. In R: `install.packages("BiocManager")`, yes to all options
+        5. In R: `BiocManager::install("DESeq2")`
+    - Test command: in R `library("DESeq2")` does not returns no Error.
+- RStudio:
+    - Version: `2022.02.3 Build 492`
+    - Installation command(s): 
+        1. Manual download from `https://www.rstudio.com/products/rstudio/download/#download`
+        2. `sudo apt-get install -y libclang-dev`
+        3. `sudo apt --fix-broken install -y`
+        4. `sudo dpkg -i rstudio-2022.02.3-492-amd64.deb`
+- Nextflow:
+    - Version: `22.04.3.5703`
+    - Installation command(s): 
+        1. `curl -s https://get.nextflow.io | bash`
+        2. `export PATH=$PATH:$(pwd)`
+        3. Manually added `export PATH=$PATH:/home/exouser/tools` to `~/.bashrc`
+    - Test command: `nextflow -v`
+- DrugSniffer:
+    - Installation command(s): `git clone https://github.com/TravisWheelerLab/drug-sniffer`
+    - Test commands: ` cd ~/tols/drug-sniffer`, `nextflow  run -profile local -params-file examples/3vri_params.yaml .`
+- PDB2PQR:
+    - Version:
+    - Installation command(s): 
+        1. `git clone https://github.com/Electrostatics/pdb2pqr.git`
+        2. `cd pbd2pqr && pip install .`
+        3. `pip install pdb2pqr` 
+    - **Important**: none of the releases are downloadable from the [link given](https://sourceforge.net/projects/pdb2pqr/). Tried installation following insructions from [readthedocs](https://pdb2pqr.readthedocs.io/en/latest/getting.html), unsure if installed correctly.
+- AutoDock Vina:
+    - Version: `1.2.3`
+    - Installation command(s): Manually downloaded release from `https://github.com/ccsb-scripps/AutoDock-Vina`
+    - Test command: `vina_1.2.3_linux_x86_64 --version`
+- OpenBabel:
+    - Version: `3.1.0` (command line), `3.0.0` (GUI)
+    - Installation command(s):
+        1. Manually downloaded and decompressed latest release from `https://github.com/openbabel/openbabel/releases/tag/openbabel-3-1-1`
+        2. `cd openbabel-3.1.1 && mkdir build && cd build`
+        3. `cmake ..`
+        4. `make -j2`
+        5. `make test`
+        6. `sudo make install`
+        7. `sudo apt install openbabel-gui`
+    - Test command: `obgui` opens the gui as expected, `obabel` runs in the command line
 - Tool:
     - Version:
     - Installation command(s):
@@ -201,15 +254,7 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
     - Version:
     - Installation command(s):
     - Test command:
-- Tool:
-    - Version:
-    - Installation command(s):
-    - Test command:
-- Tool:
-    - Version:
-    - Installation command(s):
-    - Test command:
-    
+
 - Tool:
     - Version:
     - Installation command(s):
