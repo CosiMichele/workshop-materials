@@ -140,18 +140,22 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
     - Installation command(s):
         1. `wget http://www.gitools.org/downloads/gitools-2.3.1-bin.zip`
         2. Unzipped with GUI
-        3. `rm gitools-2.3.1-bin.zip` 
+        3. `rm gitools-2.3.1-bin.zip`
     - Test command: `./gitools`
     - **Important**: GiTools only accepts JAVA version 7. Although the [website](http://www.gitools.org/download) says that it works with Java 8, this isn't true. Furthermore, Java 7 is not supported on Ubuntu 16+. Further explainations [here](https://stackoverflow.com/questions/16263556/installing-java-7-on-ubuntu) and [here](https://askubuntu.com/questions/761127/how-do-i-install-openjdk-7-on-ubuntu-16-04-or-higher). 
+    - **Alternative installation**:
+        - `conda install -c bbglab gitools`
+        - Does not work as intended (persisting Java issue).
 - Amber22, Ambertools22:
     - Version: Ambertools22
     - Installation command(s):
-        1. Manually downloaded from https://ambermd.org/GetAmber.php (used own name/institution to download)
-        2. `tar -xvf AmberTools22.tar.bz2 && rm AmberTools22.tar.bz2`
+        1. Manually downloaded from https://ambermd.org/GetAmber.php (used own name/institution to download) + used licenced Amber22 (private downloa link)
+        2. `bunzip2 AmberTools22.tar.bz2 && bunzip2 Amber22.tar.bz2`
+        2. `tar -xvf AmberTools22.tar && tar -xvf Amber22.tar && rm Amber*`
         3. `cd amber22_src/build`
         4. `./run_cmake`
         5. `make install`
-        6. Added (with vim) `export AMBERSOURCE=/home/exouser/tools/amber22_src` and `source /home/exouser/tools/amber22/amber.sh` to `~/.bashrc`
+        6. Added (with vim) `export AMBERSOURCE=/home/exouser/tools/amber22_master/amber22_src` and `source /home/exouser/tools/amber22_master/amber22/amber.sh` to `~/.bashrc`
     - Test command: `pdb4amber`, `antechamber`, `reduce`, `tleap` all give output. 
 - VMD:
     - Version: `1.9.3`
