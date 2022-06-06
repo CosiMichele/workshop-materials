@@ -220,10 +220,12 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
         1. `curl -s https://get.nextflow.io | bash`
         2. `export PATH=$PATH:$(pwd)`
         3. Manually added `export PATH=$PATH:/home/exouser/tools` to `~/.bashrc`
-    - Test command: `nextflow -v`
+    - Test command: `nextflow -v` 
+    - **Important**: make sure you are in a folder you can write (e.g. Desktop)
 - DrugSniffer:
     - Installation command(s): `git clone https://github.com/TravisWheelerLab/drug-sniffer`
-    - Test commands: ` cd ~/tols/drug-sniffer`, `nextflow  run -profile local -params-file examples/3vri_params.yaml .`
+    - Test commands: ` cd /usr/local/tools/drug-sniffer`, `nextflow  run -profile local -params-file examples/3vri_params.yaml .`
+    - **Important**: Suggest creating a clean clone of DrugSniffer if having issues with Nextflow.
 - PDB2PQR:
     - Version: `3.5.2`
     - Installation command(s): 
@@ -258,17 +260,16 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
         8. `cd docker && pip3 install -r requirements.txt`
         9. `sudo mkdir /tmp/alphafold`
         10. `sudo chmod 770 /tmp/alphafold/`
+        11. `chmod 775 run_docker.py`
     - Test command: `python3 run_docker.py`
-    - **Important**: although the test command runs, it hasn't been tested with a dataset.
+    - **Important**: although the test command runs, it hasn't been tested with a dataset. 
+    - **Docker image needs to be rebuilt every time the instances are reset**
 - FPADMET:
     - Installation command(s):
         1. `sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9`
         2. `sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran40/'`
         3. `sudo apt update`
-        4. `bash installpackages.sh ranger`
-        5. `bash installpackages.sh caret`
-        6. `bash installpackages.sh quantregForest`
-        7. `bash installpackages.sh randomForest`
+        4. `bash installpackages.sh ranger && bash installpackages.sh caret && bash installpackages.sh quantregForest && bash installpackages.sh randomForest`
     - Test command: `bash runadmet.sh -f mols.smi -p 1 -a -s 1`
 - RDKit:
     - Version: `2022.03.2`
