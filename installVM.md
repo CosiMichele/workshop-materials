@@ -271,6 +271,7 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
         3. `sudo apt update`
         4. `bash installpackages.sh ranger && bash installpackages.sh caret && bash installpackages.sh quantregForest && bash installpackages.sh randomForest`
     - Test command: `bash runadmet.sh -f mols.smi -p 1 -a -s 1`
+    - **Important**: if FPADMET cannot run packages, repeat the last step.
 - RDKit:
     - Version: `2022.03.2`
     - Installation command(s):
