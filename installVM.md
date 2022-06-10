@@ -284,4 +284,5 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
     - Test commands:
         - `conda activate my-rdkit-env`
         - `python`
-        - `from rdkit import Chem` 
+        - `from rdkit import Chem`
+    - **Important**: installation for main occoured in instructor folder. Students require to repeat last step. 
