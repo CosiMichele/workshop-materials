@@ -146,6 +146,16 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
     - **Alternative installation**:
         - `conda install -c bbglab gitools`
         - Does not work as intended (persisting Java issue).
+- Cuda:
+    - Version: `1.5`
+    - Installation command(s):
+        1. wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-ubuntu2004.pin
+        2. sudo mv cuda-ubuntu2004.pin /etc/apt/preferences.d/cuda-repository-pin-600
+        3. wget https://developer.download.nvidia.com/compute/cuda/11.5.0/local_installers/cuda-repo-ubuntu2004-11-5-local_11.5.0-495.29.05-1_amd64.deb
+        4. sudo dpkg -i cuda-repo-ubuntu2004-11-5-local_11.5.0-495.29.05-1_amd64.deb
+        5. sudo apt-key add /var/cuda-repo-ubuntu2004-11-5-local/7fa2af80.pub
+        6. sudo apt-get update
+        7. sudo apt-get -y install cuda
 - Amber22, Ambertools22:
     - Version: Ambertools22
     - Installation command(s):
@@ -182,7 +192,7 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
         2. `wget ftp://ftp.gromacs.org/gromacs/gromacs-2022.1.tar.gz`
         3. `tar -xvf gromacs-2022.1.tar.gz && rm gromacs-2022.1.tar.gz`
         4. `mkdir build && cd build`
-        5. `cmake .. -DGMX_EXTERNAL_BLAS=TRUE -DREGRESSIONTEST_DOWNLOAD=ON -DGMX_FFT_LIBRARY=fftw3`
+        5. `cmake .. -DGMX_EXTERNAL_BLAS=TRUE -DREGRESSIONTEST_DOWNLOAD=ON -DGMX_FFT_LIBRARY=fftw3 -DGMX_MPI=on`
         6. `make`
         7. `sudo make install`
         8. `source /usr/local/gromacs/bin/GMXRC`
