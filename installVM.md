@@ -156,6 +156,9 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
         5. sudo apt-key add /var/cuda-repo-ubuntu2004-11-5-local/7fa2af80.pub
         6. sudo apt-get update
         7. sudo apt-get -y install cuda
+        8. export PATH=/usr/local/cuda-11.5/bin${PATH:+:${PATH}}
+        9. export LD_LIBRARY_PATH=/usr/local/cuda-11.5/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+        10. sudo reboot
 - Amber22, Ambertools22:
     - Version: Ambertools22
     - Installation command(s):
@@ -192,11 +195,12 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
         2. `wget ftp://ftp.gromacs.org/gromacs/gromacs-2022.1.tar.gz`
         3. `tar -xvf gromacs-2022.1.tar.gz && rm gromacs-2022.1.tar.gz`
         4. `mkdir build && cd build`
-        5. `cmake .. -DGMX_EXTERNAL_BLAS=TRUE -DREGRESSIONTEST_DOWNLOAD=ON -DGMX_FFT_LIBRARY=fftw3 -DGMX_MPI=on`
+        5. `cmake .. -DGMX_EXTERNAL_BLAS=TRUE -DREGRESSIONTEST_DOWNLOAD=ON -DGMX_FFT_LIBRARY=fftw3 -DGMX_MPI=on -DGMX_GPU=CUDA -DCUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-11.5`
         6. `make`
-        7. `sudo make install`
-        8. `source /usr/local/gromacs/bin/GMXRC`
-    - Test command: `gmx -version`
+        7. `make check`
+        8. `sudo make install`
+        9. `source /usr/local/gromacs/bin/GMXRC`
+    - Test command: `gmx_mpi`
 - g_mmpbsa:
     - **Important**: more information required:
         - The latest version of GROMACS is 2022.1, whilst g_mmpbsa is only compatible with GROMACS <= 5.1. Thus a downgrade is necessary if this software is necessary.
