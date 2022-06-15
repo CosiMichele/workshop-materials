@@ -166,9 +166,10 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
         2. `bunzip2 AmberTools22.tar.bz2 && bunzip2 Amber22.tar.bz2`
         2. `tar -xvf AmberTools22.tar && tar -xvf Amber22.tar && rm Amber*`
         3. `cd amber22_src/build`
-        4. `./run_cmake`
-        5. `make install`
-        6. Added (with vim) `export AMBERSOURCE=/home/exouser/tools/amber22_master/amber22_src` and `source /home/exouser/tools/amber22_master/amber22/amber.sh` to `~/.bashrc`
+        4. Modify `./run_cmake` manually using editor such that `DCUDA=TRUE`, `-DDOWNLOAD_MINICONDA=FALSE` (miniconda already installed)
+        6. `./run_cmake`
+        7. `sudo make install`
+        8. Added (with vim) `export AMBERSOURCE=/home/exouser/tools/amber22_master/amber22_src` and `source /home/exouser/tools/amber22_master/amber22/amber.sh` to `~/.bashrc`
     - Test command: `pdb4amber`, `antechamber`, `reduce`, `tleap` all give output. 
 - VMD:
     - Version: `1.9.3`
