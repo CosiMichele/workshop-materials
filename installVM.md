@@ -121,7 +121,8 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
         1. Manually downloaded `tophat-2.1.1.Linux_x86_64.tar.gz` using GUI from https://ccb.jhu.edu/software/tophat/downloads/ (`wget` was unable to establish SSL connection)
         2. `tar -xvf tophat-2.1.1.Linux_x86_64.tar.gz && rm tophat-2.1.1.Linux_x86_64.tar.gz`
         3. `export PATH=$(pwd)/tophat-2.1.1.Linux_x86_64:$PATH`
-    - Test command: `tophat --version`
+        4. **Important**: because Tophat2 only runs on Python2, a conda environemnt had to be created for support. This was created with `conda create -n tophat-env python=2.7`. 
+    - Test command: `conda activate tophat-env`, then `tophat --version`
 - Entrez Direct:
     - Installation command(s): 
         1. `sh -c "$(curl -fsSL ftp://ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/install-edirect.sh)"`
