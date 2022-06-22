@@ -252,6 +252,7 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
 - AutoDock Vina:
     - Version: `1.2.3`
     - Installation command(s): Manually downloaded release from `https://github.com/ccsb-scripps/AutoDock-Vina`
+    - `vina_split` installation: obtained `vina_split` from vina [1.1.2 release](https://vina.scripps.edu/wp-content/uploads/sites/55/2020/12/autodock_vina_1_1_2_linux_x86.tgz)
     - Test command: `vina_1.2.3_linux_x86_64 --version`
 - OpenBabel:
     - Version: `3.1.0` (command line), `3.0.0` (GUI)
