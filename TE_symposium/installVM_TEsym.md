@@ -1,6 +1,7 @@
 Required software for TE Symposium:
 - Conda (&& Mamba)
 - DNAPipeTE ((repository)[https://github.com/clemgoub/dnaPipeTE])
+- TE_ManAnnot ((repository)[https://github.com/annaprotasio/TE_ManAnnot])
 
 Installed Conda and Mamba
 1. `wget https://repo.anaconda.com/miniconda/Miniconda3-py39_4.12.0-Linux-x86_64.sh`
