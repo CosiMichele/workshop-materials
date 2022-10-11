@@ -1,4 +1,4 @@
-name: te_annot
+name: te_annot_ubuntu
 channels:
   - bioconda
   - defaults
@@ -10,7 +10,6 @@ dependencies:
   - bzip2=1.0.8
   - ca-certificates=2021.1.19
   - cd-hit=4.8.1
-  - curl=7.71.1
   - emboss=6.6.0
   - entrez-direct=13.9
   - expat=2.3.0
@@ -18,29 +17,32 @@ dependencies:
   - freetype=2.10.4
   - gepard=1.40.0
   - giflib=5.1.4
+  - glib=2.70.0
   - hmmer=3.3.2
-  - htslib=1.11
+  - htslib=1.12
   - icu=58.2
   - jpeg=9b
-  - krb5=1.18.2
-  - libcurl=7.71.1
+  - krb5=1.17.2
   - libcxx=10.0.0
+  - libcurl=7.75.0
   - libdeflate=1.7
   - libedit=3.1.20210216
   - libgcc=4.8.5
+  - libgcc-ng=12.1.0
   - libgd=2.2.5
-  - libiconv=1.16
+  - libiconv=1.17
   - libpng=1.6.37
-  - libssh2=1.9.0
+  - libssh2=1.10.0
   - libtiff=4.1.0
   - libwebp=1.0.1
   - libxml2=2.9.10
+  - libzlib=1.2.12
   - lz4-c=1.9.3
   - mafft=7.475
   - ncurses=6.2
   - openjdk=11.0.13
-  - openssl=1.1.1k
-  - pcre=8.44
+  - openssl=1.1.1n
+  - pcre=8.45
   - perl=5.26.2
   - perl-apache-test=1.40
   - perl-app-cpanminus=1.7044
@@ -135,8 +137,8 @@ dependencies:
   - perl-xsloader=0.24
   - perl-yaml=1.29
   - pfam_scan=1.6
-  - samtools=1.11
-  - ucsc-fasplit=366
+  - samtools=1.12
+  - ucsc-fasplit=377
   - xz=5.2.5
-  - zlib=1.2.11
+  - zlib=1.2.12
   - zstd=1.4.9
