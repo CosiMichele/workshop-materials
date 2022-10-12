@@ -7,6 +7,7 @@
 | Miniconda & Mamba | [link](#conda-and-mamba) | [Miniconda](https://docs.conda.io/en/latest/miniconda.html) & [Mamba](https://github.com/mamba-org/mamba) |
 | DNAPipeTE |[link](#dnapipete) | [repository](https://github.com/clemgoub/dnaPipeTE) |
 | TE_ManAnnot | [link](#te_manannot) | [repository](https://github.com/annaprotasio/TE_ManAnnot) |
+| ECCsplorer |[link](#eccsplorer) |[repository](https://github.com/crimBubble/ECCsplorer) |
 
 ## Installation and testing
 
@@ -36,3 +37,26 @@
     4. `gunzip Pfam-A.hmm.gz && gunzip Pfam-A.hmm.dat.gz`
 - Test:
     1. `hmmpress Pfam-A.hmm`
+
+#### ECCsplorer:
+- Installation
+    1. `git clone https://github.com/crimBubble/ECCsplorer && cd ECCsplorer`
+    2. `mamba env create -f environment.yml`
+    3. `cd ~/miniconda3/envs/eccsplorer/bin`
+    4. `mv ~/ECCsplorer/ ECCsplorer`
+    5. `ln -s ECCsplorer/ECCsplorer.py eccsplorer`
+    6. `chmod +x eccsplorer`
+    7. `git clone https://bitbucket.org/petrnovak/repex_tarean.git && cd repex_tarean`
+    8. `conda activate eccsplorer`
+    9. `make && cd .. &&  ln -s repex_tarean/seqclust seqclust`
+    10. `chmod +x seqclust`
+    11. `conda deactivate`
+- Test:
+    1. `conda activate eccsplorer`
+    2. `cd ~/miniconda3/envs/eccsplorer/bin/ECCsplorer/testdata`
+    3. `efetch -db nucleotide -id CM009438.1 -seq_start 8971216 -seq_stop 9147030 -format fasta > chr1.fa && efetch -db nucleotide -id CM009440.1 -seq_start 44915437 -seq_stop 45118630 -format fasta > chr2.fa &&  efetch -db nucleotide -id CM009444.1 -seq_start 23920431 -seq_stop 24120625 -format fasta > chr3.fa`
+    4. `cat chr1.fa chr2.fa chr3.fa | awk '/^>/{print ">chr" ++i; next}{print}' > RefGenomeSeq.fa`
+    5. `rm chr1.fa chr2.fa chr3.fa`
+    6. `efetch -db nucleotide -id JX455085.1 -format fasta > RefSeq_DB.fa`
+    7. `cd ~/miniconda3/envs/eccsplorer/bin/ECCsplorer`
+    8. `eccsplorer testdata/aDNA_R1.fastq testdata/aDNA_R2.fastq testdata/gDNA_R1.fastq testdata/gDNA_R2.fastq --reference_genome testdata/RefGenomeSeq.fa --database testdata/RefSeq_DB.fa --output_dir testrun --trim_reads tru3 --read_count 1000`
