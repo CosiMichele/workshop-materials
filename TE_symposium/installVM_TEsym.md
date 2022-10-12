@@ -3,7 +3,7 @@
 ## List of Software 
 
 | Software | Installation/Test | Repository/Link |
-| --- | --- | --- |
+| :---: | :---: | :---: |
 | Miniconda & Mamba | [link](#conda-and-mamba) | [Miniconda](https://docs.conda.io/en/latest/miniconda.html) & [Mamba](https://github.com/mamba-org/mamba) |
 | DNAPipeTE |[link](#dnapipete) | [repository](https://github.com/clemgoub/dnaPipeTE) |
 | TE_ManAnnot | [link](#te_manannot) | [repository](https://github.com/annaprotasio/TE_ManAnnot) |
@@ -22,7 +22,7 @@
 #### DNAPipeTE:
 - Installation:
     1. `docker pull clemgoub/dnapipete:latest`
-- test:
+- Test:
     1. `mkdir ~/Project && cd ~/Project`
     2. `docker run -it -v ~/Project:/mnt clemgoub/dnapipete:latest`
     3. `python3 dnaPipeTE.py -input /mnt/reads_input.fastq -output /mnt/output -RM_lib ../RepeatMasker/Libraries/RepeatMasker.lib -genome_size 170000000 -genome_coverage 0.1 -sample_number 2 -RM_t 0.2 -cpu 2`
