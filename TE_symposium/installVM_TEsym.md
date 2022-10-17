@@ -32,9 +32,10 @@
 #### TE_ManAnnot:
 - Installation:
     1. `git clone https://github.com/annaprotasio/TE_ManAnnot`
-    2. `cd TE_ManAnnot && wget https://github.com/CosiMichele/workshop-materials/blob/main/TE_symposium/te_annot_ubuntu.yml`
-    3. `cd .. && mkdir Pfam_db && cd Pfam_db && wget ftp://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.hmm.gz && wget ftp://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.hmm.dat.gz && wget ftp://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/relnotes.txt`
-    4. `gunzip Pfam-A.hmm.gz && gunzip Pfam-A.hmm.dat.gz`
+    2. `cd TE_ManAnnot && https://raw.githubusercontent.com/CosiMichele/workshop-materials/main/TE_symposium/te_annot_ubuntu.yml`
+    3. `conda env create -f te_annot_ubuntu.yml`
+    4. `cd .. && mkdir Pfam_db && cd Pfam_db && wget ftp://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.hmm.gz && wget ftp://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.hmm.dat.gz && wget ftp://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/relnotes.txt`
+    5. `gunzip Pfam-A.hmm.gz && gunzip Pfam-A.hmm.dat.gz`
 - Test:
     1. `hmmpress Pfam-A.hmm`
 
