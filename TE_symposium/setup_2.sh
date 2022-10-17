@@ -30,5 +30,8 @@ make && cd .. && ln -s repex_tarean/seqclust seqclust
 chmod +x seqclust
 conda deactivate
 
+cd ~/
+git clone https://github.com/Dfam-consortium/TETools.git
+
 sudo rm /etc/profile.d/setup_1.sh
 head -n -4 ~/.bashrc > ~/.bashrc_tmp && mv ~/.bashrc_tmp ~/.bashrc
