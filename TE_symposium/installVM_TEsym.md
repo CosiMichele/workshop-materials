@@ -8,6 +8,8 @@
 | DNAPipeTE |[link](#dnapipete) | [repository](https://github.com/clemgoub/dnaPipeTE) |
 | TE_ManAnnot | [link](#te_manannot) | [repository](https://github.com/annaprotasio/TE_ManAnnot) |
 | ECCsplorer |[link](#eccsplorer) |[repository](https://github.com/crimBubble/ECCsplorer) |
+| TETools | [link](#tetools) | [repository](https://github.com/Dfam-consortium/TETools) |
+|||||
 
 ## Installation and testing
 
@@ -27,7 +29,6 @@
     1. `mkdir ~/Project && cd ~/Project`
     2. `docker run -it -v ~/Project:/mnt clemgoub/dnapipete:latest`
     3. `python3 dnaPipeTE.py -input /mnt/reads_input.fastq -output /mnt/output -RM_lib ../RepeatMasker/Libraries/RepeatMasker.lib -genome_size 170000000 -genome_coverage 0.1 -sample_number 2 -RM_t 0.2 -cpu 2`
-    - **NOTE**: failed due to lack of test file.
 
 #### TE_ManAnnot:
 - Installation:
@@ -40,7 +41,7 @@
     1. `hmmpress Pfam-A.hmm`
 
 #### ECCsplorer:
-- Installation
+- Installation:
     1. `git clone https://github.com/crimBubble/ECCsplorer && cd ECCsplorer`
     2. `mamba env create -f environment.yml`
     3. `cd ~/miniconda3/envs/eccsplorer/bin`
@@ -52,6 +53,7 @@
     9. `make && cd .. &&  ln -s repex_tarean/seqclust seqclust`
     10. `chmod +x seqclust`
     11. `conda deactivate`
+    12. sudo dpkg --add-architecture i386 && sudo apt-get update && sudo apt-get install libc6:i386 libncurses5:i386 libstdc++6:i386
 - Test:
     1. `conda activate eccsplorer`
     2. `cd ~/miniconda3/envs/eccsplorer/bin/ECCsplorer/testdata`
@@ -61,3 +63,13 @@
     6. `efetch -db nucleotide -id JX455085.1 -format fasta > RefSeq_DB.fa`
     7. `cd ~/miniconda3/envs/eccsplorer/bin/ECCsplorer`
     8. `eccsplorer testdata/aDNA_R1.fastq testdata/aDNA_R2.fastq testdata/gDNA_R1.fastq testdata/gDNA_R2.fastq --reference_genome testdata/RefGenomeSeq.fa --database testdata/RefSeq_DB.fa --output_dir testrun --trim_reads tru3 --read_count 1000`
+
+#### TETools:
+- Installation:
+    1. git clone https://github.com/Dfam-consortium/TETools.git
+    2. docker pull dfam/tetools:1.5
+    3. **Note**: dfam-tetools.sh looks for dfam/tetools:1.5. The VM is made to reflect this.
+
+#### REPET:
+- Installation:
+    1. docker pull urgi/docker_vre_aio
