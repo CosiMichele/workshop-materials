@@ -30,4 +30,4 @@ make && cd .. && ln -s repex_tarean/seqclust seqclust
 chmod +x seqclust
 conda deactivate
 
-head -n -4 ~/.bashrc > ~/.bashrc
+head -n -4 ~/.bashrc > ~/.bashrc_tmp && mv ~/.bashrc_tmp ~/.bashrc
