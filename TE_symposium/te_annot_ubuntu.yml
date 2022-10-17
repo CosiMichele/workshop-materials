@@ -1,4 +1,4 @@
-name: te_annot_ubuntu
+name: te_annot
 channels:
   - bioconda
   - defaults
