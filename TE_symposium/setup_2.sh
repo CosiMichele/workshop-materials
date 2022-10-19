@@ -34,5 +34,6 @@ conda deactivate
 cd ~/
 rm Miniconda3-py39_4.12.0-Linux-x86_64.sh*
 git clone https://github.com/Dfam-consortium/TETools.git
+sudo mv /etc/profile.d/uppsala2022_demoFiles ~/TETools/
 sudo rm /etc/profile.d/setup_1.sh
 head -n -4 ~/.bashrc > ~/.bashrc_tmp && mv ~/.bashrc_tmp ~/.bashrc
