@@ -2,11 +2,6 @@
 
 # This script is in case the pfam server doesn't connect as needed.
 
-cd ~/ && rm -r Pfam_db
-
-cd ~/ && mkdir Pfam_db && cd Pfam_db && wget ftp://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.hmm.gz && wget ftp://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.hmm.dat.gz && wget ftp://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/relnotes.txt
-gunzip Pfam-A.hmm.gz && gunzip Pfam-A.hmm.dat.gz
-
 # Step 4: Download Eccsplorer and related files
 cd ~/
 git clone https://github.com/crimBubble/ECCsplorer && cd ECCsplorer
