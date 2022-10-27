@@ -142,3 +142,4 @@ dependencies:
   - xz=5.2.5
   - zlib=1.2.12
   - zstd=1.4.9
+  - CIAlign
