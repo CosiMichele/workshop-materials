@@ -13,8 +13,8 @@ git clone https://github.com/annaprotasio/TE_ManAnnot
 cd TE_ManAnnot && wget https://raw.githubusercontent.com/CosiMichele/workshop-materials/main/TE_symposium/te_annot_ubuntu.yml
 conda env create -f te_annot_ubuntu.yml
 chmod +x te_annot_ubuntu.yml
-cd .. && mkdir Pfam_db && cd Pfam_db && wget ftp://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.hmm.gz && wget ftp://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.hmm.dat.gz && wget ftp://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/relnotes.txt
-gunzip Pfam-A.hmm.gz && gunzip Pfam-A.hmm.dat.gz
+# cd .. && mkdir Pfam_db && cd Pfam_db && wget ftp://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.hmm.gz && wget ftp://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.hmm.dat.gz && wget ftp://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/relnotes.txt
+# gunzip Pfam-A.hmm.gz && gunzip Pfam-A.hmm.dat.gz
 
 # Step 4: Download Eccsplorer and related files
 cd ~/
@@ -39,10 +39,10 @@ sudo rm /etc/profile.d/setup_1.sh
 head -n -4 ~/.bashrc > ~/.bashrc_tmp && mv ~/.bashrc_tmp ~/.bashrc
 
 # Step 6: hmm related commands
-cd ~/Pfam_db
-conda activate te_annot
-hmmpress Pfam-A.hmm
-conda deactivate
-cd ~/
+# cd ~/Pfam_db
+# conda activate te_annot
+# hmmpress Pfam-A.hmm
+# conda deactivate
+# cd ~/
 # one line alternative 
 # cd ~/Pfam_db && conda activate te_annot && hmmpress Pfam-A.hmm & conda deactivate && cd ~/
