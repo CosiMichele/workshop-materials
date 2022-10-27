@@ -15,6 +15,9 @@ conda env create -f te_annot_ubuntu.yml
 chmod +x te_annot_ubuntu.yml
 cd .. && mkdir Pfam_db && cd Pfam_db && wget ftp://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.hmm.gz && wget ftp://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/Pfam-A.hmm.dat.gz && wget ftp://ftp.ebi.ac.uk/pub/databases/Pfam/current_release/relnotes.txt
 gunzip Pfam-A.hmm.gz && gunzip Pfam-A.hmm.dat.gz
+conda activate te_annot
+hmmpress Pfam-A.hmm
+conda deactivate
 
 # Step 4: Download Eccsplorer and related files
 cd ~/
