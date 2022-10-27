@@ -44,3 +44,5 @@ conda activate te_annot
 hmmpress Pfam-A.hmm
 conda deactivate
 cd ~/
+# one line alternative 
+# cd ~/Pfam_db && conda activate te_annot && hmmpress Pfam-A.hmm & conda deactivate && cd ~/
