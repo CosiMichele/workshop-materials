@@ -24,10 +24,8 @@ Access to these machines is on demand and/or according to the necessities of the
     -  Gitools (http://www.gitools.org/download)
 - MD
     -  Bash and Zsh
-    -  Ambertools22 (https://ambermd.org/AmberTools.php - no license required)
+    -  Ambertools23 (https://ambermd.org/GetAmber.php) 
     -  Amber22/pmemd.cuda (this can wait – we’re figuring out the license)
-    -  VMD (https://www.ks.uiuc.edu/Research/vmd/)
-    -  ChimeraX (https://www.cgl.ucsf.edu/chimerax/)
     -  Gromacs2022.1 (https://manual.gromacs.org/current/download.html)
     -  g_mmpbsa (https://rashmikumari.github.io/g_mmpbsa/   - someone has suggested that this may come as part of Gromacs2022.1???)
 - Screening
@@ -171,17 +169,15 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
         6. `./run_cmake`
         7. `sudo make install`
         8. Added (with vim) `export AMBERSOURCE=/home/exouser/tools/amber22_master/amber22_src` and `source /home/exouser/tools/amber22_master/amber22/amber.sh` to `~/.bashrc`
-    - Test command: `pdb4amber`, `antechamber`, `reduce`, `tleap` all give output. 
-- VMD:
-    - Version: `1.9.3`
-    - Installation command(s):
-        1. Manually downloaded the `LINUX_64 OpenGL, CUDA, OptiX, OSPRay` version from `https://www.ks.uiuc.edu/Development/Download/download.cgi?PackageName=VMD` (Created account etc)
-        2. `tar -xvf vmd-1.9.3.bin.LINUXAMD64-CUDA8-OptiX4-OSPRay111p1.opengl.tar.gz && rm vmd-1.9.3.bin.LINUXAMD64-CUDA8-OptiX4-OSPRay111p1.opengl.tar.gz`
-        3. `cd vm-1.9.3`
-        4. `./configure`
-        5. `cd src`
-        6. `make install`
-    - Test command: `vmd` opens the expected GUI
+    - Test command: `pdb4amber`, `antechamber`, `reduce`, `tleap` all give output.
+- AmberTools23:
+    - Version: `23`
+    - Installation instructions: https://ambermd.org/doc12/Amber23.pdf
+    - Installation procedure and commands:
+        1. Manually downloaded source code from https://ambermd.org/GetAmber.php.
+        2. Decompress with `tar xvfj AmberTools23.tar.bz2` (output is `amber22_src`). Change directory: `cd amber22_src/build`
+        3. Modify `./run_cmake` manually using editor such that `DCUDA=TRUE`, `-DDOWNLOAD_MINICONDA=FALSE` (miniconda already installed) **Important**: in case you want multithreading, please have `-DMPI=TRUE`
+        4. Build with `./run_cmake` and `sudo make install`
 - GROMACS:
     - Version: `2022.1`
     - Installation command(s):
@@ -288,8 +284,11 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
 - Changes in `compbio23_init.sh`:
     - Removed:
         - `export FPADMET=/usr/local/tools/fpadmet/`
-        - `source /usr/local/tools/amber22_master/amber22/amber.sh`
     - Added: 
         - `cp /etc/skel/.bashrc ~` (line 2)
+        - `echo 'source /usr/local/tools/amber22_master/amber22/amber.sh' >> ~/.bashrc`
         - `conda init` (penultimate line)
         - `source ~/.bashrc` (last line)
+- Enabled a smoother conda experience
+    - Updated conda to a newer version (23.3.1)
+    - installed mamba (`conda install -c conda-forge mamba`)
