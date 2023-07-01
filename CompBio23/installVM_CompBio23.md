@@ -176,8 +176,9 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
     - Installation procedure and commands:
         1. Manually downloaded source code from https://ambermd.org/GetAmber.php.
         2. Decompress with `tar xvfj AmberTools23.tar.bz2` (output is `amber22_src`). Change directory: `cd amber22_src/build`
-        3. Modify `./run_cmake` manually using editor such that `DCUDA=TRUE`, `-DDOWNLOAD_MINICONDA=FALSE` (miniconda already installed) **Important**: in case you want multithreading, please have `-DMPI=TRUE`
-        4. Build with `./run_cmake` and `sudo make install`
+        3. Modify `./run_cmake` manually using editor such that `DCUDA=TRUE`, `-DDOWNLOAD_MINICONDA=FALSE` (miniconda already installed) **Important**: in case you want multithreading, please have `-DMPI=TRUE`.
+        4. Install packages through conda: `mamba install -c conda-forge numpy scipy matplotlib`
+        5. Build with `./run_cmake` and `sudo make install`
 - GROMACS:
     - Version: `2022.1`
     - Installation command(s):
