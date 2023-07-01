@@ -32,12 +32,10 @@ Access to these machines is on demand and/or according to the necessities of the
     -  g_mmpbsa (https://rashmikumari.github.io/g_mmpbsa/   - someone has suggested that this may come as part of Gromacs2022.1???)
 - Screening
     - R (https://www.r-project.org/)
-    - Drugsniffer (http://drugsniffer.org/)
     -  PDB2PQR (https://sourceforge.net/projects/pdb2pqr/)
     -  AutoDock Vina (GPU version) (https://github.com/ccsb-scripps/AutoDock-Vina) (in drugsniffer)
     -  OpenBabel (http://openbabel.org/wiki/Main_Page)
-    -  AlphaFold (https://github.com/deepmind/alphafold)
-    -  FPADMET - https://gitlab.com/vishsoft/fpadmet  (in drugsniffer)
+
     -  RDKIT (this requires Conda, I think) (https://www.rdkit.org/)   (in drugsniffer)
 
 ## Installation of software
@@ -184,14 +182,6 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
         5. `cd src`
         6. `make install`
     - Test command: `vmd` opens the expected GUI
-- ChimeraX:
-    - Version: `1.3`
-    - Installation command(s):
-        1. Manually downloaded from `https://www.cgl.ucsf.edu/chimerax/download.html` (accepted terms and conditions)
-        2. `sudo apt-get install -y libxcb-xinerama0`
-        3. `sudo apt --fix-broken install`
-        4. `sudo dpkg -i ucsf-chimerax_1.3ubuntu20.04_amd64.deb && rm ucsf-chimerax_1.3ubuntu20.04_amd64.deb`
-    - Test: Applciation opens when executed (from Desktop)
 - GROMACS:
     - Version: `2022.1`
     - Installation command(s):
@@ -240,10 +230,6 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
         3. Manually added `export PATH=$PATH:/home/exouser/tools` to `~/.bashrc`
     - Test command: `nextflow -v` 
     - **Important**: make sure you are in a folder you can write (e.g. Desktop)
-- DrugSniffer:
-    - Installation command(s): `git clone https://github.com/TravisWheelerLab/drug-sniffer`
-    - Test commands: ` cd /usr/local/tools/drug-sniffer`, `nextflow  run -profile local -params-file examples/3vri_params.yaml .`
-    - **Important**: Suggest creating a clean clone of DrugSniffer if having issues with Nextflow.
 - PDB2PQR:
     - Version: `3.5.2`
     - Installation command(s): 
@@ -267,30 +253,7 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
         6. `sudo make install`
         7. `sudo apt install openbabel-gui`
     - Test command: `obgui` opens the gui as expected, `obabel` runs in the command line
-- Alphafold:
-    - Installation command(s):
-        1. Execute `distribution=$(. /etc/os-release;echo $ID$VERSION_ID) && curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg && curl -s -L https://nvidia.github.io/libnvidia-container/$distribution/libnvidia-container.list | sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list`
-        2. `sudo apt-get install -y nvidia-docker2`
-        3. `sudo docker run --rm --gpus all nvidia/cuda:11.0.3-base-ubuntu20.04 nvidia-smi`
-        4. Test with `docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi`
-        5. `git clone https://github.com/deepmind/alphafold.git && cd alphafold`
-        6. Modify `Dockerfile` (`docker/Dockerfile`) such as first `RUN` statement is `RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/3bf863cc.pub`
-        7. `docker build -f docker/Dockerfile -t alphafold .`
-        8. `cd docker && pip3 install -r requirements.txt`
-        9. `sudo mkdir /tmp/alphafold`
-        10. `sudo chmod 770 /tmp/alphafold/`
-        11. `chmod 775 run_docker.py`
-    - Test command: `python3 run_docker.py`
-    - **Important**: although the test command runs, it hasn't been tested with a dataset. 
-    - **Docker image needs to be rebuilt every time the instances are reset**
-- FPADMET:
-    - Installation command(s):
-        1. `sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9`
-        2. `sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran40/'`
-        3. `sudo apt update`
-        4. `bash installpackages.sh ranger && bash installpackages.sh caret && bash installpackages.sh quantregForest && bash installpackages.sh randomForest`
-    - Test command: `bash runadmet.sh -f mols.smi -p 1 -a -s 1`
-    - **Important**: if FPADMET cannot run packages, repeat the last step.
+
 - RDKit:
     - Version: `2022.03.2`
     - Installation command(s):
@@ -313,3 +276,20 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
 - Removed: VMD, Chimera/ChimeraX, Autodock Vina, Drugsniffer, AlphaFold, FPADMET
 - Updated: Amber22 -> Amber23, 
 - Added: pldock (docker), MDTraj, PyMol
+
+## Changelog (in slightly more detail)
+
+- Removed docker images (Drugsniffer related)
+- Removed from `/usr/local/tools`:
+    - drug-sniffer
+    - fpadmet
+    - alphafold
+- Renamed `/etc/profile.d/compbio22_init.sh` to `/etc/profile.d/compbio23_init.sh`
+- Changes in `compbio23_init.sh`:
+    - Removed:
+        - `export FPADMET=/usr/local/tools/fpadmet/`
+        - `source /usr/local/tools/amber22_master/amber22/amber.sh`
+    - Added: 
+        - `cp /etc/skel/.bashrc ~` (line 2)
+        - `conda init` (penultimate line)
+        - `source ~/.bashrc` (last line)
