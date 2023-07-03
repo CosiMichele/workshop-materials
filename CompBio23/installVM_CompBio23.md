@@ -31,7 +31,7 @@ Access to these machines is on demand and/or according to the necessities of the
 - Screening
     - R (https://www.r-project.org/)
     - PDB2PQR (https://sourceforge.net/projects/pdb2pqr/)
-    - AutoDock Vina (GPU version) (https://github.com/ccsb-scripps/AutoDock-Vina) (in drugsniffer)
+    - AutoDock Vina (GPU version) (https://github.com/ccsb-scripps/AutoDock-Vina)
     - OpenBabel (http://openbabel.org/wiki/Main_Page)
     - RDKIT (this requires Conda, I think) (https://www.rdkit.org/)
 
@@ -43,18 +43,31 @@ Access to these machines is on demand and/or according to the necessities of the
     - Installation procedure and commands:
         1. Manually downloaded source code from https://ambermd.org/GetAmber.php.
         2. Decompress with `tar xvfj AmberTools23.tar.bz2` (output is `amber22_src`). Change directory: `cd amber22_src/build`
-        3. Modify `./run_cmake` manually using editor such that `DCUDA=TRUE`, `-DDOWNLOAD_MINICONDA=FALSE` (miniconda already installed) **Important**: in case you want multithreading, please have `-DMPI=TRUE`.
+        3. Modify `./run_cmake` manually using editor such that `DCUDA=TRUE`, `-DDOWNLOAD_MINICONDA=FALSE` (miniconda already installed) :exclamation::pencil: **NOTE**: in case you want multithreading, please have `-DMPI=TRUE`.
         4. Install packages through conda: `mamba install -c conda-forge numpy scipy matplotlib`
         5. Build with `./run_cmake` and `sudo make install`
         6. Manually added `export AMBERSOURCE=/home/exouser/tools/amber22_master/amber22_src` and `echo 'source /usr/local/tools/amber22_master/amber22/amber.sh' >> ~/.bashrc` to `/etc/profile.d/compbio23_init.sh`. This will ensure that everytime the machine is turned on, Amber22 and AmberTools23 are executable from the path. 
         7. Made all directories and files in `$AMBERSOURCE` executable by all users with ` sudo find ./* -type d -exec chmod 0777 {} \+` and  `sudo find ./* -type f -exec chmod 0777 {} \+` (this was necessary as otherwise the test would fail.)
     - Test:
         - `cd $AMBERSOURCE` and executed tests with `make test.serial` and `exportCUDA_VISIBLE_DEVICES=0 && make test.cuda.serial`. `make test.serial` executes with no errors, `test.cuda.serial` returns 2 erros, probably tied to GPU memory leaks (GPU out of memory)
-- AutoDock Vina:
-    - Version: `1.2.3`
-    - Installation command(s): Manually downloaded release from `https://github.com/ccsb-scripps/AutoDock-Vina`
-    - `vina_split` installation: obtained `vina_split` from vina [1.1.2 release](https://vina.scripps.edu/wp-content/uploads/sites/55/2020/12/autodock_vina_1_1_2_linux_x86.tgz)
-    - Test command: `vina_1.2.3_linux_x86_64 --version`
+- AutoDock Vina & Vina split:
+    - Vina version: `vina_1.2.5_linux_x86_64`
+    - Split version: `vina_split_1.2.5_linux_x86_64`
+    - Installation procedure and commands: 
+        1. Manually downloaded releases from `https://github.com/ccsb-scripps/AutoDock-Vina/releases/tag/v1.2.5`
+        2. Added path to `PATH` and renamed `vina_1.2.5_linux_x86_64` to `vina` and `vina_split_1.2.5_linux_x86_64` to `vina-split`
+    - Test commands: `vina --version` and `vina-split --version` return version numbers and are executable from anywhere
+    - :exclamation::pencil: **NOTE**: In case there's need to install the GPU version, go here: https://github.com/ccsb-scripps/AutoDock-GPU
+- MDTraj:
+    - Version: `1.9.8`
+    - Installation instructions: https://www.mdtraj.org/1.9.8.dev0/installation.html#testing-your-installation
+    - Intallation procedure and commands:
+        1. `mamba install -c conda-forge mdtraj` (if mamba not installed use conda: `conda install -c conda-forge mdtraj`)
+        2. `pip install pytest gsd`
+    - Test:
+        1. Executed `git clone https://github.com/mdtraj/mdtraj.git && cd mdtraj && py.test`. Test output resulted in 1000+ passed tests and 10 errors related to `rb` (read binary mode). Might need to look into this further.
+- pymol:
+    
 ## Installation of software
 
 Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
@@ -274,7 +287,7 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
 
 ---
 
-## Software changelong between 2022 and 2023
+## Software changelong
 
 - Removed: 
     - VMD
@@ -290,7 +303,7 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
     - MDTraj
     - PyMol
 
-## Changelog (in slightly more detail)
+### Changelog (in slightly more detail)
 
 - Removed docker images (Drugsniffer related)
 - Removed from `/usr/local/tools`:
