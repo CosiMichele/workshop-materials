@@ -30,12 +30,31 @@ Access to these machines is on demand and/or according to the necessities of the
     -  g_mmpbsa (https://rashmikumari.github.io/g_mmpbsa/   - someone has suggested that this may come as part of Gromacs2022.1???)
 - Screening
     - R (https://www.r-project.org/)
-    -  PDB2PQR (https://sourceforge.net/projects/pdb2pqr/)
-    -  AutoDock Vina (GPU version) (https://github.com/ccsb-scripps/AutoDock-Vina) (in drugsniffer)
-    -  OpenBabel (http://openbabel.org/wiki/Main_Page)
+    - PDB2PQR (https://sourceforge.net/projects/pdb2pqr/)
+    - AutoDock Vina (GPU version) (https://github.com/ccsb-scripps/AutoDock-Vina) (in drugsniffer)
+    - OpenBabel (http://openbabel.org/wiki/Main_Page)
+    - RDKIT (this requires Conda, I think) (https://www.rdkit.org/)
 
-    -  RDKIT (this requires Conda, I think) (https://www.rdkit.org/)   (in drugsniffer)
+## 2023 Additions
 
+- AmberTools23:
+    - Version: `23`
+    - Installation instructions: https://ambermd.org/doc12/Amber23.pdf
+    - Installation procedure and commands:
+        1. Manually downloaded source code from https://ambermd.org/GetAmber.php.
+        2. Decompress with `tar xvfj AmberTools23.tar.bz2` (output is `amber22_src`). Change directory: `cd amber22_src/build`
+        3. Modify `./run_cmake` manually using editor such that `DCUDA=TRUE`, `-DDOWNLOAD_MINICONDA=FALSE` (miniconda already installed) **Important**: in case you want multithreading, please have `-DMPI=TRUE`.
+        4. Install packages through conda: `mamba install -c conda-forge numpy scipy matplotlib`
+        5. Build with `./run_cmake` and `sudo make install`
+        6. Manually added `export AMBERSOURCE=/home/exouser/tools/amber22_master/amber22_src` and `echo 'source /usr/local/tools/amber22_master/amber22/amber.sh' >> ~/.bashrc` to `/etc/profile.d/compbio23_init.sh`. This will ensure that everytime the machine is turned on, Amber22 and AmberTools23 are executable from the path. 
+        7. Made all directories and files in `$AMBERSOURCE` executable by all users with ` sudo find ./* -type d -exec chmod 0777 {} \+` and  `sudo find ./* -type f -exec chmod 0777 {} \+` (this was necessary as otherwise the test would fail.)
+    - Test:
+        - `cd $AMBERSOURCE` and executed tests with `make test.serial` and `exportCUDA_VISIBLE_DEVICES=0 && make test.cuda.serial`. `make test.serial` executes with no errors, `test.cuda.serial` returns 2 erros, probably tied to GPU memory leaks (GPU out of memory)
+- AutoDock Vina:
+    - Version: `1.2.3`
+    - Installation command(s): Manually downloaded release from `https://github.com/ccsb-scripps/AutoDock-Vina`
+    - `vina_split` installation: obtained `vina_split` from vina [1.1.2 release](https://vina.scripps.edu/wp-content/uploads/sites/55/2020/12/autodock_vina_1_1_2_linux_x86.tgz)
+    - Test command: `vina_1.2.3_linux_x86_64 --version`
 ## Installation of software
 
 Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
@@ -170,19 +189,7 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
         7. `sudo make install`
         8. Added (with vim) `export AMBERSOURCE=/home/exouser/tools/amber22_master/amber22_src` and `source /home/exouser/tools/amber22_master/amber22/amber.sh` to `~/.bashrc`
     - Test command: `pdb4amber`, `antechamber`, `reduce`, `tleap` all give output.
-- AmberTools23:
-    - Version: `23`
-    - Installation instructions: https://ambermd.org/doc12/Amber23.pdf
-    - Installation procedure and commands:
-        1. Manually downloaded source code from https://ambermd.org/GetAmber.php.
-        2. Decompress with `tar xvfj AmberTools23.tar.bz2` (output is `amber22_src`). Change directory: `cd amber22_src/build`
-        3. Modify `./run_cmake` manually using editor such that `DCUDA=TRUE`, `-DDOWNLOAD_MINICONDA=FALSE` (miniconda already installed) **Important**: in case you want multithreading, please have `-DMPI=TRUE`.
-        4. Install packages through conda: `mamba install -c conda-forge numpy scipy matplotlib`
-        5. Build with `./run_cmake` and `sudo make install`
-        6. Manually added `export AMBERSOURCE=/home/exouser/tools/amber22_master/amber22_src` and `echo 'source /usr/local/tools/amber22_master/amber22/amber.sh' >> ~/.bashrc` to `/etc/profile.d/compbio23_init.sh`. This will ensure that everytime the machine is turned on, Amber22 and AmberTools23 are executable from the path. 
-        7. Made all directories and files in `$AMBERSOURCE` executable by all users with ` sudo find ./* -type d -exec chmod 0777 {} \+` and  `sudo find ./* -type f -exec chmod 0777 {} \+` (this was necessary as otherwise the test would fail.)
-    - Test:
-        - `cd $AMBERSOURCE` and executed tests with `make test.serial` and `exportCUDA_VISIBLE_DEVICES=0 && make test.cuda.serial`. `make test.serial` executes with no errors, `test.cuda.serial` returns 2 erros, probably tied to GPU memory leaks (GPU out of memory)
+    - :exclamation::pencil: **NOTE**: `pmemd.cuda` is installed and executable.
 - GROMACS:
     - Version: `2022.1`
     - Installation command(s):
@@ -238,11 +245,6 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
         2. `cd pbd2pqr && pip install .`
         3. `pip install pdb2pqr` 
     - **Important**: none of the releases are downloadable from the [link given](https://sourceforge.net/projects/pdb2pqr/). Tried installation following insructions from [readthedocs](https://pdb2pqr.readthedocs.io/en/latest/getting.html), unsure if installed correctly.
-- AutoDock Vina:
-    - Version: `1.2.3`
-    - Installation command(s): Manually downloaded release from `https://github.com/ccsb-scripps/AutoDock-Vina`
-    - `vina_split` installation: obtained `vina_split` from vina [1.1.2 release](https://vina.scripps.edu/wp-content/uploads/sites/55/2020/12/autodock_vina_1_1_2_linux_x86.tgz)
-    - Test command: `vina_1.2.3_linux_x86_64 --version`
 - OpenBabel:
     - Version: `3.1.0` (command line), `3.0.0` (GUI)
     - Installation command(s):
@@ -274,9 +276,19 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
 
 ## Software changelong between 2022 and 2023
 
-- Removed: VMD, Chimera/ChimeraX, Autodock Vina, Drugsniffer, AlphaFold, FPADMET
-- Updated: Amber22 -> Amber23, 
-- Added: pldock (docker), MDTraj, PyMol
+- Removed: 
+    - VMD
+    - Chimera/ChimeraX 
+    - Drugsniffer 
+    - AlphaFold 
+    - FPADMET
+- Updated: 
+    - AmberTools22 -> AmberTools23 
+    - Autodock Vina 1.2.3 -> 1.2.5
+- Added: 
+    - pldock (docker) 
+    - MDTraj
+    - PyMol
 
 ## Changelog (in slightly more detail)
 
