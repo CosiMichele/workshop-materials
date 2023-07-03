@@ -158,8 +158,8 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
         8. export PATH=/usr/local/cuda-11.5/bin${PATH:+:${PATH}}
         9. export LD_LIBRARY_PATH=/usr/local/cuda-11.5/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
         10. sudo reboot
-- Amber22, Ambertools22:
-    - Version: Ambertools22
+- Amber22:
+    - Version: Amber22
     - Installation command(s):
         1. Manually downloaded from https://ambermd.org/GetAmber.php (used own name/institution to download) + used licenced Amber22 (private downloa link)
         2. `bunzip2 AmberTools22.tar.bz2 && bunzip2 Amber22.tar.bz2`
@@ -179,6 +179,10 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
         3. Modify `./run_cmake` manually using editor such that `DCUDA=TRUE`, `-DDOWNLOAD_MINICONDA=FALSE` (miniconda already installed) **Important**: in case you want multithreading, please have `-DMPI=TRUE`.
         4. Install packages through conda: `mamba install -c conda-forge numpy scipy matplotlib`
         5. Build with `./run_cmake` and `sudo make install`
+        6. Manually added `export AMBERSOURCE=/home/exouser/tools/amber22_master/amber22_src` and `echo 'source /usr/local/tools/amber22_master/amber22/amber.sh' >> ~/.bashrc` to `/etc/profile.d/compbio23_init.sh`. This will ensure that everytime the machine is turned on, Amber22 and AmberTools23 are executable from the path. 
+        7. Made all directories and files in `$AMBERSOURCE` executable by all users with ` sudo find ./* -type d -exec chmod 0777 {} \+` and  `sudo find ./* -type f -exec chmod 0777 {} \+` (this was necessary as otherwise the test would fail.)
+    - Test:
+        - `cd $AMBERSOURCE` and executed tests with `make test.serial` and `exportCUDA_VISIBLE_DEVICES=0 && make test.cuda.serial`. `make test.serial` executes with no errors, `test.cuda.serial` returns 2 erros, probably tied to GPU memory leaks (GPU out of memory)
 - GROMACS:
     - Version: `2022.1`
     - Installation command(s):
