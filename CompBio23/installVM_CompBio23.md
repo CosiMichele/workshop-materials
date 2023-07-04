@@ -66,8 +66,18 @@ Access to these machines is on demand and/or according to the necessities of the
         2. `pip install pytest gsd`
     - Test:
         1. Executed `git clone https://github.com/mdtraj/mdtraj.git && cd mdtraj && py.test`. Test output resulted in 1000+ passed tests and 10 errors related to `rb` (read binary mode). Might need to look into this further.
-- pymol:
-    
+- PyMOL:
+    - Version: `2.5.0`
+    - Source/repository: https://github.com/schrodinger/pymol-open-source
+    - Installation instructions: https://pymolwiki.org/index.php/Linux_Install
+    - Installation procedure and commands:
+        1. Install requirements with `sudo apt-get install git build-essential python3-dev libglew-dev libpng-dev libfreetype6-dev libxml2-dev libmsgpack-dev python3-pyqt5.qtopengl libglm-dev libnetcdf-dev`
+        2. Clone repositories: `git clone https://github.com/schrodinger/pymol-open-source.git`, `git clone https://github.com/rcsb/mmtf-cpp.git`, `mv mmtf-cpp/include/mmtf* pymol-open-source/include/`, `cd pymol-open-source`
+        3. Set prefix location: `export prefix=/usr/local/tools/pymol-open-source/pymol-open-source-build`
+        4. Install using the following: `python3 setup.py build install --home=$prefix`
+    - Test:
+        - `pymol-open-source-build/bin/pymol` results with an Error: `ImportError: /lib/x86_64-linux-gnu/libp11-kit.so.0: undefined symbol: ffi_type_pointer, version LIBFFI_BASE_7.0`. Looking more into it.
+     
 ## Installation of software
 
 Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
