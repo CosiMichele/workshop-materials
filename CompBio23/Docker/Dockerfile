@@ -57,7 +57,11 @@ RUN mamba install --yes \
     'r-tidymodels' \
     'r-tidyverse' \
     'rpy2' \
+    'pymol-open-source' \
+    'pytorch torchvision torchaudio pytorch-cuda=11.7 -c pytorch -c nvidia' \
     'unixodbc' && \
     mamba clean --all -f -y && \
+    pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir omegaconf pytorch_lightning biopython ml_collections einops py3Dmol && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
