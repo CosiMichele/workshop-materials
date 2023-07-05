@@ -1,1 +1,1 @@
-# CompBio22-supp-materials
+# Workshop materials general repository
