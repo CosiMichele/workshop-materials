@@ -1,67 +1,79 @@
-# Copyright (c) Jupyter Development Team.
-# Distributed under the terms of the Modified BSD License.
-ARG OWNER=jupyter
-ARG BASE_CONTAINER=$OWNER/scipy-notebook
-FROM $BASE_CONTAINER
-
-LABEL maintainer="Michele Cosi"
-LABEL description="this Dockerfile was originally developed by the Jupyter Development team and modified for the CompBio 2023 Workshop."
-
-# Fix: https://github.com/hadolint/hadolint/wiki/DL4006
-# Fix: https://github.com/koalaman/shellcheck/wiki/SC3014
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+FROM jupyter/datascience-notebook:lab-4.0.1
 
 USER root
 
-# R pre-requisites
-RUN apt-get update --yes && \
-    apt-get install --yes --no-install-recommends \
-    fonts-dejavu \
-    gfortran \
-    gcc && \
+# Install a few dependencies for goCommands, text editing, and monitoring instances
+RUN apt update && \
+    apt install -y lsb-release apt-transport-https curl libfreetype6-dev pkg-config libx11-dev gcc less software-properties-common apt-utils glances htop nano 
+
+
+# Install and configure jupyter lab.
+COPY jupyter_notebook_config.json /opt/conda/etc/jupyter/jupyter_notebook_config.json
+
+# Add sudo to jovyan user
+RUN apt update && \
+    apt install -y sudo && \
+    apt clean && \
+    rm -rf /var/lib/apt/lists/*
+    
+ARG LOCAL_USER=jovyan
+ARG PRIV_CMDS='/bin/ch*,/bin/cat,/bin/gunzip,/bin/tar,/bin/mkdir,/bin/ps,/bin/mv,/bin/cp,/usr/bin/apt*,/usr/bin/pip*,/bin/yum,/bin/snap,/bin/curl,/bin/tee,/opt'
+
+RUN usermod -aG sudo jovyan && \
+    echo "$LOCAL_USER ALL=NOPASSWD: $PRIV_CMDS" >> /etc/sudoers
+RUN addgroup jovyan
+RUN usermod -aG jovyan jovyan
+
+RUN sudo apt-get update -y && \
+    sudo dpkg --add-architecture amd64 && \
+    sudo apt-get update
+
+
+# Install RStudio
+RUN apt update && apt install --yes gdebi-core && \
+    wget https://download2.rstudio.org/server/jammy/amd64/rstudio-server-2023.06.0-421-amd64.deb && \
+    gdebi -n rstudio-server-2023.06.0-421-amd64.deb && \
+    rm rstudio-server-2023.06.0-421-amd64.deb && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Julia dependencies
-# install Julia packages in /opt/julia instead of ${HOME}
-ENV JULIA_DEPOT_PATH=/opt/julia \
-    JULIA_PKGDIR=/opt/julia
+# Install Shiny Server
+RUN wget https://download3.rstudio.org/ubuntu-18.04/x86_64/shiny-server-1.5.20.1002-amd64.deb && \
+    gdebi -n shiny-server-1.5.20.1002-amd64.deb && \
+    rm shiny-server-1.5.20.1002-amd64.deb && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Setup Julia
-RUN /opt/setup-scripts/setup-julia.bash
+USER jovyan
+WORKDIR /home/jovyan
 
-USER ${NB_UID}
+# Install Jupyter Lab Proxy extensions (cards in Launcher)
+RUN mamba install --quiet --yes jupyter-rsession-proxy jupyter-server-proxy && \
+    pip install jupyter-shiny-proxy
+    
+# Install and configure jupyter lab. 
+COPY jupyter_notebook_config.json /opt/conda/etc/jupyter/jupyter_notebook_config.json
 
-# Setup IJulia kernel & other packages
-RUN /opt/setup-scripts/setup-julia-packages.bash
+# Rebuild the Jupyter Lab with new tools
+RUN jupyter lab build
 
-# R packages including IRKernel which gets installed globally.
-# r-e1071: dependency of the caret R package
-RUN mamba install --yes \
-    'r-base' \
-    'r-caret' \
-    'r-crayon' \
-    'r-devtools' \
-    'r-e1071' \
-    'r-forecast' \
-    'r-hexbin' \
-    'r-htmltools' \
-    'r-htmlwidgets' \
-    'r-irkernel' \
-    'r-nycflights13' \
-    'r-randomforest' \
-    'r-rcurl' \
-    'r-rmarkdown' \
-    'r-rodbc' \
-    'r-rsqlite' \
-    'r-shiny' \
-    'r-tidymodels' \
-    'r-tidyverse' \
-    'rpy2' \
-    'pymol-open-source' \
-    'pytorch torchvision torchaudio pytorch-cuda=11.7 -c pytorch -c nvidia' \
-    'unixodbc' && \
-    mamba clean --all -f -y && \
-    pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir omegaconf pytorch_lightning biopython ml_collections einops py3Dmol && \
-    fix-permissions "${CONDA_DIR}" && \
-    fix-permissions "/home/${NB_USER}"
+# Installation of workshop related materials
+RUN mamba install --yes -c pytorch -c nvidia -c conda-forge \
+    'pytorch' \
+    'pytorch-cuda'
+## AlphaFold2
+RUN mamba install --yes -c conda-forge -c bioconda \
+    'kalign2=2.04' \ 
+    'hhsuite=3.3.0' \
+    'openmm=7.7.0' \
+    'numpy' \ 
+    'matplotlib' \ 
+    'py3dmol'
+## ESMFold
+## Omegafold
+
+EXPOSE 8888
+
+COPY entry.sh /bin
+COPY *ipynb /home/jovyan/
+RUN mkdir -p /home/jovyan/.irods
+
+ENTRYPOINT ["bash", "/bin/entry.sh"]
