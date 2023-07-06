@@ -47,7 +47,7 @@ Access to these machines is on demand and/or according to the necessities of the
         4. Install packages through conda: `mamba install -c conda-forge numpy scipy matplotlib`
         5. Build with `./run_cmake` and `sudo make install`
         6. Manually added `export AMBERSOURCE=/home/exouser/tools/amber22_master/amber22_src` and `echo 'source /usr/local/tools/amber22_master/amber22/amber.sh' >> ~/.bashrc` to `/etc/profile.d/compbio23_init.sh`. This will ensure that everytime the machine is turned on, Amber22 and AmberTools23 are executable from the path. 
-        7. Made all directories and files in `$AMBERSOURCE` executable by all users with ` sudo find ./* -type d -exec chmod 0777 {} \+` and  `sudo find ./* -type f -exec chmod 0777 {} \+` (this was necessary as otherwise the test would fail.)
+        7. Made all directories and files in `$AMBERSOURCE` executable by all users with `sudo find ./* -type d -exec chmod 0777 {} \+` and  `sudo find ./* -type f -exec chmod 0777 {} \+` (this was necessary as otherwise the test would fail.)
     - Test:
         - `cd $AMBERSOURCE` and executed tests with `make test.serial` and `exportCUDA_VISIBLE_DEVICES=0 && make test.cuda.serial`. `make test.serial` executes with no errors, `test.cuda.serial` returns 2 erros, probably tied to GPU memory leaks (GPU out of memory)
 - AutoDock Vina & Vina split:
@@ -82,22 +82,21 @@ Access to these machines is on demand and/or according to the necessities of the
 
 Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
 
-- Base: Ubuntu 20.
+- Base: Ubuntu 22.
 - Prereq command execution:
     - `sudo apt-get update && sudo apt-get upgrade`
-    - `mkdir ~/tools`
+    - `mkdir /data/tools`
 
-!!! Warning "Important"
+:warning: Warning "Important"
         `PATH` is manually unpdated in `/etc/environment` whenever necessary
-
 
 - Python2:
     - Version: `v2.7.18`
     - Installation command(s): `sudo apt install python`
     - Test command: `python --version`
 - Python3:
-    - Version: `v3.8.10`
-    - Installation command(s): none, pre-installed with Base image.
+    - Version: `v3.10.10`
+    - Installation command(s): none, installed with Conda.
     - Test command: `python3 --version`
 - Java 8:
     - Version: `openjdk version "1.8.0_312"`
@@ -108,51 +107,40 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
 - BLAST:
     - Version: `blast 2.13.0`
     - Installation command(s):
-        1. `cd ~/tools`
-        2. `wget https://ftp.ncbi.nlm.nih.gov/blast/executables/LATEST/ncbi-blast-2.13.0+-x64-linux.tar.gz`
-        3. `tar -xvf ncbi-blast-2.13.0+-x64-linux.tar.gz && rm ncbi-blast-2.13.0+-x64-linux.tar.gz`
-        4. `export PATH=$PATH:$HOME/tools/ncbi-blast-2.13.0+/bin`
+        1. `cd /data/tools`
+        2. `wget https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.14.0+-x64-linux.tar.gz`
+        3. `tar -xvf ncbi-blast-2.14.0+-x64-linux.tar.gz && rm ncbi-blast-2.14.0+-x64-linux.tar.gz`
+        4. `export PATH=$PATH:/data/tools/ncbi-blast-2.14.0+/bin`
     - Test command: `blastn -version`
 - HMMER:
     - Version: `HMMER 3.3.2`
     - Installation command(s):
-        1. `wget http://eddylab.org/software/hmmer/hmmer.tar.gz`
-        2. `tar -xvf hmmer.tar.gz && rm hmmer.tar.gz`
-        3. `cd hmmr-3.3.2`
-        4. `./configure --prefix /home/exouser/tools/hmmer-3.3.2`
-        5. `make`
-        6. `make check`
-        7. `make install`
-        8. `cd easel && make install`
-        9. `export /home/exouser/tools/hmmer-3.3.2/bin`
+        1. `mamba install -c bioconda hmmer`
     - Test command: `hmmscan -h`
 - MMSEQS2:
-    - Version: `96b2009982ce686e0b78e226c75c59fd286ba450`
+    - Version: `13.45111`
     - Installation command(s):
-        1. `wget https://mmseqs.com/latest/mmseqs-linux-avx2.tar.gz`
-        2. `tar -xvf mmseqs-linux-avx2.tar.gz && rm mmseqs-linux-avx2.tar.gz`
-        3. `export PATH=$(pwd)/mmseqs/bin/:$PATH`
+        1. `mamba install -c bioconda mmseq2`
     - Test command: `mmseqs --version`
 - MAFFT:
-    - Version: `v7.490`
+    - Version: `v7.520`
     - Installation command(s):
-        1. `wget https://mafft.cbrc.jp/alignment/software/mafft_7.490-1_amd64.deb`
-        2. `dpkg -i mafft_7.490-1_amd64.deb && rm mafft_7.490-1_amd64.deb`
+        1. `mamba install -c bioconda mafft`
     - Test command: `mafft -v`
 - FastTree:
     - Version: `2.1.11 Double precision (No SSE3)`
-    - Installation command(s): `sudo apt-get install fasttree`
-    - Test command: `FastTree`
+    - Installation command(s): `mamba install -c bioconda fasttree`
+    - Test command: `fasttree`
 - PAML:
-    - Version: `4.9j`
-    - Installation command(s): `sudo apt-get install paml`
+    - Version: `4.10`
+    - Installation command(s): `mamba install -c bioconda paml`
     - Test command: `baseml`
 - Bowtie 2:
-    - Version: `2.3.5.1`
-    - Installation command(s): `sudo apt install bowtie2`
+    - Version: `2.5.1`
+    - Installation command(s): `mamba install -c bioconda bowtie2`
     - Test command: `bowtie2 --version`
 - Samtools:
-    - Version: `1.10`
+    - Version: `1.13`
     - Installation command(s): `sudo apt-get install samtools`
     - Test command: `samtools --version`
 - Tophat2:
@@ -160,23 +148,18 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
     - Installation command(s):
         1. Manually downloaded `tophat-2.1.1.Linux_x86_64.tar.gz` using GUI from https://ccb.jhu.edu/software/tophat/downloads/ (`wget` was unable to establish SSL connection)
         2. `tar -xvf tophat-2.1.1.Linux_x86_64.tar.gz && rm tophat-2.1.1.Linux_x86_64.tar.gz`
-        3. `export PATH=$(pwd)/tophat-2.1.1.Linux_x86_64:$PATH`
+        3. `exportex PATH=$(pwd)/tophat-2.1.1.Linux_x86_64:$PATH`
         4. **Important**: because Tophat2 only runs on Python2, a conda environemnt had to be created for support. This was created with `conda create -n tophat-env python=2.7`. 
     - Test command: `conda activate tophat-env`, then `tophat --version`
 - Entrez Direct:
-    - Installation command(s): 
-        1. `sh -c "$(curl -fsSL ftp://ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/install-edirect.sh)"`
-        2. `export PATH=${PATH}:${HOME}/edirect`
-    - Test command: `esearch` (outputs `ERROR:  Missing -db argument`, which highlights esearch is installed)
+    - Version: `16.2`
+    - Installation command(s): `mamba install -c bioconda entrez-direct`
+    - Test command: `esearch -h`
 - SRA-Toolkit:
-    - Version: `3.0.0`
-    - Installation command(s):
-        1. `wget https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/3.0.0/sratoolkit.3.0.0-ubuntu64.tar.gz`
-        2. `tar -xvf sratoolkit.3.0.0-ubuntu64.tar.gz && rm sratoolkit.3.0.0-ubuntu64.tar.gz`
-        3. `export PATH=$(pwd)/sratoolkit.3.0.0-ubuntu64/bin:$PATH`
-        4. `vdb-config --interactive` (saved defaults and exited)
+    - Version: `3.0.5`
+    - Installation command(s):`mamba install -c bioconda sra-tools`
     - Test command: `fasterq-dump --version`
-- GiTools:
+- GiTools: ######### Followed alternative installation, still results in issues
     - Version: `2.3.1`
     - Installation command(s):
         1. `wget http://www.gitools.org/downloads/gitools-2.3.1-bin.zip`
@@ -185,21 +168,14 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
     - Test command: `./gitools`
     - **Important**: GiTools only accepts JAVA version 7. Although the [website](http://www.gitools.org/download) says that it works with Java 8, this isn't true. Furthermore, Java 7 is not supported on Ubuntu 16+. Further explainations [here](https://stackoverflow.com/questions/16263556/installing-java-7-on-ubuntu) and [here](https://askubuntu.com/questions/761127/how-do-i-install-openjdk-7-on-ubuntu-16-04-or-higher). 
     - **Alternative installation**:
+        - `conda create -n gitools openjdk=8`
         - `conda install -c bbglab gitools`
         - Does not work as intended (persisting Java issue).
 - Cuda:
-    - Version: `1.5`
-    - Installation command(s):
-        1. wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-ubuntu2004.pin
-        2. sudo mv cuda-ubuntu2004.pin /etc/apt/preferences.d/cuda-repository-pin-600
-        3. wget https://developer.download.nvidia.com/compute/cuda/11.5.0/local_installers/cuda-repo-ubuntu2004-11-5-local_11.5.0-495.29.05-1_amd64.deb
-        4. sudo dpkg -i cuda-repo-ubuntu2004-11-5-local_11.5.0-495.29.05-1_amd64.deb
-        5. sudo apt-key add /var/cuda-repo-ubuntu2004-11-5-local/7fa2af80.pub
-        6. sudo apt-get update
-        7. sudo apt-get -y install cuda
-        8. export PATH=/usr/local/cuda-11.5/bin${PATH:+:${PATH}}
-        9. export LD_LIBRARY_PATH=/usr/local/cuda-11.5/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
-        10. sudo reboot
+    - :exclamation::pencil: `nvidia-smi` and the `cuda` drivers are already installed but must be loaded first.
+    - Load Cuda with: `module load nvhpc/22.11/nvhpc` (for versions of `NVIDIA-SMI 525.85.05`, `CUDA Version: 12.0` )
+    - Check for `nvcc` with `nvcc --version` or `which nvcc`
+    - Look at what other modules are available by doing `module avail`
 - Amber22:
     - Version: Amber22
     - Installation command(s):
@@ -214,29 +190,43 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
     - Test command: `pdb4amber`, `antechamber`, `reduce`, `tleap` all give output.
     - :exclamation::pencil: **NOTE**: `pmemd.cuda` is installed and executable.
 - GROMACS:
-    - Version: `2022.1`
+    - :exclamation::pencil: **NOTE**: there seems to be an issue with Ubuntu22, and newer CUDA installation preventing GROMACS from installing properly. https://manual.gromacs.org/current/user-guide/known-issues.html 
+- Nextflow:
+    - Version: `23.04.2.5870`
+    - Installation command(s): 
+        1. set Java to 11 with `sudo update-alternatives --config java` and select 0
+        1. `wget -qO- https://get.nextflow.io | bash`
+        2. `export PATH=$PATH:$(pwd)`
+    - Test command: `nextflow -v` 
+- PDB2PQR:
+    - Version: `3.6.1`
+    - Installation command(s): `mamba install -c conda-forge pdb2pqr`
+    - Test command: pdb2pqr --version
+- OpenBabel:
+    - Version: `3.1.0` (command line), `3.0.0` (GUI)
     - Installation command(s):
-        1. `sudo apt-get  install -y libblas-dev liblapack-dev fftw3 fftw3-dev pkg-config`
-        2. `wget ftp://ftp.gromacs.org/gromacs/gromacs-2022.1.tar.gz`
-        3. `tar -xvf gromacs-2022.1.tar.gz && rm gromacs-2022.1.tar.gz`
-        4. `mkdir build && cd build`
-        5. `cmake .. -DGMX_EXTERNAL_BLAS=TRUE -DREGRESSIONTEST_DOWNLOAD=ON -DGMX_FFT_LIBRARY=fftw3 -DGMX_MPI=on -DGMX_GPU=CUDA -DCUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-11.5`
-        6. `make`
-        7. `make check`
-        8. `sudo make install`
-        9. `source /usr/local/gromacs/bin/GMXRC`
-    - Test command: `gmx_mpi`
-- g_mmpbsa:
-    - **Important**: more information required:
-        - The latest version of GROMACS is 2022.1, whilst g_mmpbsa is only compatible with GROMACS <= 5.1. Thus a downgrade is necessary if this software is necessary.
-- R:
-    - Version: `4.2.0`
-    - Installation command(s):
-        1. `sudo apt install dirmngr gnupg apt-transport-https ca-certificates software-properties-common`
-        2. `sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9`
-        3. `sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/'`
-        4. `sudo apt install r-base`
-    - Test command: `R --version`
+        1. Manually downloaded and decompressed latest release from `https://github.com/openbabel/openbabel/releases/tag/openbabel-3-1-1`
+        2. `cd openbabel-3.1.1 && mkdir build && cd build`
+        3. `cmake .. -DCMAKE_INSTALL_PREFIX=/data/tools/openbabel -DBUILD_GUI=ON`
+        4. `make -j2`
+        5. `sudo make install`
+        6. `export PATH=$PATH:/data/tools/openbabel/bin`
+        7. `sudo apt install openbabel-gui`
+    - Test command: `obgui` opens the gui as expected, `obabel` runs in the command line
+- RDKit:
+    - Version: `2022.03.2`
+    - Installation command(s): `mamba install -c conda-forge rdkit`
+    - Test commands:
+        - `conda activate my-rdkit-env`
+        - `python`
+        - `from rdkit import Chem`
+
+The following packages will be installed in the Dockerfile rather than the VM, although R and RStudio are available.
+- R, RStudio:
+    - Versions: R = `4.2.1` RStudio = `rstudio-2022.07.2+576 `
+    - :exclamation::pencil: `R` and `RStudio` are already installed but must be loaded first.
+    - Load R with: `module load R`
+    - Load RStudio with: `module load rstudio`
 - DESeq2 (R):
     - Version: `DESeq2_1.36.0`
     - Installation command(s):
@@ -246,54 +236,6 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
         4. In R: `install.packages("BiocManager")`, yes to all options
         5. In R: `BiocManager::install("DESeq2")`
     - Test command: in R `library("DESeq2")` does not returns no Error.
-- RStudio:
-    - Version: `2022.02.3 Build 492`
-    - Installation command(s): 
-        1. Manual download from `https://www.rstudio.com/products/rstudio/download/#download`
-        2. `sudo apt-get install -y libclang-dev`
-        3. `sudo apt --fix-broken install -y`
-        4. `sudo dpkg -i rstudio-2022.02.3-492-amd64.deb`
-- Nextflow:
-    - Version: `22.04.3.5703`
-    - Installation command(s): 
-        1. `curl -s https://get.nextflow.io | bash`
-        2. `export PATH=$PATH:$(pwd)`
-        3. Manually added `export PATH=$PATH:/home/exouser/tools` to `~/.bashrc`
-    - Test command: `nextflow -v` 
-    - **Important**: make sure you are in a folder you can write (e.g. Desktop)
-- PDB2PQR:
-    - Version: `3.5.2`
-    - Installation command(s): 
-        1. `git clone https://github.com/Electrostatics/pdb2pqr.git`
-        2. `cd pbd2pqr && pip install .`
-        3. `pip install pdb2pqr` 
-    - **Important**: none of the releases are downloadable from the [link given](https://sourceforge.net/projects/pdb2pqr/). Tried installation following insructions from [readthedocs](https://pdb2pqr.readthedocs.io/en/latest/getting.html), unsure if installed correctly.
-- OpenBabel:
-    - Version: `3.1.0` (command line), `3.0.0` (GUI)
-    - Installation command(s):
-        1. Manually downloaded and decompressed latest release from `https://github.com/openbabel/openbabel/releases/tag/openbabel-3-1-1`
-        2. `cd openbabel-3.1.1 && mkdir build && cd build`
-        3. `cmake ..`
-        4. `make -j2`
-        5. `make test`
-        6. `sudo make install`
-        7. `sudo apt install openbabel-gui`
-    - Test command: `obgui` opens the gui as expected, `obabel` runs in the command line
-
-- RDKit:
-    - Version: `2022.03.2`
-    - Installation command(s):
-        - **Important**: tried and failed to build from source, failed. Reverted to conda.
-        1. `wget https://repo.anaconda.com/miniconda/Miniconda3-py39_4.12.0-Linux-x86_64.sh`
-        2. `chmod 775 Miniconda3-py39_4.12.0-Linux-x86_64.sh`
-        3. `./Miniconda3-py39_4.12.0-Linux-x86_64.sh`
-        4. `conda init`
-        5. `conda create -c conda-forge -n my-rdkit-env rdkit`
-    - Test commands:
-        - `conda activate my-rdkit-env`
-        - `python`
-        - `from rdkit import Chem`
-    - **Important**: installation for main occoured in instructor folder. Students require to repeat last step. 
 
 ---
 
@@ -305,6 +247,7 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
     - Drugsniffer 
     - AlphaFold 
     - FPADMET
+    - g_mmpbsa
 - Updated: 
     - AmberTools22 -> AmberTools23 
     - Autodock Vina 1.2.3 -> 1.2.5
@@ -312,6 +255,8 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
     - pldock (docker) 
     - MDTraj
     - PyMol
+- Issue:
+    - Gromacs. Might want to use an older version of the VM to access.
 
 ### Changelog (in slightly more detail)
 

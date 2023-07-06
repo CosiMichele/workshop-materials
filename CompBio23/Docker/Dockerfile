@@ -42,6 +42,23 @@ RUN wget https://download3.rstudio.org/ubuntu-18.04/x86_64/shiny-server-1.5.20.1
     rm shiny-server-1.5.20.1002-amd64.deb && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
+
+# Install CUDA toolkit
+ENV CUDA_VERSION=11.0
+ENV CUDA_PKG_VERSION=11-0=$CUDA_VERSION-1
+RUN curl -fsSL https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/7fa2af80.pub | sudo apt-key add - && \
+    echo "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64 /" > /etc/apt/sources.list.d/cuda.list && \
+    echo "deb https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu2004/x86_64 /" > /etc/apt/sources.list.d/nvidia-ml.list && \
+    sudo apt-get update && \
+    sudo apt-get install -y --no-install-recommends cuda-cudart-$CUDA_PKG_VERSION cuda-compat-11-0 && \
+    ln -s cuda-11.0 /usr/local/cuda && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install CUDA-related Python packages
+RUN mamba install --quiet --yes \
+    cudatoolkit=$CUDA_VERSION \
+    cudnn
+
 USER jovyan
 WORKDIR /home/jovyan
 
@@ -59,6 +76,7 @@ RUN jupyter lab build
 RUN mamba install --yes -c pytorch -c nvidia -c conda-forge \
     'pytorch' \
     'pytorch-cuda'
+
 ## AlphaFold2
 RUN mamba install --yes -c conda-forge -c bioconda \
     'kalign2=2.04' \ 
