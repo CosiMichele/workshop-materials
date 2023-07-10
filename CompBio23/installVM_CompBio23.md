@@ -82,7 +82,7 @@ Access to these machines is on demand and/or according to the necessities of the
 
 Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
 
-- Base: Ubuntu 22.
+- Base: Ubuntu 20.
 - Prereq command execution:
     - `sudo apt-get update && sudo apt-get upgrade`
     - `mkdir /data/tools`
@@ -91,9 +91,7 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
         `PATH` is manually unpdated in `/etc/environment` whenever necessary
 
 - Python2:
-    - Version: `v2.7.18`
-    - Installation command(s): `sudo apt install python`
-    - Test command: `python --version`
+    - Installed in own enviroment via conda
 - Python3:
     - Version: `v3.10.10`
     - Installation command(s): none, installed with Conda.
@@ -105,7 +103,7 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
         2. `sudo update-alternatives --config java` (selected 2: java 8)
     - Test command: `java -version`
 - BLAST:
-    - Version: `blast 2.13.0`
+    - Version: `blast 2.14.0`
     - Installation command(s):
         1. `cd /data/tools`
         2. `wget https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.14.0+-x64-linux.tar.gz`
@@ -172,10 +170,7 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
         - `conda install -c bbglab gitools`
         - Does not work as intended (persisting Java issue).
 - Cuda:
-    - :exclamation::pencil: `nvidia-smi` and the `cuda` drivers are already installed but must be loaded first.
-    - Load Cuda with: `module load nvhpc/22.11/nvhpc` (for versions of `NVIDIA-SMI 525.85.05`, `CUDA Version: 12.0` )
-    - Check for `nvcc` with `nvcc --version` or `which nvcc`
-    - Look at what other modules are available by doing `module avail`
+    - see [CompBio22 instructions](../CompBio22/installVM_CompBio22.md)
 - Amber22:
     - Version: Amber22
     - Installation command(s):
@@ -190,7 +185,7 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
     - Test command: `pdb4amber`, `antechamber`, `reduce`, `tleap` all give output.
     - :exclamation::pencil: **NOTE**: `pmemd.cuda` is installed and executable.
 - GROMACS:
-    - :exclamation::pencil: **NOTE**: there seems to be an issue with Ubuntu22, and newer CUDA installation preventing GROMACS from installing properly. https://manual.gromacs.org/current/user-guide/known-issues.html 
+    - see [CompBio22 instructions](../CompBio22/installVM_CompBio22.md)
 - Nextflow:
     - Version: `23.04.2.5870`
     - Installation command(s): 
@@ -223,10 +218,16 @@ Using a VM on JetStream2 to install software (`g3.small`), logged in via ssh.
 
 The following packages will be installed in the Dockerfile rather than the VM, although R and RStudio are available.
 - R, RStudio:
-    - Versions: R = `4.2.1` RStudio = `rstudio-2022.07.2+576 `
-    - :exclamation::pencil: `R` and `RStudio` are already installed but must be loaded first.
-    - Load R with: `module load R`
-    - Load RStudio with: `module load rstudio`
+    - R
+        - Versions: R = `4.3.1` RStudio = `rstudio-2022.07.2+576 `
+        - sudo apt update -qq
+        - apt install --no-install-recommends software-properties-common dirmngr
+        - wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
+        - sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
+        - sudo apt install --no-install-recommends r-base
+    - RStudio
+        - wget https://s3.amazonaws.com/rstudio-ide-build/electron/focal/amd64/rstudio-2023.06.1-524-amd64.deb
+        - sudo dpkg -i rstudio-2023.06.1-524-amd64.deb
 - DESeq2 (R):
     - Version: `DESeq2_1.36.0`
     - Installation command(s):
@@ -234,8 +235,11 @@ The following packages will be installed in the Dockerfile rather than the VM, a
         2. `sudo apt-get -y install libcurl4-gnutls-dev libxml2-dev libssl-dev`
         3. Open R as superuser `sudo R` (required to update packages)
         4. In R: `install.packages("BiocManager")`, yes to all options
+        5. In R: `BiocManager::install(version = "3.17")`
         5. In R: `BiocManager::install("DESeq2")`
     - Test command: in R `library("DESeq2")` does not returns no Error.
+- Bambu (R):
+    - BiocManager::install("bambu")
 
 ---
 

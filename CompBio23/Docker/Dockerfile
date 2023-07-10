@@ -1,33 +1,6 @@
-FROM jupyter/datascience-notebook:lab-4.0.1
+FROM stack0verflow/jupyterlab-pytorch
 
 USER root
-
-# Install a few dependencies for goCommands, text editing, and monitoring instances
-RUN apt update && \
-    apt install -y lsb-release apt-transport-https curl libfreetype6-dev pkg-config libx11-dev gcc less software-properties-common apt-utils glances htop nano 
-
-
-# Install and configure jupyter lab.
-COPY jupyter_notebook_config.json /opt/conda/etc/jupyter/jupyter_notebook_config.json
-
-# Add sudo to jovyan user
-RUN apt update && \
-    apt install -y sudo && \
-    apt clean && \
-    rm -rf /var/lib/apt/lists/*
-    
-ARG LOCAL_USER=jovyan
-ARG PRIV_CMDS='/bin/ch*,/bin/cat,/bin/gunzip,/bin/tar,/bin/mkdir,/bin/ps,/bin/mv,/bin/cp,/usr/bin/apt*,/usr/bin/pip*,/bin/yum,/bin/snap,/bin/curl,/bin/tee,/opt'
-
-RUN usermod -aG sudo jovyan && \
-    echo "$LOCAL_USER ALL=NOPASSWD: $PRIV_CMDS" >> /etc/sudoers
-RUN addgroup jovyan
-RUN usermod -aG jovyan jovyan
-
-RUN sudo apt-get update -y && \
-    sudo dpkg --add-architecture amd64 && \
-    sudo apt-get update
-
 
 # Install RStudio
 RUN apt update && apt install --yes gdebi-core && \
@@ -42,23 +15,6 @@ RUN wget https://download3.rstudio.org/ubuntu-18.04/x86_64/shiny-server-1.5.20.1
     rm shiny-server-1.5.20.1002-amd64.deb && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-
-# Install CUDA toolkit
-ENV CUDA_VERSION=11.0
-ENV CUDA_PKG_VERSION=11-0=$CUDA_VERSION-1
-RUN curl -fsSL https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/7fa2af80.pub | sudo apt-key add - && \
-    echo "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64 /" > /etc/apt/sources.list.d/cuda.list && \
-    echo "deb https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu2004/x86_64 /" > /etc/apt/sources.list.d/nvidia-ml.list && \
-    sudo apt-get update && \
-    sudo apt-get install -y --no-install-recommends cuda-cudart-$CUDA_PKG_VERSION cuda-compat-11-0 && \
-    ln -s cuda-11.0 /usr/local/cuda && \
-    rm -rf /var/lib/apt/lists/*
-
-# Install CUDA-related Python packages
-RUN mamba install --quiet --yes \
-    cudatoolkit=$CUDA_VERSION \
-    cudnn
-
 USER jovyan
 WORKDIR /home/jovyan
 
@@ -71,22 +27,6 @@ COPY jupyter_notebook_config.json /opt/conda/etc/jupyter/jupyter_notebook_config
 
 # Rebuild the Jupyter Lab with new tools
 RUN jupyter lab build
-
-# Installation of workshop related materials
-RUN mamba install --yes -c pytorch -c nvidia -c conda-forge \
-    'pytorch' \
-    'pytorch-cuda'
-
-## AlphaFold2
-RUN mamba install --yes -c conda-forge -c bioconda \
-    'kalign2=2.04' \ 
-    'hhsuite=3.3.0' \
-    'openmm=7.7.0' \
-    'numpy' \ 
-    'matplotlib' \ 
-    'py3dmol'
-## ESMFold
-## Omegafold
 
 EXPOSE 8888
 
