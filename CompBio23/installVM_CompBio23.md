@@ -281,3 +281,7 @@ The following packages will be installed in the Dockerfile rather than the VM, a
 - Enabled a smoother conda experience
     - Updated conda to a newer version (23.3.1)
     - installed mamba (`conda install -c conda-forge mamba`)
+
+---
+
+Note: [Edwin has good notes on shared storage for JH-vm4w](https://gitlab.com/stack0/jh-share-mounter)
