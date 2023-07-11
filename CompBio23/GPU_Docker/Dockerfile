@@ -65,11 +65,16 @@ RUN mamba install --quiet --yes jupyter-rsession-proxy jupyter-server-proxy
 # Install and configure jupyter lab. 
 COPY jupyter_notebook_config.json /opt/conda/etc/jupyter/jupyter_notebook_config.json
 
+RUN mamba install --quiet --yes \
+    pytorch \
+    -c pytorch 
+
 # Rebuild the Jupyter Lab with new tools
 RUN jupyter lab build
 
 EXPOSE 8888
 
-#COPY entry.sh /bin
+COPY entry.sh /bin
 
-#ENTRYPOINT ["bash", "/bin/entry.sh"]
+ENTRYPOINT ["bash", "/bin/entry.sh"]
+
