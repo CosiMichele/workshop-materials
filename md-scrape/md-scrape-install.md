@@ -37,4 +37,4 @@ Users will require CyVerse accounts in order to use the tools accessing the MD-S
 2. Once in the VM, you will need to connect to the CyVerse Data Store. To do so, you will need to type in the following: `sudo mount -o gid=<you>,uid=<you> -t davfs https://data.cyverse.org/dav/iplant/projects/mdrepo-staging/ /opt/md-scrape-data-repo`, where <you> is your username (e.g., `user1`)
 3. You should be able to create and remove files using `sudo` commands. This only works with very small files.
 
-:bangbang: **Note 3**: *[With great power comes great responsibility](https://en.wikipedia.org/wiki/With_great_power_comes_great_responsibility)* You have `sudo` priviledges. Before you do something, **THINK ABOUT IT**. :bangbang:
+:bangbang: **Note 3**: *[With great power comes great responsibility](https://en.wikipedia.org/wiki/With_great_power_comes_great_responsibility)*: you have `sudo` priviledges. Before you do something, **THINK ABOUT IT**. :bangbang:
