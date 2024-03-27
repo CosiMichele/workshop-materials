@@ -57,25 +57,347 @@ One of the most useful guides to Markdown is the [markdownguide.org](https://www
 From here on we are going to explore some of the popular Markdown techniques used through the DataLab and beyond! These should render well here on GitHub and other Markdown supporting websites (Stack Overflow, Reddit, Slack, etc...).
 
 ### Headings
-### Paragraphs
+
+Headinds are created by adding `#` in front of a word or a phrase. The more the `#` the "smaller" the level heading: 1 `#` represents a level one heading used for the name of a chapter, 2 `##` is a level 2 heading used, for example, as heading of a paragraph, all the way until level heading 6. 
+
+|Markdown|Output|
+|---|---|
+|# Heading level 1 | <h1>Heading level 1</h1> |
+|## Heading level 2 | <h2>Heading level 2</h2> |
+|### Heading level 3 | <h3>Heading level 3</h3> |
+|#### Heading level 4 | <h4>Heading level 4</h4> |
+|##### Heading level 5 | <h5>Heading level 5</h5> |
+|###### Heading level 6 | <h6>Heading level 6</h6> |
+
+### Paragraphs and Line Breaks
+
+Paragraphs can be populated as normal text, however you will require at least 2 line breaks (or character returns) in order to add separation between 2 sentences.
+
+Wrong Markdown:
+```
+This is my first paragraph. 
+This is my second paragraph. 
+There's no separation as I have only 1 character return.
+```
+
+Output: 
+
+This is my first paragraph. 
+This is my second paragraph. 
+There's no separation as I have only 1 character return.
+
+Right Markdown:
+```
+This is my first paragraph. 
+
+This is my second paragraph. 
+
+There is separation as I have put 2 character returns between the two sentences.
+```
+
+Output:
+
+This is my first paragraph. 
+
+This is my second paragraph. 
+
+There is separation as I have put 2 character returns between the two sentences.
+
 #### Emphasis
-##### Bold
-##### Italic
-##### Bold & Italic
+
+Markdown allows you to to emphasize sentences or words in **bold**, *italic* or ***both***!
+
+||Markdown|Output|
+|---|---|---|
+|Bold| `**Use asterisks twice around the word or sentence to bold it!**` | **Use asterisks twice around the word or sentence to bold it!** |
+|Italic| `*Use asterisk once round the word or sentence to italicize it!*` | *Use asterisk once round the word or sentence to italicize it!* |
+|Bold and Italic | `***Use 3 asterisks around the word or sentence to have both bold and italic!***` | ***Use 3 asterisks around the word or sentence to have both bold and italic!*** |
+
 #### Block Quotes
-#### Line Breaks
+
+Block quotes can be used in order to emphasize a note or a warning. These are created using the `>` character.
+
+Markdown:
+
+`> Note: 'tis a block quote!`
+
+Output:
+
+> Note: 'tis a block quote!
+
+There can be multiple sentences in block quotes. Simply remember to add a `>` even for emtpy lines.
+
+Markdown:
+
+```
+> This is the first sentence in the block quote...
+>
+> ... and here's the second!
+```
+
+Output:
+
+> This is the first sentence in the block quote...
+>
+> ... and here's the second!
+
+You can also create nested blocked quotes by adding more `>` in sequence.
+
+Markdown:
+
+```
+> This is the heading sentence.
+>
+>> Here's a nested sentence...
+>>> And here's a veeeery (x3) nested sentence!
+```
+
+Output:
+
+> This is the heading sentence.
+>
+>> Here's a nested sentence...
+>>> And here's a veeery (x3) nested sentence!
+
 #### Lists
-##### Ordered Lists
+
+Lists can either be ordered or unordered.
+
+##### Ordered lists
+
+Ordered lists can be called with simply typing `1.` in the first sentence and the list will continue from there automatically. Even if the second number is NOT 2, the list will resume from 2. If the number starts from a different number, the list will start that specified number.
+
+Inserts however, need to start from `1.`
+
+Markdown:
+```
+1. Sentence 1
+1. Sentence 2 
+    1. Nested insert 1
+    1. Nested insert 2
+1. Sentence 3
+
+Break
+
+4. Sentence 1
+4. Sentence 2
+    1. Nested insert 1
+    1. Nested insert 2
+4. Sentence 3
+```
+
+Output:
+
+1. Sentence 1
+1. Sentence 2 
+    1. Nested insert 1
+    5. Nested insert 2
+1. Sentence 3
+
+Break
+
+4. Sentence 1
+4. Sentence 2
+    1. Nested insert 1
+    5. Nested insert 2
+4. Sentence 3
+    
 ##### Unordered Lists
+
+Unordered lists are called with `-`, `*`, `+`.
+
+Markdown:
+```
+- Sentence 1
+- Sentence 2 
+    - Nested insert 1
+    - Nested insert 2
+- Sentence 3
+
+Break
+
++ Sentence 1
++ Sentence 2 
+    + Nested insert 1
+    + Nested insert 2
++ Sentence 3
+
+Break
+
+* Sentence 1
+* Sentence 2 
+    * Nested insert 1
+    * Nested insert 2
+* Sentence 3
+```
+
+Output:
+
+- Sentence 1
+- Sentence 2 
+    - Nested insert 1
+    - Nested insert 2
+- Sentence 3
+
+Break
+
++ Sentence 1
++ Sentence 2 
+    + Nested insert 1
+    + Nested insert 2
++ Sentence 3
+
+Break
+
+* Sentence 1
+* Sentence 2 
+    * Nested insert 1
+    * Nested insert 2
+* Sentence 3
+
 #### Images
-##### Images with Links
-##### Images using HTML
+
+Images are insterted using the following convenctions:
+
+Markdown:
+```
+![image name](URL-to-image)
+[![image name](URL-to-image)](URL destination)
+
+such as 
+
+![wilma&wilbur](https://alumni.arizona.edu/sites/default/files/styles/az_natural/public/2022-06/wilbur%20and%20wilma.jpg?itok=BtBNnOAR)
+[![wilma&wilbur](https://alumni.arizona.edu/sites/default/files/styles/az_natural/public/2022-06/wilbur%20and%20wilma.jpg?itok=BtBNnOAR)](https://alumni.arizona.edu/history-traditions/wilbur-and-wilma)
+```
+
+Output:
+
+The first image will just show the image.
+![wilma&wilbur](https://alumni.arizona.edu/sites/default/files/styles/az_natural/public/2022-06/wilbur%20and%20wilma.jpg?itok=BtBNnOAR)
+
+The second picture will redirect to a selected webpage.
+[![wilma&wilbur](https://alumni.arizona.edu/sites/default/files/styles/az_natural/public/2022-06/wilbur%20and%20wilma.jpg?itok=BtBNnOAR)](https://alumni.arizona.edu/history-traditions/wilbur-and-wilma)
+
 #### Code
+
+Code can be shown in 2 ways, either in-line or in a code block.
+
 ##### In-line Code
+
+When addressing in-line code, all you need is adding ` (above the ~ sign) next to your word or sentence.
+
+Markdown:
+```
+`This sentence is going to render as code.`
+```
+
+Output:
+
+`This sentence is going to render as code.`
+
 ##### Code Block
+
+The Code Block synthax is what we've been using throughout the page in order to show you what the raw Markdown is! In order to create code blocks, one has to add 3 ticks at the beginning and at the end of a code chunk.
+
+Markdown:
+````
+```
+This is the first sentence in a code block
+
+code line 1:
+    code line 2
+        code line 3
+
+This is going to be the last sentence in the code block.
+```
+````
+
+Output:
+
+```
+This is the first sentence in a code block
+
+code line 1:
+    code line 2
+        code line 3
+
+This is going to be the last sentence in the code block.
+```
+
 #### Links
+
+We have seen how to link things earlier during the images section and we can apply the same synthax to words and sentences. One has to follow the next synthax: `[sentence in square brakets](followed by the URL destination).`
+
+Mardown:
+
+```
+[This sentence is going to be linking to the Data Science Institute webpage.](https://datascience.arizona.edu/)
+```
+
+Output:
+
+[This sentence is going to be linking to the Data Science Institute webpage.](https://datascience.arizona.edu/)
+
+
 #### Horizontal Rule
+
+Adding orizontal separators in a page is simple: add 3 dashes (`-`) to create a visual separation!
+
+Markdown:
+`---`
+
+Output:
+
+---
+
 #### Tables
+
+Tables are created by using pipes (`|`) and dashes (`-`).
+
+Markdown:
+
+```
+|Entry A|Entry B| Data |Results|
+|---|---|---|---|
+|entry 1A|entry 1B|data 1|result 1|
+|entry 2A|entry 2B|data 2|result 2|
+|entry 3A|entry 3B|data 3|result 3|
+|entry 4A|entry 4B|data 4|result 4|
+```
+Output:
+
+|Entry A|Entry B| Data |Results|
+|---|---|---|---|
+|entry 1A|entry 1B|data 1|result 1|
+|entry 2A|entry 2B|data 2|result 2|
+|entry 3A|entry 3B|data 3|result 3|
+|entry 4A|entry 4B|data 4|result 4|
+
+Notice how the first line is always the table header and the second always a separator. You can add handendness in the second line to set how that specific column is going to align using `:` on the left, right, or both for centered. 
+
+You can also leave columns (or rows) blank to create space.
+
+Markdown:
+
+```
+|Left handed column|Centered Column| Empty column | Right handed column |
+|:---|:---:|---|---:|
+|entry 1A|entry 1B||data 1|
+|entry 2A|entry 2B||data 2|
+|empty row||||
+|entry 3A|entry 3B||data 3|
+|entry 4A|entry 4B||data 4|
+```
+Output:
+
+|Left handed column|Centered Column| Empty column | Right handed column |
+|:---|:---:|---|---:|
+|entry 1A|entry 1B||data 1|
+|entry 2A|entry 2B||data 2|
+|empty row||||
+|entry 3A|entry 3B||data 3|
+|entry 4A|entry 4B||data 4|
+
 
 ---
 
