@@ -39,9 +39,52 @@ Here are some examples of tools/websites (that you may have accessed!) using mar
 
 Therefore, knowing Markdown will help you with communicating your science, discoveries, and growing your collaborations online!! Because at the end of the day, markdown is communicating with the computer how *you* want your text and websites to look, and therefore allowing potential collaboratiors to understand exactly what you are trying to communicate. **Markdown is a communication tool!**
 
-
 ## Introducing Markdown
 
 Markdown is a [lightweight  markup language (LML)](https://en.wikipedia.org/wiki/Lightweight_markup_language) created to be quickly learned and deployed. 
 
 Released in 2004, Markdown has seen a number of variants rise, such as GitHub Flavoured Markdown (GFM, what you are seeing here), and Markdown Extra (a lot of these features are also seen in GFM). 
+
+Markdown files have the `.md` or `.markdown` extensions.
+
+One of the most useful guides to Markdown is the [markdownguide.org](https://www.markdownguide.org/). There you can find:
+- basic synthax guide: https://www.markdownguide.org/basic-syntax/
+- Cheat sheets: https://www.markdownguide.org/cheat-sheet/
+- Extended synthax (more markdown!): https://www.markdownguide.org/extended-syntax/
+- "Hacks" (using HTML for better expression): https://www.markdownguide.org/hacks/
+- A list of popular tools that support Markdown editing: https://www.markdownguide.org/tools/
+
+From here on we are going to explore some of the popular Markdown techniques used through the DataLab and beyond! These should render well here on GitHub and other Markdown supporting websites (Stack Overflow, Reddit, Slack, etc...).
+
+### Headings
+### Paragraphs
+#### Emphasis
+##### Bold
+##### Italic
+##### Bold & Italic
+#### Block Quotes
+#### Line Breaks
+#### Lists
+##### Ordered Lists
+##### Unordered Lists
+#### Images
+##### Images with Links
+##### Images using HTML
+#### Code
+##### In-line Code
+##### Code Block
+#### Links
+#### Horizontal Rule
+#### Tables
+
+---
+
+## Useful Resources
+
+Markdown can come in various flavours.
+
+- Check out the Markdown guide for basic synthax: https://www.markdownguide.org/basic-syntax/
+- Learn about ReStructured Text, useful with Read the Docs: https://docs.open-mpi.org/en/v5.0.x/developers/rst-for-markdown-expats.html
+- Write in MkDocs with MkDocs-material for some sleek looking pages: https://squidfunk.github.io/mkdocs-material/reference/
+
+We hope that this workshop has been a useful introduction to markdown for your future communication use!
