@@ -1,4 +1,4 @@
-# Remote Computing with High Performance Computer (HPC)
+# Exploring Analysis  Platforms and High-Performance Computing Resources for Bioinformatics 
 
 <br>
 <br>
@@ -25,6 +25,8 @@
 > - Learning basic HPC commands
 > - Exposition to on-campus Cloud computing alternatives (CyVerse)
 ---
+
+## Bioinformatics and the Need for Compute
 
 ## A 10,000ft View of the HPC
 
@@ -87,11 +89,10 @@ $ elgato
 
 At this point you are in the Login Node, where you can submit jobs or ask for an interactive node.
 
-<p align="center">
+<figure align="center">
     <img src="https://uarizona.atlassian.net/wiki/download/thumbnails/75989999/HPCDiagram_FileTransfers.png?version=1&modificationDate=1696282205000&cacheVersion=1&api=v2&effects=drop-shadow&width=1124&height=686" width="600">
-    <figcaption> A representation of what the HPC structure and its various nodes. [Source](https://uarizona.atlassian.net/wiki/spaces/UAHPC/pages/75989999/HPC+Quick+Start). </figcaption>
-</p>
-
+    <figcaption>A representation of what the HPC structure and its various nodes. <a href="https://uarizona.atlassian.net/wiki/spaces/UAHPC/pages/75989999/HPC+Quick+Start">Source</a>.</figcaption>
+</figure>
 
 ### Choosing a System
 
@@ -203,66 +204,64 @@ There are 2 ways one can submit jobs onto the HPC system. The first is to run a 
 
 As we are not going to be using batch submissions, we are not going to be going into too much detail. However, here is what you need to know. For more details on running batch jobs, visit the [official documentation page on batch jobs](https://uarizona.atlassian.net/wiki/spaces/UAHPC/pages/75989875/Running+Jobs+with+Slurm).
 
-!!! Note "Writing a Batch Script"
+##### Writing a Batch Script
 
-    Batch scripts require a number of job **directives**. These are similar to the Dockerfile instructions, but instead of telling Docker how to build the image, these instead tell the SLURM system what to do with the job. The essential directives are the following:
+Batch scripts require a number of job **directives**. These are similar to the Dockerfile instructions, but instead of telling Docker how to build the image, these instead tell the SLURM system what to do with the job. The essential directives are the following:
 
-    |Directive|Purpose|
-    |-|-|
-    | `#SBATCH --account=group_name`	| Specify the account where hours are charged. |
-    | `#SBATCH --partition=partition_name` |	Set the job partition. This determines your job's priority and the hours charged. |
-    | `#SBATCH --time=DD-HH:MM:SS` |	Set the job's runtime limit in days, hours, minutes, and seconds. A single job cannot exceed 10 days or 240 hours. |
-    | `#SBATCH --nodes=N`	| Allocate N nodes to your job. |
-    | `#SBATCH --cpus-per-task=M` <br> and <br> `#SBATCH --ntasks=N` | ntasks specifies the number of tasks (or processes) the job will run. By default, you will be allocated one CPU/task. This can be increased by including the additional directive --cpus-per-task. |
-    | `#SBATCH --mem=Ngb`	| Select N gb of memory per node. If "gb" is not included, this value defaults to MB. |
+|Directive|Purpose|
+|-|-|
+| `#SBATCH --account=group_name`	| Specify the account where hours are charged. |
+| `#SBATCH --partition=partition_name` |	Set the job partition. This determines your job's priority and the hours charged. |
+| `#SBATCH --time=DD-HH:MM:SS` |	Set the job's runtime limit in days, hours, minutes, and seconds. A single job cannot exceed 10 days or 240 hours. |
+| `#SBATCH --nodes=N`	| Allocate N nodes to your job. |
+| `#SBATCH --cpus-per-task=M` <br> and <br> `#SBATCH --ntasks=N` | ntasks specifies the number of tasks (or processes) the job will run. By default, you will be allocated one CPU/task. This can be increased by including the additional directive --cpus-per-task. |
+| `#SBATCH --mem=Ngb`	| Select N gb of memory per node. If "gb" is not included, this value defaults to MB. |
 
-    After setting your directives, you can instruct the HPC to do what you require similar to a bash script.
+After setting your directives, you can instruct the HPC to do what you require similar to a bash script.
 
-    Here's an example of a batch job:
+Here's an example of a batch job:
 
-    ```
-    #!/bin/bash
-    #SBATCH --job-name=blast_job          # Job name
-    #SBATCH --partition=standard          # Sets the job priority to standard
-    #SBATCH --nodes=1                     # Number of nodes
-    #SBATCH --ntasks=1                    # Number of tasks (processes) per node
-    #SBATCH --cpus-per-task=4             # Number of CPU cores per task
-    #SBATCH --mem=8G                      # Memory per node (in this case, 8GB)
-    #SBATCH --time=02:00:00               # Time limit (HH:MM:SS)
+```
+#!/bin/bash
+#SBATCH --job-name=blast_job          # Job name
+#SBATCH --partition=standard          # Sets the job priority to standard
+#SBATCH --nodes=1                     # Number of nodes
+#SBATCH --ntasks=1                    # Number of tasks (processes) per node
+#SBATCH --cpus-per-task=4             # Number of CPU cores per task
+#SBATCH --mem=8G                      # Memory per node (in this case, 8GB)
+#SBATCH --time=02:00:00               # Time limit (HH:MM:SS)
 
-    # Load necessary modules
-    module load blast/2.12.0              # Load BLAST module (adjust version as needed)
+# Load necessary modules
+module load blast/2.12.0              # Load BLAST module (adjust version as needed)
 
-    # Change to the directory where the job will run
-    cd $SLURM_SUBMIT_DIR
+# Change to the directory where the job will run
+cd $SLURM_SUBMIT_DIR
 
-    # Define input and output files
-    query_file="query.fasta"              # Input query file (FASTA format)
-    database_file="database.fasta"        # BLAST database file (FASTA format)
-    output_file="blast_results.out"       # Output file for BLAST results
+# Define input and output files
+query_file="query.fasta"              # Input query file (FASTA format)
+database_file="database.fasta"        # BLAST database file (FASTA format)
+output_file="blast_results.out"       # Output file for BLAST results
 
-    # Run BLAST command
-    blastp -query $query_file -db $database_file -out $output_file -evalue 0.001 -num_threads $SLURM_CPUS_PER_TASK
-    ```
+# Run BLAST command
+blastp -query $query_file -db $database_file -out $output_file -evalue 0.001 -num_threads $SLURM_CPUS_PER_TASK
+```
 
-    !!! Tip "Submitting a Batch Script"
+##### Submitting a Batch Script
 
-        - To submit jobs you need to use `sbatch`, such as `sbatch script.slurm`
-        - To cancel your job you do `scancel`, such as `scancel $JOBID` or `scancel -u $NETID`
+- To submit jobs you need to use `sbatch`, such as `sbatch script.slurm`
+- To cancel your job you do `scancel`, such as `scancel $JOBID` or `scancel -u $NETID`
 
-        This will submit your job to the queue. Execution will depend on your submission type (partition).
+This will submit your job to the queue. Execution will depend on your submission type (partition).
 
 #### Launching an Interactive Node
 
 An **interactive node**, unlike batch jobs which are run asynchronously, allows immediate access to compute. Similar to batch jobs, interactive nodes are submitted to the queue, but once available, you will receive a prompt for a node with the selected resources. Read more on how to launch interactive jobs in [the official documentation](https://uarizona.atlassian.net/wiki/spaces/UAHPC/pages/75989825/Interactive+Jobs).
 
-!!! tip "The Quick and Dirty"
-
-    Don't need a lot of resources and just want access to the compute?
-
-    Just type `interactive`. 
-    
-    Disclaimer: you may require to wait longer as your job is going to fall in the `windfall` queue.
+> :fire: **The "Quick and Dirty"**
+>
+>    Don't need a lot of resources and just want access to the compute?
+>    Just type `interactive`. 
+>   Disclaimer: you may require to wait longer as your job is going to fall in the `windfall` queue.
 
 Following are a list of useful flags (options) for setting up the interactive node.
 
@@ -283,323 +282,20 @@ interactive -n 8 -m 16GB -a datalab -t 02:00:00
 
 The above example will request an interactive node with 8 cores, 16GB RAM, "charging" the datalab, running for 2 hours. Try it!  
 
-!!! Note "Modules"
-    There are 100s of tools installed on the HPC, few of which are available on the login screen. These tools are available only during a batch job submission or within interactive jobs.
-
-    To see what tools are already running, or which are available, you will need to use the `module` command.
-
-    !!! tip "Helpful `module` commands"
-        |Command|Purpose|
-        |-|-|
-        |`module list`| Lists loaded modules|
-        |`module avail`| Lists available modules|
-        |`module spider`| Lists ALL modules|
-        |`module load`| Loads a module|
-        |`module help`| Help command!|
+> :fire: **Modules**
+> There are 100s of tools installed on the HPC, few of which are available on the login screen. These tools are available only during a batch job submission or within interactive jobs.
+>
+>To see what tools are already running, or which are available, you will need to use the `module` command.
+>
+> :fire: **Helpful `module` commands"
+> 
+> |Command|Purpose|
+> |-|-|
+> |`module list`| Lists loaded modules|
+> |`module avail`| Lists available modules|
+> |`module spider`| Lists ALL modules|
+> |`module load`| Loads a module|
+> |`module help`| Help command!|
 
 ---
 
-## Singularity/Apptainer
-
-In 2021, the Sylabs, the developers behind the original Singularity, made a fork of the original project and renamed it [SingularityCE (Community Edition)](https://github.com/apptainer/singularity). This would allow for the SingularityCE to be compliat with FOSS and allowing for the community to contribute to the builds. The Singularity team then joined the [Linux Foundation](https://en.wikipedia.org/wiki/Linux_Foundation) and decided to rename their effor to [**Apptainer**](https://github.com/apptainer/apptainer). 
-
-The technology behind Singularity/Apptainer is similar to the one of Docker, but, as mentioned before, it was created with the HPC in mind, and therefore bypasses the requirement of sudo.
-
-!!! Note
-    Until now we have used Singularity/Apptainer to refer to the same software. Onwards, you can decide whether to use Singularity *OR* Apptainer; in order to keep up with the latest release, we are going to be executing apptainer commands. 
-
-??? info "Docker vs SingularityCE & Apptainer in the blink of an eye"
-
-    **:material-open-source-initiative: Apptainer and SingularityCE are 100% compatible with Docker but they do have some distinct differences**
-
-
-    **:material-docker: Docker**
-      
-    :octicons-container-24: Docker containers run as `root`
-
-      -  This privilege is almost never supported by administrators of High Performance Computing (HPC) centers. Meaning Docker is not, and will likely never be, installed natively on your HPC cluster.
-
-    :octicons-container-24: uses compressed layers to create one image
-
-    **:material-open-source-initiative: SingularityCE & Apptainer**:
-
-    :octicons-container-24:  Same user and group identity inside as outside the container
-    
-    :octicons-container-24:  User only has `root` privileges if elevated with `sudo` when the container is run
-    
-    :octicons-container-24:  Can run and modify any existing Docker image
-
-      - These key differences allow Singularity to be installed on most HPC centers. Because you can run virtually all Docker containers in Singularity, you can effectively run Docker on an HPC. 
-
-### General Executable Commands
- 
-Resources:
-
-  - https://cc.cyverse.org/singularity/intro/
-  - https://cc.cyverse.org/singularity/hpc/
-  - https://cc.cyverse.org/singularity/advanced/
-
-
-Apptainer’s [command line interface](https://apptainer.org/docs/user/main/cli.html){target=_blank} allows you to build and interact with containers transparently. You can run programs inside a container as if they were running on your host system. You can easily redirect IO, use pipes, pass arguments, and access files, sockets, and ports on the host system from within a container.
-
-#### :octicons-container-24: help
-
-The `help` command gives an overview of Apptainer options and subcommands as follows:
-
-```
- $ apptainer help pull
-Pull an image from a URI
-
-Usage:
-  apptainer pull [pull options...] [output file] <URI>
-
-Description:
-  The 'pull' command allows you to download or build a container from a given
-  URI. Supported URIs include:
-
-  library: Pull an image from the currently configured library
-      library://user/collection/container[:tag]
-
-  docker: Pull a Docker/OCI image from Docker Hub, or another OCI registry.
-      docker://user/image:tag
-
-  shub: Pull an image from Singularity Hub
-      shub://user/image:tag
-
-  oras: Pull a SIF image from an OCI registry that supports ORAS.
-      oras://registry/namespace/image:tag
-
-  http, https: Pull an image using the http(s?) protocol
-      https://example.com/alpine.sif
-
-Options:
-      --arch string           architecture to pull from library (default
-                              "amd64")
-      --arch-variant string   architecture variant to pull from library
-      --dir string            download images to the specific directory
-      --disable-cache         do not use or create cached images/blobs
-      --docker-host string    specify a custom Docker daemon host
-      --docker-login          login to a Docker Repository interactively
-  -F, --force                 overwrite an image file if it exists
-  -h, --help                  help for pull
-      --library string        download images from the provided library
-      --no-cleanup            do NOT clean up bundle after failed build,
-                              can be helpful for debugging
-      --no-https              use http instead of https for docker://
-                              oras:// and library://<hostname>/... URIs
-
-
-Examples:
-  From a library
-  $ apptainer pull alpine.sif library://alpine:latest
-
-  From Docker
-  $ apptainer pull tensorflow.sif docker://tensorflow/tensorflow:latest
-  $ apptainer pull --arch arm --arch-variant 6 alpine.sif docker://alpine:latest
-
-  From Shub
-  $ apptainer pull apptainer-images.sif shub://vsoch/apptainer-images
-
-  From supporting OCI registry (e.g. Azure Container Registry)
-  $ apptainer pull image.sif oras://<username>.azurecr.io/namespace/image:tag
-
-
-For additional help or support, please visit https://apptainer.org/help/
-```
-
-
-#### :octicons-container-24: search
-
-Just like with Docker, you can `search` the Apptainer container [registries](https://apptainer.org/docs/user/1.0/library_api.html) for images.
-
-```
-$ apptainer search tensorflow
-```
-
-#### :octicons-container-24: pull
-
-The easiest way to use a Apptainer is to `pull` an existing container from one of the Registries.
-
-```
-$ apptainer pull library://lolcow
-```
-
-Not only you can pull fromt the Apptainer registries/libraries, but you can pull from Docker.
-
-```
-$ apptainer pull docker://alpine
-```
-
-!!! Note "In my humble opinion..."
-
-    This is whre Apptainer shines: you can pull from Docker and run Docker built images on the HPC! These are automatically converted to Apptainer images (`.sif`) and executable on the HPC!
-
-!!! tip "... so where are the Apptainer `.sif` images stored?"
-
-    Right where in the directory you are pulling them to. Check with `cd`!
-
-### Obtaining Images
-
-As metioned earlier, you can use the `pull` command to download pre-built images from a number of Container Registries, here we'll be focusing on the [DockerHub](https://hub.docker.com/).
-
-Container Registries:
-
--   `library://` - images hosted on Sylabs Cloud
--   `docker://` - images hosted on Docker Hub
--   `localimage://` - images saved on your machine
--   `yum://` - yum based systems such as CentOS and Scientific Linux
--   `debootstrap://` - apt based systems such as Debian and Ubuntu
--   `arch://` - Arch Linux
--   `busybox://` - BusyBox
--   `zypper://` - zypper based systems such as Suse and OpenSuse
--   `shub://` - (archived) images hosted on Singularity Hub, no longer maintained
-
-#### Pulling an image from Singularity Hub
-
-Similar to previous example, in this example I am pulling a base Ubuntu
-container from Singularity-Hub:
-
-```
-$ apptainer pull shub://singularityhub/ubuntu
-INFO:    Downloading shub image
-88.6MiB / 88.6MiB [=============================================================================] 100 % 39.1 MiB/s 0s
-```
-
-!!! tip "Re/naming"
-    You can give the  the container using the `--name` flag: such as `apptainer pull --name my-own-ubuntu-pulled-image.sif shub://singularityhub/ubuntu`
-
-
-#### Pulling an image from Docker Hub
-
-This example pulls an `ubuntu:22.04` image from DockerHub and saves it to the working directory.
-
-```
-$ apptainer pull docker://ubuntu:22.04
-INFO:    Converting OCI blobs to SIF format
-INFO:    Starting build...
-Getting image source signatures
-Copying blob bccd10f490ab done
-Copying config ca2b0f2696 done
-Writing manifest to image destination
-Storing signatures
-2024/03/27 20:14:50  info unpack layer: sha256:bccd10f490ab0f3fba61b193d1b80af91b17ca9bdca9768a16ed05ce16552fcb
-INFO:    Creating SIF file...
-```
-
-### Interacting with Images
-
-You can interact with images in several ways such as `run`, `shell` and `exec`.
-
-For these examples we will use a `cowsay_latest.sif` image that can be pulled from the Docker Hub.
-
-```
-$ apptainer pull docker://tswetnam/cowsay
-INFO:    Converting OCI blobs to SIF format
-INFO:    Starting build...
-Getting image source signatures
-Copying blob 05e030abce7b done
-Copying blob b4624b3efe06 done
-Copying blob 6cf436f81810 done
-Copying blob 987088a85b96 done
-Copying blob d42beb8ded59 done
-Copying config ee9e20351a done
-Writing manifest to image destination
-Storing signatures
-2024/03/27 20:16:29  info unpack layer: sha256:6cf436f81810f067c6d4ffca6793eae7cb6d38456715b0707d8a5a2d1acccf12
-2024/03/27 20:16:29  warn rootless{dev/full} creating empty file in place of device 1:7
-2024/03/27 20:16:29  warn rootless{dev/null} creating empty file in place of device 1:3
-2024/03/27 20:16:29  warn rootless{dev/ptmx} creating empty file in place of device 5:2
-2024/03/27 20:16:29  warn rootless{dev/random} creating empty file in place of device 1:8
-2024/03/27 20:16:29  warn rootless{dev/tty} creating empty file in place of device 5:0
-2024/03/27 20:16:29  warn rootless{dev/urandom} creating empty file in place of device 1:9
-2024/03/27 20:16:29  warn rootless{dev/zero} creating empty file in place of device 1:5
-2024/03/27 20:16:30  info unpack layer: sha256:987088a85b9606eb474a365eb210db765ff0d011ee099a6e3de5087435c6f966
-2024/03/27 20:16:30  info unpack layer: sha256:b4624b3efe0617e59ed3998407eafdbe1cb6451346a6cabd066b6e253f50efb1
-2024/03/27 20:16:30  info unpack layer: sha256:d42beb8ded595df5627ad4ef31bf528a6fdbfbd11d82f9023152738d6b05a7fa
-2024/03/27 20:16:30  info unpack layer: sha256:05e030abce7b562606031bcc54646a868984685f4c89c7c354f34f1f6e502917
-INFO:    Creating SIF file..
-
-$ ls
-alpine_latest.sif  lolcow_latest.sif  ubuntu_22.04.sif  cowsay_latest.sif
-```
-
-#### :octicons-container-24: run
-
-Apptainer containers contain [runscripts](https://www.sylabs.io/guides/3.0/user-guide/definition_files.html#runscript). These are user defined scripts that define the actions a container should perform when someone runs it. The runscript can be triggered with the `run` command, or simply by calling the container as though it were an executable.
-
-```
-$ apptainer run cowsay_latest.sif
-INFO:    underlay of /etc/localtime required more than 50 (76) bind mounts
- ____________________________________
-/ Q: Do you know what the death rate \
-\ around here is? A: One per person. /
- ------------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-```
-
-#### :octicons-container-24: shell
-
-The `shell` command allows you to spawn a new shell within your container and interact with it as though it were a small virtual machine.
-
-```
-$ apptainer shell cowsay_latest.sif
-INFO:    underlay of /etc/localtime required more than 50 (76) bind mounts
-(ocelote) Apptainer>
-```
-
-The change in prompt indicates that you have entered the container (though you should not rely on that to determine whether you are in container or not).
-
-Once inside of a Apptainer container, you are the same user as you are on the host system.
-
-```
-(ocelote) Apptainer> whoami
-cosi
-```
-
-!!! tip "Type `exit` to exit the container."
-
-!!! Warning "The more you know :material-star-shooting:"
-    `shell` also works with the `library://`, `docker://`, and `shub://` URIs.
-    This creates an **ephemeral container**\* that disappears when the shell is
-    exited.
-
-    **Ephemeral container**\*: a short-lived container instance that is created dynamically to perform a specific task or process and then terminated once the task is complete. These containers are typically used for one-off jobs, temporary operations, or short-duration tasks within a larger computing environment.
-
-
-#### :octicons-container-24: exec
-
-The exec command allows you to execute a custom command within a container by specifying the image file. For instance, to execute the `cowsay` program within the `cowsay_latest.sif` container:
-
-```
-$ apptainer exec cowsay_latest.sif cowsay whoaaaa the grass is soooo green inside the HPC!
-INFO:    underlay of /etc/localtime required more than 50 (76) bind mounts
- _________________________________________
-/ whoaaaa the grass is soooo green inside \
-\ the HPC!                                /
- -----------------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-```
-
-This  also creates an ephemeral container that executes a command and disappears.
-
-#### :octicons-container-24: inspect
-
-The `inspect` command will provide information about labels, metadata, and environmental variables.
-
-```
-$ apptainer inspect cowsay_latest.sif
-org.label-schema.build-arch: amd64
-org.label-schema.build-date: Wednesday_27_March_2024_20:16:32_MST
-org.label-schema.schema-version: 1.0
-org.label-schema.usage.apptainer.version: 1.2.5-1.el7
-org.label-schema.usage.singularity.deffile.bootstrap: docker
-org.label-schema.usage.singularity.deffile.from: tswetnam/cowsay
-```
