@@ -26,7 +26,6 @@
 > - Exposition to on-campus Cloud computing alternatives (CyVerse)
 ---
 
-
 ## A 10,000ft View of the HPC
 
 ### Logging onto the HPC
@@ -42,7 +41,7 @@ Type your UA password and if successful you'll be greeted with a two-factor logi
 1. Protect from attacks.
 2. Select what HPC system you want to use.
 
-!!! warning "Note: the Bastion server is NOT YET the HPC! Here you cannot submit jobs or run analyes. Type `shell` in order to select what system you want to use."
+> :warning: The Bastion server is NOT YET the HPC! Here you cannot submit jobs or run analyes. Type `shell` in order to select what system you want to use. :warning:
 
 The whole process (from logging to selecting the system) looks like the following:
 
@@ -88,10 +87,10 @@ $ elgato
 
 At this point you are in the Login Node, where you can submit jobs or ask for an interactive node.
 
-<figure markdown>
-  ![nodes](https://uarizona.atlassian.net/wiki/download/thumbnails/75989999/HPCDiagram_FileTransfers.png?version=1&modificationDate=1696282205000&cacheVersion=1&api=v2&effects=drop-shadow&width=1124&height=686)
+<p align="center">
+    <img src="https://uarizona.atlassian.net/wiki/download/thumbnails/75989999/HPCDiagram_FileTransfers.png?version=1&modificationDate=1696282205000&cacheVersion=1&api=v2&effects=drop-shadow&width=1124&height=686" width="600">
     <figcaption> A representation of what the HPC structure and its various nodes. [Source](https://uarizona.atlassian.net/wiki/spaces/UAHPC/pages/75989999/HPC+Quick+Start). </figcaption>
-</figure>
+</p>
 
 
 ### Choosing a System
