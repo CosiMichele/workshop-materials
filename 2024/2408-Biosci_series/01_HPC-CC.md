@@ -8,19 +8,19 @@
 <br>
 
 ---
-> **Schedule**
+> :clock1: **Schedule**
 > - 2:00pm-2:10pm: Welcome and overview of the DataLab Biosciences workshop
 > - 2:10pm-2:45pm: Introduction to the HPC
 > - 2:45pm-3:00pm: Introduction to CyVerse
 
-> **Requirements**
+> :heavy_exclamation_mark: **Requirements**
 > - Basic command line knowledge
 >- Access to a [Terminal](https://en.wikipedia.org/wiki/Unix_shell)
 >    - Unix and Mac users already have access to the Terminal
 >    - Windows users can use either [PowerShell](https://en.wikipedia.org/wiki/PowerShell) or the [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install)
 > - A registered CyVerse account (Register for a CyVerse account)
 
-> **Expected Outcomes**
+> :white_check_mark: **Expected Outcomes**
 > - Understanding the structure of an HPC
 > - Learning basic HPC commands
 > - Exposition to on-campus Cloud computing alternatives (CyVerse)
