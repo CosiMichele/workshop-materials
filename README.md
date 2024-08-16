@@ -13,3 +13,4 @@ This repository is where I create/modify some of my own workshop materials.
 - 2024:
     - [UA DataLab's Data Tapas: Git/GitHub](https://datascience.arizona.edu/events/data-science-tapas-savor-tools-data-mastery) (2402-DataTapas_git)
     - MD Repo metadata project (2403-md-scrape)
+    - [UA DataLab's Bioscience/informatics series](https://datascience.arizona.edu/events/exploring-analysis-platforms-and-high-performance-computing-resources-bioinformatics) (2408-Biosci-series)
