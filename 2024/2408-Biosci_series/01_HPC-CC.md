@@ -1,39 +1,33 @@
 # Remote Computing with High Performance Computer (HPC)
 
-<figure markdown>
-  ![sin-2-app](assets/logos/sin-app-slurm.png)
-    <figcaption> Singularity > Apptainer and working with the [SLURM workload manager](https://slurm.schedmd.com/documentation.html) (HPC scheduler). </figcaption>
-</figure>
-
-!!! Success "Expected Outcomes"
-    - Being able to log onto the HPC and start an interactive node
-    - Know basic HPC related commands
-    - Execute containerized code through Singularity/Apptainer
-    - Being able to search and load specific software
-    - Execute NextFlow scripts on the HPC
-
-Through FOSS and FOSS+ we have learned about container technology and how it can affect reproducibility by wrapping all the necessary components that allow a specific software to be executed. 
-
-Similar to Docker, Singularity/Apptainer is a powerful tool that enables researchers to package entire environments, including software dependencies and libraries, into a single executable file.
-
-**Unlike other containerization platforms, Singularity/Apptainer is designed with [HPC](https://en.wikipedia.org/wiki/High-performance_computing) in mind, allowing seamless integration with cluster computing environments.**
-
-The biggest difference between Docker and Singularity/Apptainer, is that with the latter *you do **not** require sudo priviledges*. Exciting!
-
-In this workshop, we are going to learn how we can use Singularity/Apptainer on the UA HPC, covering orientation of the HPC, and executing Singularity/Apptainer control commands.
+<br>
+<br>
+<p align="center">
+    <img src="https://hpcdocs.hpc.arizona.edu/assets/images/home/uofa_cactus_computing3.png" width="300">
+</p>
+<br>
 
 ---
+> **Schedule**
+> - 2:00pm-2:10pm: Welcome and overview of the DataLab Biosciences workshop
+> - 2:10pm-2:45pm: Introduction to the HPC
+> - 2:45pm-3:00pm: Introduction to CyVerse
+
+> **Requirements**
+> - Basic command line knowledge
+>- Access to a [Terminal](https://en.wikipedia.org/wiki/Unix_shell)
+>    - Unix and Mac users already have access to the Terminal
+>    - Windows users can use either [PowerShell](https://en.wikipedia.org/wiki/PowerShell) or the [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install)
+> - A registered CyVerse account (Register for a CyVerse account)
+
+> **Expected Outcomes**
+> - Understanding the structure of an HPC
+> - Learning basic HPC commands
+> - Exposition to on-campus Cloud computing alternatives (CyVerse)
+---
+
 
 ## A 10,000ft View of the HPC
-
-[Next week](10_hpc.md) (Apr 04th) [Chris Reidy](https://datascience.arizona.edu/person/chris-reidy) from [UITS](https://it.arizona.edu/) is going to talk in more details regarding the hardware specifications of the UA HPC systems. 
-
-Here, we are going to concentrate on *HOW* to operate the HPC system as a general user.
-
-!!! warning "Who is this lesson for?"
-    This workshop is  primarely aimed to UA students, grad students, faculty and staff as being part of the University of Arizona grants you access to the UA HPC. 
-    
-    If you are not part of UA... *you're still very welcome to take part of this lesson!* You may not be able to execute the commands but you can still walk out of this with a good understanding of your institution's own HPC and Singularity/Apptainer. Everyone's welcome!
 
 ### Logging onto the HPC
 
