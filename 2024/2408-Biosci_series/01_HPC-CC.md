@@ -49,6 +49,11 @@ In this workshop, we are going to demonstrate the basics of connecting and using
     <img src="https://hpcdocs.hpc.arizona.edu/quick_start/what_is_hpc/images/simple_hpc_diagram.png" width="450">
 </p>
 
+Here, we discuss how University of Arizona users can access the HPC and how to use the resources it offers. This section covers:
+- [Logging onto the HPC](#logging-onto-the-hpc)
+- [Choosing a system](#choosing-a-system) 
+- [Checking Available Resources](#checking-available-resources)
+- [Job Submissions](#job-submissions)
 
 ### Logging onto the HPC
 
@@ -328,9 +333,64 @@ The above example will request an interactive node with 8 cores, 16GB RAM, "char
 [CyVerse](https://www.cyverse.org/) is an NSF funded cloud based system that aims to support scientists and researchers by allowing users to harness the power of cloud systems whilst making the cloud feel like your laptop.
 
 Similar to the HPC, users can access a number of software useful for your own research and data extrapolation. This section covers the following content:
-- Accessing the CyVerse Discovery Environment
-- Data Management
-- Running Applications and Resource Managenent
+- [Accessing the CyVerse Discovery Environment](#accessing-the-cyverse-discovery-environment)
+- [Data Management](#data-management-with-cyverse)
+- [Running Applications and Resource Managenent](#running-applications-and-resource-managenent)
+- [Sharing Data](#sharing-data-and-apps)
 
 > :warning: As of 2022, CyVerse has implemented a [Subscription sytem](https://cyverse.org/subscribe); However, as part of the University of Arizona, students, faculty and staff can freely access CyVerse at the equivalent of the Pro-tier subscription :warning:
 
+> :warning: For your best experience, we suggest creating a CyVerse account at https://user.cyverse.org/ :warning:
+
+### Accessing the CyVerse Discovery Environment
+
+> :fire: login to the Discovery Environemt at https://de.cyverse.org/ and click the top right Log In button! :fire:
+
+One of CyVerse's main strengths is its [Discovery Environemt](https://de.cyverse.org/): a platform where users can launch Apps, view past and current Analyses, carry out Data Management and view avalable resources.
+
+<p align="center">
+    <img src="https://learning.cyverse.org/assets/de/de_login_screen.png" width="750">
+</p>
+
+The left hand side menu expands in the following:
+
+- <img src="https://learning.cyverse.org/assets/de/menu_items/homeIcon.svg" width="15"> **Home/Dashboard**: Your main control panel that may display summary widgets, quick links to recent activities, or educational content such as tutorials and webinars.
+- <img src="https://learning.cyverse.org/assets/de/menu_items/dataIcon.svg" width="15"> **Data**: This interface connects you to the Data Store. Here, you can manage your files, including uploading, downloading, organizing, and sharing data. You'll have access to your personal storage space and shared directories.
+- <img src="https://learning.cyverse.org/assets/de/menu_items/appsIcon.svg" width="15"> **Apps**: Discover various applications, including VICE (Visual Interactive Computing Environment) apps for interactive computing sessions. You can browse, search, and launch these applications based on your research needs.
+- <img src="https://learning.cyverse.org/assets/de/menu_items/analysisIcon.svg" width="15"> **Analyses**: View and manage your computational tasks. This section logs your history of analysis jobs, allowing you to monitor current processes, review completed ones, and access resulting data.
+- <img src="https://learning.cyverse.org/assets/de/menu_items/webshellIcon.svg" width="15"> **Cloud Shell**: Access a Linux shell environment directly within the DE. This feature enables advanced users to perform command-line operations without leaving the platform.
+- <img src="https://learning.cyverse.org/assets/de/menu_items/teamsIcon.svg" width="15"> **Teams**: Create and manage collaboration groups. Teams allow you to group together with other users for easier sharing of data, analyses, and other collaborative efforts.
+- <img src="https://learning.cyverse.org/assets/de/menu_items/bank.svg" width="15"> **Collections**: Explore public collections of data and apps curated by other users or the CyVerse team. This resource can be invaluable for finding information relevant to your studies.
+- <img src="https://learning.cyverse.org/assets/de/menu_items/helpIcon.svg" width="15"> **Help**: Access various support materials, including FAQs, guides, and contact information for direct assistance from the CyVerse support team.
+
+The <img src="https://learning.cyverse.org/assets/de/menu_items/homeIcon.svg" width="15"> **Home/Dashboard** will also feature a quick breakdown of:
+- Completed and recent Analyes
+- Running Apps notifications
+- Available resources (storage, compute time)
+
+From here, users are able to manage data, launch Apps, and manage a variety of resources. 
+
+### Data Management with CyVerse
+
+Opening the <img src="https://learning.cyverse.org/assets/de/menu_items/dataIcon.svg" width="15"> **Data** tab, will show you your own private data. **This data is only visible to you and no one else**. [Sharing data](#sharing-data-and-apps) and Apps is covered below. 
+
+Listed below are the methods to upload (and download) data with CyVerse:
+
+| Method | Access Point	| Upload/Download | Installation/Setup Required | Account Required |	Max File Size |
+|---|---|---|---|---|---|
+| Discovery Environment	| Web |	Both | No |	Yes | 2GB/file upload, no limit import |
+| Data Commons | Web | Download | No | No | 2GB/file |
+| Cyberduck | Desktop App | Both | Yes | Yes, or public data only | >10GB |
+| iCommands | Command line | Both | Yes | Yes, or public data only | >10GB |
+| SFTP | Desktop App & Command line | Both | No (Yes for desktop apps) | Yes, or public data only | >10GB |
+| GoCommands | Command line	| Both | Yes | Yes, or public data only	| >10GB |
+
+Newcomers are encouraged to use any of the following methods:
+- The Discovery Environement upload and download functions (useful for small files)
+    - Note: the upload button is on the top right of the Data portal, whilst the download button will show only when a file/folder is selected
+- [CyberDuck](https://cyberduck.io/): a great and easy way to access data in CyVerse as it allows for easy drag and drop from your own machine
+- [GoCommands](https://learning.cyverse.org/ds/gocommands/): if you are versed with the Command Line, GoCommands are an in-house system for moving data as it is quicker than other methods and presents a number of additional options implementable in pipelines and automation. 
+
+### Running Applications and Resource Managenent
+
+### Sharing Data and Apps
