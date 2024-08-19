@@ -24,11 +24,31 @@
 > - Understanding the structure of an HPC
 > - Learning basic HPC commands
 > - Exposition to on-campus Cloud computing alternatives (CyVerse)
+
+<br>
+
+---
 ---
 
 ## Bioinformatics and the Need for Compute
 
+The field of bioinformatics has become increasingly reliant on computational power. The volume and complexity of biological data (e.g., genome sequences, protein structures and molecular simulations) requires advanced computational resources for data extrapolation and analysis.
+
+To effectively tackle the problem, scientists can access resources such as [High Performance Computing](https://en.wikipedia.org/wiki/High-performance_computing) (HPC) systems or [cloud based computing](https://en.wikipedia.org/wiki/Cloud_computing) to tackle the issue at hand.
+
+The University of Arizona allows for access to both of these platforms through the U of A HPC system (https://hpc.arizona.edu/) or CyVerse (https://www.cyverse.org/). Both of these offer a number of software and resources that can help researchers in their scientific journey.
+
+In this workshop, we are going to demonstrate the basics of connecting and using the resources here on Campus with the aim to tackle your computational needs. **Strap in!**
+
+---
+---
+
 ## A 10,000ft View of the HPC
+
+<p align="center">
+    <img src="https://hpcdocs.hpc.arizona.edu/quick_start/what_is_hpc/images/simple_hpc_diagram.png" width="450">
+</p>
+
 
 ### Logging onto the HPC
 
@@ -89,10 +109,9 @@ $ elgato
 
 At this point you are in the Login Node, where you can submit jobs or ask for an interactive node.
 
-<figure align="center">
+<p align="center">
     <img src="https://uarizona.atlassian.net/wiki/download/thumbnails/75989999/HPCDiagram_FileTransfers.png?version=1&modificationDate=1696282205000&cacheVersion=1&api=v2&effects=drop-shadow&width=1124&height=686" width="600">
-    <figcaption>A representation of what the HPC structure and its various nodes. <a href="https://uarizona.atlassian.net/wiki/spaces/UAHPC/pages/75989999/HPC+Quick+Start">Source</a>.</figcaption>
-</figure>
+</p>
 
 ### Choosing a System
 
@@ -185,13 +204,9 @@ Likely, this will output 100s of lines, therefore if you want to check on your o
 
 ## HPC, SLURM and Jobs Submissions
 
-<figure style="display: flex; justify-content: center;">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Slurm_logo.svg/1200px-Slurm_logo.svg.png" alt="SLURM" style="width: 300px; margin-right: 20px;">
-    <img src="https://static.wikia.nocookie.net/enfuturama/images/8/80/Slurm-1-.jpg" alt="Slurm futurama" style="width: 300px;">
-</figure>
-<figcaption style="text-align: center;">
-    SLURM not <a href="https://futurama.fandom.com/wiki/Slurm" style="text-decoration: none; color: blue;">Slurm</a>.
-</figcaption>
+<p align="center">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Slurm_logo.svg/1200px-Slurm_logo.svg.png" width="300">
+</p>
 
 All of the UA HPC systems run on a workload manager and job scheduler named [SLURM](https://slurm.schedmd.com/documentation.html) (Simple Linux Utility for Resource Management). It's designed to manage and schedule computing resources such as CPUs, GPUs, memory, and storage across a cluster of interconnected nodes.
 
@@ -297,5 +312,25 @@ The above example will request an interactive node with 8 cores, 16GB RAM, "char
 > |`module load`| Loads a module|
 > |`module help`| Help command!|
 
+<br>
+
 ---
+---
+
+## CyVerse: Your Virtual Lab Bench
+
+<br>
+<p align="center">
+    <img src="https://cyverse.org/sites/default/files/cyverse_logo_1_0.png" width="450">
+</p>
+<br>
+
+[CyVerse](https://www.cyverse.org/) is an NSF funded cloud based system that aims to support scientists and researchers by allowing users to harness the power of cloud systems whilst making the cloud feel like your laptop.
+
+Similar to the HPC, users can access a number of software useful for your own research and data extrapolation. This section covers the following content:
+- Accessing the CyVerse Discovery Environment
+- Data Management
+- Running Applications and Resource Managenent
+
+> :warning: As of 2022, CyVerse has implemented a [Subscription sytem](https://cyverse.org/subscribe); However, as part of the University of Arizona, students, faculty and staff can freely access CyVerse at the equivalent of the Pro-tier subscription :warning:
 
