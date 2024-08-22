@@ -3,15 +3,17 @@
 <br>
 <br>
 <p align="center">
-    <img src="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/per_base_quality.png" width="450">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/C674115.jpg/662px-C674115.jpg" width="500">
 </p>
 <br>
 
 ---
 > :clock1: **Schedule**
-> - 2:00pm-2:10pm: 
-> - 2:10pm-2:45pm:
-> - 2:45pm-3:00pm:
+> - 2:00pm-2:05pm: Welcome and introdution to topic
+> - 2:05pm-2:15pm: Quality Control & Post-Assembly Quality Assessment
+> - 2:15pm-3:45pm: Sequence Alignment and Assembly
+> - 2:45pm-2:55pm: Variant Calling
+> - 2:55pm-3:00pm: Closing remarks
 
 > :heavy_exclamation_mark: **Requirements**
 > - Basic command line knowledge
@@ -31,7 +33,7 @@
 
 ## Topic overview
 
-This workshop focuses on the various tools every bioinformatician should know about. This is **NOT** intended to be a deep dive into each and every tool, as each software is incredibly complex and requires precious time to truly be understood. However, this workshop tries to expose the most common tools when it comes to the following popular bioinformatic topics: quality control (QC), sequence alignment, transcript assembly, variant calling, genome quality assessment.
+This workshop focuses on the various tools every bioinformatician should know about. This is **NOT** intended to be a deep dive into each and every tool, as each software is incredibly complex and requires precious time to truly be understood. However, this workshop tries to expose the most common tools when it comes to the following popular bioinformatic topics: *quality control (QC), sequence alignment, transcript assembly, variant calling.*
 
 ***Jack of all trades, master of none, <u> but oftentimes better than a master of one. </u>***
 
@@ -40,10 +42,69 @@ This workshop focuses on the various tools every bioinformatician should know ab
 > That's completely understandable: bioinformatics/genomics is such a wide field; This list is non-exhaustive and I will add more tools you may be interested in at the end of the workshop's page.
 
 > :heavy_exclamation_mark: Please do notice that visualization tools and analysis software have their own sessions! Check the [Data Science Institute's DataLab website](https://datascience.arizona.edu/education/uarizona-data-lab) for more information. :heavy_exclamation_mark:
+
+<br>
+
 ---
 ---
 
-## Section 1
+## Quality Control & Post-Assembly Quality Assessment
+
+<p align="center">
+    <img src="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/per_base_quality.png" width="450">
+</p>
+
+This section covers popular methods to assess quality of data. **FastQC** assesses raw data from sequencing runs, useful before an assembly or analysis starts. **MultiQC** takes outputs of other tools (but including FastQC) to give a more in depth report across multiple samples. With BUSCO, users can assess the completeness of a specific genome assembly and comparing the genes within the assembly with other well conserved orthologs.
+
+- [FastQC and MutliQC](#fastqc-and-multiqc) 
+- [BUSCO](#busco)
+
+### FastQC and MultiQC
+
+---
+
+### BUSCO
+
+---
+---
+
+## Sequence Alignment
+
+<p align="center">
+    <img src="image" width="450">
+</p>
+
+- [content 1](#section-1-subsection-1) 
+- [content 2](#section-1-subsection-2)
+
+### Section 1 Subsection 1
+
+---
+
+### Section 1 Subsection 2
+
+---
+---
+
+## Transcript Assembly
+
+<p align="center">
+    <img src="image" width="450">
+</p>
+
+- [content 1](#section-1-subsection-1) 
+- [content 2](#section-1-subsection-2)
+
+### Section 1 Subsection 1
+
+---
+
+### Section 1 Subsection 2
+
+---
+---
+
+## Variant Calling
 
 <p align="center">
     <img src="image" width="450">
