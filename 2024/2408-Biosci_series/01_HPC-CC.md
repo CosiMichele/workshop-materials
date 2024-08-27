@@ -393,4 +393,37 @@ Newcomers are encouraged to use any of the following methods:
 
 ### Running Applications and Resource Managenent
 
+Apps on CyVerse are accessible in the Apps tab on the left hand side menu. CyVerse supports a number of popular Apps such as Jupyter, RStudio, VSCode, Remote Desktops and a CLI. 
+
+#### Launching and terminating an App
+
+<p>
+    <img src="https://learning.cyverse.org/assets/de/de_apps_screen.png" width="750">
+</p>
+
+In order to launch an App, go to the App page in the Discovery Environment.
+
+1. Select the App you want to launch by clicking on the name; This is going to open the App launch page/process.
+2. Select the version, (if needed) the output folder, and give the Analysis a name and a comment. Click Next.
+3. If the analysis is an executable, fill and give any required optional fields.
+4. Click Submit. The page is going to turn from the App launch to Analysis.
+
+From here on, you can access your analysis from the Analyes menu tab. Here you can go to the runnig App, share, or Terminate your analysis (by hitting the :x: button).
+
+> :fire: Terminating Analyses will save you compute hours!!
+
+<p>
+    <img src="https://learning.cyverse.org/assets/de/menu_items/terminate_analyses.png" width="750">
+</p>
+
+#### Bring your own App
+
+Users are welcome to bring their own Apps: Apps on CyVerse are [Containerized Images](https://www.docker.com/resources/what-container/) which have been implemented into CyVerse through an ingestion process:
+
+1. User creates or obtains a container for a specific software. Containers are available at popular repositories like [DockerHub](https://hub.docker.com/) or [Quay.io](https://quay.io/).
+2. Said Container is then made into a Tool on CyVerse, a process that allows to specify which [ports](https://en.wikipedia.org/wiki/Port_(computer_networking)) the software needs to be open, set [UID](https://en.wikipedia.org/wiki/User_identifier), set a different [Entrypoint](https://docs.docker.com/reference/dockerfile/#entrypoint) than the one specified in the Dockerfile, and other options.
+3. A Tool is then turned into an App, which adds the ability to set executable [flag/options](https://unix.stackexchange.com/questions/285575/whats-the-difference-between-a-flag-an-option-and-an-argument), versions, and ultimately is used to execute the software at scale.
+
+> :fire: This process is described in detail here: https://learning.cyverse.org/de/create_apps/#building-an-app-for-your-tool
+
 ### Sharing Data and Apps
