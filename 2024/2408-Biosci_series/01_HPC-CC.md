@@ -281,7 +281,8 @@ This will submit your job to the queue. Execution will depend on your submission
 
 An **interactive node**, unlike batch jobs which are run asynchronously, allows immediate access to compute. Similar to batch jobs, interactive nodes are submitted to the queue, but once available, you will receive a prompt for a node with the selected resources. Read more on how to launch interactive jobs in [the official documentation](https://uarizona.atlassian.net/wiki/spaces/UAHPC/pages/75989825/Interactive+Jobs).
 
-> [!TIP] **The "Quick and Dirty"**
+> [!TIP] 
+> **The "Quick and Dirty"**
 >
 > Don't need a lot of resources and just want access to the compute?
 > Just type `interactive`. 
@@ -306,12 +307,14 @@ interactive -n 8 -m 16GB -a datalab -t 02:00:00
 
 The above example will request an interactive node with 8 cores, 16GB RAM, "charging" the datalab, running for 2 hours. Try it!  
 
-> [!TIP] **Modules**
+> [!TIP] 
+> **Modules**
 > There are 100s of tools installed on the HPC, few of which are available on the login screen. These tools are available only during a batch job submission or within interactive jobs.
 >
 >To see what tools are already running, or which are available, you will need to use the `module` command.
 >
-> [!TIP] **Helpful `module` command**
+> [!TIP] 
+> **Helpful `module` command**
 > 
 > |Command|Purpose|
 > |-|-|
