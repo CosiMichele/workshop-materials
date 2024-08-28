@@ -424,7 +424,7 @@ Users are welcome to bring their own Apps: Apps on CyVerse are [Containerized Im
 2. Said Container is then made into a Tool on CyVerse, a process that allows to specify which [ports](https://en.wikipedia.org/wiki/Port_(computer_networking)) the software needs to be open, set [UID](https://en.wikipedia.org/wiki/User_identifier), set a different [Entrypoint](https://docs.docker.com/reference/dockerfile/#entrypoint) than the one specified in the Dockerfile, and other options.
 3. A Tool is then turned into an App, which adds the ability to set executable [flag/options](https://unix.stackexchange.com/questions/285575/whats-the-difference-between-a-flag-an-option-and-an-argument), versions, and ultimately is used to execute the software at scale.
 
----
+> [!NOTE]
 > :warning: :fire: Understandably, this process is not as simplistic as the 3 points above make it sound. In fact, the ingestion process (Docker container > Tool > App) is described in more details here: https://learning.cyverse.org/de/create_apps/#building-an-app-for-your-tool
 >
 > Additionally, creating a Docker container is not straightforward. Here is some documentation that can help you understand and create your own Docker container:
@@ -432,6 +432,5 @@ Users are welcome to bring their own Apps: Apps on CyVerse are [Containerized Im
 > - [Docker documentation on containerization](https://docs.docker.com/get-started/workshop/02_our_app/)
 > - [Docker documentation on running containers](https://docs.docker.com/engine/containers/run/)
 > - [Devopscube article on building Docker images](https://devopscube.com/build-docker-image/) (great introductory article showcasing many moving pieces concerning containerization)
----
 
 ### Sharing Data and Apps
