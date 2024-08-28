@@ -8,11 +8,13 @@
 <br>
 
 ---
+>[!important]
 > :clock1: **Schedule**
 > - 2:00pm-2:10pm: Welcome and overview of the DataLab Biosciences workshop
 > - 2:10pm-2:45pm: Introduction to the HPC
 > - 2:45pm-3:00pm: Introduction to CyVerse
 
+>[!important]
 > :heavy_exclamation_mark: **Requirements**
 > - Basic command line knowledge
 >- Access to a [Terminal](https://en.wikipedia.org/wiki/Unix_shell)
@@ -20,6 +22,7 @@
 >    - Windows users can use either [PowerShell](https://en.wikipedia.org/wiki/PowerShell) or the [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install)
 > - A registered CyVerse account (Register for a CyVerse account)
 
+>[!important]
 > :white_check_mark: **Expected Outcomes**
 > - Understanding the structure of an HPC
 > - Learning basic HPC commands
@@ -68,7 +71,8 @@ Type your UA password and if successful you'll be greeted with a two-factor logi
 1. Protect from attacks.
 2. Select what HPC system you want to use.
 
-> :warning: The Bastion server is NOT YET the HPC! Here you cannot submit jobs or run analyes. Type `shell` in order to select what system you want to use. :warning:
+> [!NOTE]
+> The Bastion server is NOT YET the HPC! Here you cannot submit jobs or run analyes. Type `shell` in order to select what system you want to use.
 
 The whole process (from logging to selecting the system) looks like the following:
 
@@ -277,11 +281,11 @@ This will submit your job to the queue. Execution will depend on your submission
 
 An **interactive node**, unlike batch jobs which are run asynchronously, allows immediate access to compute. Similar to batch jobs, interactive nodes are submitted to the queue, but once available, you will receive a prompt for a node with the selected resources. Read more on how to launch interactive jobs in [the official documentation](https://uarizona.atlassian.net/wiki/spaces/UAHPC/pages/75989825/Interactive+Jobs).
 
-> :fire: **The "Quick and Dirty"**
+> [!TIP] **The "Quick and Dirty"**
 >
->    Don't need a lot of resources and just want access to the compute?
->    Just type `interactive`. 
->   Disclaimer: you may require to wait longer as your job is going to fall in the `windfall` queue.
+> Don't need a lot of resources and just want access to the compute?
+> Just type `interactive`. 
+> Disclaimer: you may require to wait longer as your job is going to fall in the `windfall` queue.
 
 Following are a list of useful flags (options) for setting up the interactive node.
 
@@ -302,12 +306,12 @@ interactive -n 8 -m 16GB -a datalab -t 02:00:00
 
 The above example will request an interactive node with 8 cores, 16GB RAM, "charging" the datalab, running for 2 hours. Try it!  
 
-> :fire: **Modules**
+> [!TIP] **Modules**
 > There are 100s of tools installed on the HPC, few of which are available on the login screen. These tools are available only during a batch job submission or within interactive jobs.
 >
 >To see what tools are already running, or which are available, you will need to use the `module` command.
 >
-> :fire: **Helpful `module` command**
+> [!TIP] **Helpful `module` command**
 > 
 > |Command|Purpose|
 > |-|-|
@@ -338,13 +342,16 @@ Similar to the HPC, users can access a number of software useful for your own re
 - [Running Applications and Resource Managenent](#running-applications-and-resource-managenent)
 - [Sharing Data](#sharing-data-and-apps)
 
-> :warning: As of 2022, CyVerse has implemented a [Subscription sytem](https://cyverse.org/subscribe); However, as part of the University of Arizona, students, faculty and staff can freely access CyVerse at the equivalent of the Pro-tier subscription :warning:
+> [!WARNING] 
+> As of 2022, CyVerse has implemented a [Subscription sytem](https://cyverse.org/subscribe); However, as part of the University of Arizona, students, faculty and staff can freely access CyVerse at the equivalent of the Pro-tier subscription
 
-> :warning: For your best experience, we suggest creating a CyVerse account at https://user.cyverse.org/ :warning:
+> [!WARNING]
+> For your best experience, we suggest creating a CyVerse account at https://user.cyverse.org/ :warning:
 
 ### Accessing the CyVerse Discovery Environment
 
-> :fire: login to the Discovery Environemt at https://de.cyverse.org/ and click the top right Log In button! :fire:
+> [!TIP] 
+> login to the Discovery Environemt at https://de.cyverse.org/ and click the top right Log In button!
 
 One of CyVerse's main strengths is its [Discovery Environemt](https://de.cyverse.org/): a platform where users can launch Apps, view past and current Analyses, carry out Data Management and view avalable resources.
 
@@ -410,7 +417,8 @@ In order to launch an App, go to the App page in the Discovery Environment.
 
 From here on, you can access your analysis from the Analyes menu tab. Here you can go to the runnig App, share, or Terminate your analysis (by hitting the :x: button).
 
-> :fire: Terminating Analyses will save you compute hours!!
+> [!TIP] 
+> Terminating Analyses will save you compute hours!!
 
 <p align="center">
     <img src="https://learning.cyverse.org/assets/de/menu_items/terminate_analyses.png" width="750">
@@ -425,7 +433,7 @@ Users are welcome to bring their own Apps: Apps on CyVerse are [Containerized Im
 3. A Tool is then turned into an App, which adds the ability to set executable [flag/options](https://unix.stackexchange.com/questions/285575/whats-the-difference-between-a-flag-an-option-and-an-argument), versions, and ultimately is used to execute the software at scale.
 
 > [!NOTE]
-> :warning: :fire: Understandably, this process is not as simplistic as the 3 points above make it sound. In fact, the ingestion process (Docker container > Tool > App) is described in more details here: https://learning.cyverse.org/de/create_apps/#building-an-app-for-your-tool
+> Understandably, this process is not as simplistic as the 3 points above make it sound. In fact, the ingestion process (Docker container > Tool > App) is described in more details here: https://learning.cyverse.org/de/create_apps/#building-an-app-for-your-tool
 >
 > Additionally, creating a Docker container is not straightforward. Here is some documentation that can help you understand and create your own Docker container:
 > - CyVerse's own FOSS content on Containers: [running containers](https://foss.cyverse.org/07_reproducibility_II/) and [building containers](https://foss.cyverse.org/08_reproducibility_III/)
