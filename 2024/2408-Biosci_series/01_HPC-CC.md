@@ -445,3 +445,13 @@ Users are welcome to bring their own Apps: Apps on CyVerse are [Containerized Im
 > - [Devopscube article on building Docker images](https://devopscube.com/build-docker-image/) (great introductory article showcasing many moving pieces concerning containerization)
 
 ### Sharing Data and Apps
+
+Sharing data and Apps with your coworkers can be done using the **Share** function. One can select multiple files (and/or analyses), and click the Share button. This will prompt a small window to open, where the user needs to type the ***exact*** username of the target coworker(s).
+
+Once the usernames are added, users will be able to choose the permission level:
+
+| Permission level | Read | Download/Save | Metadata | Rename | Move | Delete |
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| Read | X | X | View |			
+| Write | X | X | Add/Edit |			
+| Own | X | X | Add/Edit | X | X | X |
