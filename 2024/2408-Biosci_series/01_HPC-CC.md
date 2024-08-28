@@ -307,7 +307,7 @@ The above example will request an interactive node with 8 cores, 16GB RAM, "char
 >
 >To see what tools are already running, or which are available, you will need to use the `module` command.
 >
-> :fire: **Helpful `module` commands"
+> :fire: **Helpful `module` command**
 > 
 > |Command|Purpose|
 > |-|-|
@@ -397,7 +397,7 @@ Apps on CyVerse are accessible in the Apps tab on the left hand side menu. CyVer
 
 #### Launching and terminating an App
 
-<p>
+<p align="center">
     <img src="https://learning.cyverse.org/assets/de/de_apps_screen.png" width="750">
 </p>
 
@@ -412,7 +412,7 @@ From here on, you can access your analysis from the Analyes menu tab. Here you c
 
 > :fire: Terminating Analyses will save you compute hours!!
 
-<p>
+<p align="center">
     <img src="https://learning.cyverse.org/assets/de/menu_items/terminate_analyses.png" width="750">
 </p>
 
@@ -424,6 +424,12 @@ Users are welcome to bring their own Apps: Apps on CyVerse are [Containerized Im
 2. Said Container is then made into a Tool on CyVerse, a process that allows to specify which [ports](https://en.wikipedia.org/wiki/Port_(computer_networking)) the software needs to be open, set [UID](https://en.wikipedia.org/wiki/User_identifier), set a different [Entrypoint](https://docs.docker.com/reference/dockerfile/#entrypoint) than the one specified in the Dockerfile, and other options.
 3. A Tool is then turned into an App, which adds the ability to set executable [flag/options](https://unix.stackexchange.com/questions/285575/whats-the-difference-between-a-flag-an-option-and-an-argument), versions, and ultimately is used to execute the software at scale.
 
-> :fire: This process is described in detail here: https://learning.cyverse.org/de/create_apps/#building-an-app-for-your-tool
+> :fire: Understandably, this process is not as simplistic as the 3 points above make it sound. In fact, the ingestion process (Docker container > Tool > App) is described in more details here: https://learning.cyverse.org/de/create_apps/#building-an-app-for-your-tool
+>
+> Additionally, creating a Docker container is not straightforward. Here is some documentation that can help you understand and create your own Docker container:
+> - CyVerse's own FOSS content on Containers: [running containers](https://foss.cyverse.org/07_reproducibility_II/) and [building containers](https://foss.cyverse.org/08_reproducibility_III/)
+> - [Docker documentation on containerization](https://docs.docker.com/get-started/workshop/02_our_app/)
+> - [Docker documentation on running containers](https://docs.docker.com/engine/containers/run/)
+> - [Devopscube article on building Docker images](https://devopscube.com/build-docker-image/) (great introductory article showcasing many moving pieces concerning containerization)
 
 ### Sharing Data and Apps
