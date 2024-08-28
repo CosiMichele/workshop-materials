@@ -492,9 +492,11 @@ Once finished creating the Team, one can share a file/folder/analysis with the T
     <img src="https://docs.jetstream-cloud.org/images/JS2-Logo-Transparent.png" width="350">
 </p>
 
-Jetstream2 is a user-friendly cloud computing environment for researchers and educators running on [OpenStack](https://www.openstack.org/) and featuring [Exosphere](https://docs.jetstream-cloud.org/ui/exo/exo/) as the primary user interface. It is designed to provide both infrastructure for gateways and other “always on” services as well as giving researchers access to interactive computing and data analysis resources on demand.
+Jetstream2 (JS2) is a user-friendly cloud computing environment for researchers and educators running on [OpenStack](https://www.openstack.org/) and featuring [Exosphere](https://docs.jetstream-cloud.org/ui/exo/exo/) as the primary user interface. It is designed to provide both infrastructure for gateways and other “always on” services as well as giving researchers access to interactive computing and data analysis resources on demand.
 
 JetStream2 is an incredibly powerful resource, that researchers and users can access by submitting a small proposal to [ACCESS](https://access-ci.org/). There are further tiers, however for a smaller research group, the lowest tier is sufficient.
+
+With JetStream2, users can access a variety of powrful CPU nodes, GPU nodes, high memory RAM and large storage nodes. On these nodes, JS2 supports Ubuntu Desktops, JupyterLabs, RStudio, and various Virtual Machine deployments.
 
 Read more on JetStream2 [here](https://docs.jetstream-cloud.org/).
 
