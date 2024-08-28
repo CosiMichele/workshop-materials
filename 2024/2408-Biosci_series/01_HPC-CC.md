@@ -312,7 +312,7 @@ The above example will request an interactive node with 8 cores, 16GB RAM, "char
 > There are 100s of tools installed on the HPC, few of which are available on the login screen. These tools are available only during a batch job submission or within interactive jobs.
 >
 >To see what tools are already running, or which are available, you will need to use the `module` command.
->
+
 > [!TIP] 
 > **Helpful `module` command**
 > 
