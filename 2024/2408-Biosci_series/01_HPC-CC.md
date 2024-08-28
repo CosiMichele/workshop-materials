@@ -455,3 +455,31 @@ Once the usernames are added, users will be able to choose the permission level:
 | Read | X | X | View |			
 | Write | X | X | Add/Edit |			
 | Own | X | X | Add/Edit | X | X | X |
+
+> [!TIP]
+> These are similar to [standard file system permissions](https://en.wikipedia.org/wiki/File-system_permissions), where:
+> - Read: allows to read (open/access) the file/folder 
+> - Write: allows to modify a file/folder   
+> - Own: allows to modify the file/folder and share it with others
+
+#### Teams
+
+<p align="center">
+    <img src="https://learning.cyverse.org/assets/de/teams_01.png" width="750">
+</p>
+
+As adding each coworker can get tedious, CyVerse allows the creation of <img src="https://learning.cyverse.org/assets/de/menu_items/teamsIcon.svg" width="15"> **Teams**, accessible through the left side menu.
+
+The <img src="https://learning.cyverse.org/assets/de/menu_items/teamsIcon.svg" width="15"> Teams feature allows you to create, organize, and join public or private groups of collaborators, with the goal of enabling a simpler method to share Apps, Tools and data with collaborators.
+
+On the team Teams page, users are able to:
+
+- See all public teams and teams one is part of (top left drop down menu **All Teams**)
+- Create a team (top right Team icon)
+
+When creating a Team, one can add as many collaborators as needed and adding a name to the Team.
+
+> [!TIP]
+> **REMEMBER TO SAVE BEFORE LEAVING THE TEAMS CREATION PAGE.**
+
+Once finished creating the Team, one can share a file/folder/analysis with the Team instead of each collaborator one by one, thus simplifying the sharing process.
