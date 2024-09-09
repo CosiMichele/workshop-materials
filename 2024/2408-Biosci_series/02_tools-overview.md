@@ -8,6 +8,7 @@
 <br>
 
 ---
+>[!important]
 > :clock1: **Schedule**
 > - 2:00pm-2:05pm: Welcome and introdution to topic
 > - 2:05pm-2:15pm: Quality Control & Post-Assembly Quality Assessment
@@ -15,6 +16,7 @@
 > - 2:45pm-2:55pm: Variant Calling
 > - 2:55pm-3:00pm: Closing remarks
 
+>[!important]
 > :heavy_exclamation_mark: **Requirements**
 > - Basic command line knowledge
 >- Access to a [Terminal](https://en.wikipedia.org/wiki/Unix_shell)
@@ -22,6 +24,7 @@
 >    - Windows users can use either [PowerShell](https://en.wikipedia.org/wiki/PowerShell) or the [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install)
 > - A registered CyVerse account (Register for a CyVerse account)
 
+>[!important]
 > :white_check_mark: **Expected Outcomes**
 > - Exposure to general bioinformatic tools
 > - Understanding of genome assembly pipelines
@@ -47,6 +50,34 @@ This workshop focuses on the various tools every bioinformatician should know ab
 
 ---
 ---
+## The Command Line in <5 Minutes
+
+The Command Line is how you communicate with your computer: it sends specific commands that tell software to *execute* specific actions. Following is a quick example of how commands work:
+
+```
+    hostname/machine           command        input file      argument/value----------------┐  
+            ↓                     ↓                ↓            ↓          ↓                ↓
+jovyan@aaf56ff92:~/data-store$ blastn -query <input.fasta> -db nt -out output.txt -evalue 1e-5
+  ↑                    ↑                ↑                   ↑       ↑               ↑
+user           current location     flag/option            flags/options------------┘
+
+\---------------------------/  \--------------------------------------------------------------/
+        shell prompt                                command
+```
+
+> [!NOTE]
+> Notice:
+> - The **shell prompt** (or simply, **prompt**) is always followed by the command.
+> - The command can have a number of flag/options.
+>    - Usually these can be listed by doing `<command> --help` (*"help me by showing me your options!"*)
+>    - Each flag/option requires one of the following:
+>        - The path to an **input file**;
+>        - An argument (e.g., preferred name of output) or a value (e.g., `1e-5`)
+>        - Some options do not require any added argument/value (e.g., `--help` does not require any further input)
+
+> [!TIP]
+> Always remember: **Spaces in Paths are *bad*.**
+> 
 
 ## Quality Control & Post-Assembly Quality Assessment
 
