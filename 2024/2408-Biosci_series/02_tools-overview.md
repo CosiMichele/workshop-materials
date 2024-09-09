@@ -42,15 +42,15 @@ This workshop focuses on the various tools every bioinformatician should know ab
 ***Jack of all trades, master of none, <u> but oftentimes better than a master of one. </u>***
 
 > [!WARNING]
-> :question: "... but my favourite tool/topic is missing!"
+> **:question: "... but my favourite tool/topic is missing!"**
 >
 > That's completely understandable: bioinformatics/genomics is such a wide field; This list is non-exhaustive and I will add more tools you may be interested in at the end of the workshop's page.
 > 
-> :heavy_exclamation_mark: Please do notice that visualization tools and analysis software have their own sessions! Check the [Data Science Institute's DataLab website](https://datascience.arizona.edu/education/uarizona-data-lab) for more information. :heavy_exclamation_mark:
+> **:heavy_exclamation_mark: Please do notice that visualization tools and analysis software have their own sessions! Check the [Data Science Institute's DataLab website](https://datascience.arizona.edu/education/uarizona-data-lab) for more information. :heavy_exclamation_mark:**
 
 <br>
 
-> [!IMPORTAT]
+> [!IMPORTANT]
 > This workshop uses data obtained by the [National Center of Biotechnology Information (NCBI)](https://www.ncbi.nlm.nih.gov/).  
 > We are going to be using *E. coli* as the example organism throughout this workshop.
 >
