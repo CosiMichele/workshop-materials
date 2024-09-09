@@ -134,7 +134,6 @@ Or, if you have multiple samples
 
 ```
 fastqc *.fastq -o /path/to/output
-
 ```
 
 #### Reading the FastQC Results
@@ -153,6 +152,13 @@ Let's use the figure above to help us understand the output FastQC, called the t
 >    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Phred_Figure_1.jpg" width="450">
 ></p>
 
+Other important results:
+- **Per tile sequence quality** (only if sequencing was carried out with Illumina): The plot shows the deviation from the average quality for each tile, blue = good, red = bad (heat scale blue to red). [Here's an example of a not so great result](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/per_tile_quality.png) ([source](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/12%20Per%20Tile%20Sequence%20Quality.html)).
+- **Per sequence quality scores**: the average quality score on the x-axis and the number of sequences with that average on the y-axis.
+- **Per base sequence content**:  plots out the proportion of each base position in a file for which each of the four normal DNA bases has been called. [In a random library you would expect that there would be little to no difference between the different bases of a sequence run, so the lines in this plot should run parallel with each other](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/4%20Per%20Base%20Sequence%20Content.html). **Note:** this will always fail with RNA-seq data.
+- **Per sequence GC content**: plots the GC distribution over all sequences
+- **Per base N content**: If a sequencer is unable to make a base call with sufficient confidence then it will normally substitute an N rather than a conventional base call. This module plots out the percentage of base calls at each position for which an N was called.
+- **Sequence Length Distribution**: shows the distribution of sequence length.
 
 ---
 
