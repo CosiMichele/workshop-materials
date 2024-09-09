@@ -52,11 +52,11 @@ This workshop focuses on the various tools every bioinformatician should know ab
 
 > [!IMPORTANT]
 > This workshop uses data obtained by the [National Center of Biotechnology Information (NCBI)](https://www.ncbi.nlm.nih.gov/).  
-> We are going to be using *E. coli* as the example organism throughout this workshop.
+> We are going to be using *E. coli* as the example organism throughout this workshop. All files are made available on CyVerse [here](https://datacommons.cyverse.org/browse/iplant/home/shared/cyverse_training/datalab/biosciences) or if you are using the command line here: `iplant/home/shared/cyverse_training/datalab/biosciences`.
 >
 > - The *E. coli* genome used will be the [ASM584v2](https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000005845.2/) (4.6MB).
 > - Curated RefSeq annotations (gff) for the genome can be found in the same location as above.
-> - Raw reads are made available on CyVerse, and can also be downloaded [here](https://www.ncbi.nlm.nih.gov/sra/SRX26020219[accn]) (302.8MB) (Note: sequenced with an Illumina NovaSeq 6000 machine).
+> - Raw reads used are from [here](https://www.ncbi.nlm.nih.gov/sra/SRX26020219[accn]) (302.8MB) (Note: sequenced with an Illumina NovaSeq 6000 machine).
 >
 > We are also going to be using some famous genes that access:
 > - [HBB (hemoglobin subunit beta)](https://www.ncbi.nlm.nih.gov/gene/3043)
@@ -84,7 +84,7 @@ user           current location     flag/option            flags/options--------
 ```
 
 > [!NOTE]
-> Notice:
+> 
 > - The **shell prompt** (or simply, **prompt**) is always followed by the command.
 > - The command can have a number of flag/options.
 >    - Usually these can be listed by doing `<command> --help` (*"help me by showing me your options!"*)
@@ -111,6 +111,48 @@ This section covers popular methods to assess quality of data. **FastQC** assess
 ### FastQC and MultiQC
 
 Upon obtaining raw sequencing data and before starting your downstream analysis, it is common that at the beginning of your pipeline you run **FastQC**.
+
+FastQC will help you identify potential issues such as 
+- Low quality scores at certain positions.
+- Adapter contamination.
+- Overrepresented sequences.
+- GC content anomalies.
+
+The typical workflow including FastQC is the following: 
+- Run FastQC on the raw reads.
+- Review the report for quality issues.
+- Perform trimming/cleaning if needed (using tools like Trimmomatic or Cutadapt).
+- Optionally, re-run FastQC to confirm the data is clean.
+
+To run fastqc, the commands are
+
+```
+fastqc <sample_data>.fastq -o /path/to/output
+```
+
+Or, if you have multiple samples
+
+```
+fastqc *.fastq -o /path/to/output
+
+```
+
+#### Reading the FastQC Results
+
+Let's use the figure above to help us understand the output FastQC, called the the **Per base sequence quality** plot, and it provides the distribution of quality scores at each position in the read across all reads.
+- The y-axis gives the quality scores, while the x-axis represents the position in the read. 
+- The color coding of the plot denotes what are considered high, medium and low quality scores.
+- The yellow box represents the 25th and 75th percentiles, with the red line as the median. The whiskers are the 10th and 90th percentiles.
+- The blue line represents the average quality score for the nucleotide.
+
+> [!IMPORTANT]
+> **What's the Phred Quality Score?**
+> 
+> The y-axis typically represents [Phred](https://en.wikipedia.org/wiki/Phred_(software)) quality scores, which measure the probability of an incorrect base call. Quality scores are logarithmic and can theoretically go beyond 40. Scores above 40 represent very high confidence in base calls, with probabilities of incorrect base calls being very low (less than 1 in 10,000). Setting the y-axis limit at 40 helps in standardizing the plot and avoiding unnecessary scaling for the majority of sequencing data, where scores often peak around 30 to 40. Scores higher than 40 are relatively rare in most datasets.
+><p align="center">
+>    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Phred_Figure_1.jpg" width="450">
+></p>
+
 
 ---
 
