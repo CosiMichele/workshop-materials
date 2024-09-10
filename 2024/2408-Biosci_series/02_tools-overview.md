@@ -64,6 +64,7 @@ This workshop focuses on the various tools every bioinformatician should know ab
 > - [CDC28 (yeast cell cycle regulator)](https://www.ncbi.nlm.nih.gov/gene/852457)
 > - [Pr55(Gag) (HIV-1 virus encoding gene)](https://www.ncbi.nlm.nih.gov/gene/155030)
 > - [rbCl (Rubisco gene)](https://www.ncbi.nlm.nih.gov/gene?Db=gene&Cmd=DetailsSearch&Term=845212)
+> - [lacZ (lactose metabolizing gene)](https://www.ncbi.nlm.nih.gov/gene/945006)
 
 ---
 ---
@@ -216,14 +217,171 @@ BLAST is able to search for both nucleotide sequences and protein sequences in a
 
 On the command line, BLAST is an even more powerful tool, however it comes with a few too many options. Executing BLAST first requires a genome that has been made into a database with `makeblastdb`.
 
-The full command used is `makeblastdb -in ASM584v2.fna -dbtype nucl -out e_coli_db`.
+The full command used is `makeblastdb -in ASM584v2.fna -dbtype nucl -out e_coli_db`. 
 
-
-First copy the genome, annotations database and genes to BLAST onto your location:
+For this BLAST exercise, first copy the genome, annotations database and genes to BLAST onto your current location:
 
 ```
 cp data/iplant/home/shared/cyverse_training/datalab/biosciences/e_coli_gen_dir/ data/iplant/home/shared/cyverse_training/datalab/biosciences/genes .
 ```
+
+Then, you're ready to BLAST! The command to use is:
+
+```
+blastn -query <gene>.fa -db e_coli_gen_dir/e_coli_db/e_coli_db -out results.out
+```
+
+> [!IMPORTANT]
+> **What's going on here?** Breaking down the command
+> - `blastn`: calls the nucleotide version of BLAST
+> - `-query <gene.fa>` : here you point to the FASTA file to query the search
+> - `-db e_coli_gen_dir/e_coli_db/e_coli_db`: this points to where the *E. coli* database lives. **Note**: inside the `e_coli_gen_dir/e_coli_db` lives a number of files which end with a number of extensions; All together these files make up the database, callable with `e_coli_db`.
+> - `-out results.out`: creates an output file called `results.out`
+
+To view the output, one can do:
+
+```
+cat results.out
+```
+
+If, for example, you blasted any other gene other than the lacZ gene, the `results.out` output will be:
+
+```
+BLASTN 2.16.0+
+
+
+Reference: Zheng Zhang, Scott Schwartz, Lukas Wagner, and Webb
+Miller (2000), "A greedy algorithm for aligning DNA sequences", J
+Comput Biol 2000; 7(1-2):203-14.
+
+
+
+Database: ASM584v2.fna
+           4,315 sequences; 4,025,874 total letters
+
+
+
+Query= random_gene
+
+Length=27
+
+
+***** No hits found *****
+
+
+
+Lambda      K        H
+    1.33    0.621     1.12 
+
+Gapped
+Lambda      K        H
+    1.28    0.460    0.850 
+
+Effective search space used: 39525190
+
+
+  Database: ASM584v2.fna
+    Posted date:  Sep 10, 2024  1:42 AM
+  Number of letters in database: 4,025,874
+  Number of sequences in database:  4,315
+
+
+
+Matrix: blastn matrix 1 -2
+Gap Penalties: Existence: 0, Extension: 2.5
+```
+
+However, running the lacZ gene, will result with:
+
+```
+BLASTN 2.16.0+
+
+
+Reference: Zheng Zhang, Scott Schwartz, Lukas Wagner, and Webb
+Miller (2000), "A greedy algorithm for aligning DNA sequences", J
+Comput Biol 2000; 7(1-2):203-14.
+
+
+
+Database: ASM584v2.fna
+           4,315 sequences; 4,025,874 total letters
+
+
+
+Query= NC_000913.3:c366305-363231 Escherichia coli str. K-12 substr.
+MG1655, complete genome
+
+Length=3075
+                                                                      Score     E
+Sequences producing significant alignments:                          (Bits)  Value
+
+lcl|NC_000913.3_cds_NP_414878.1_338 [gene=lacZ] [locus_tag=b0344]...  5679    0.0  
+
+
+>lcl|NC_000913.3_cds_NP_414878.1_338 [gene=lacZ] [locus_tag=b0344] 
+[db_xref=UniProtKB/Swiss-Prot:P00722] [protein=beta-galactosidase] 
+[protein_id=NP_414878.1] [location=complement(363231..366305)] 
+[gbkey=CDS]
+Length=3075
+
+ Score = 5679 bits (3075),  Expect = 0.0
+ Identities = 3075/3075 (100%), Gaps = 0/3075 (0%)
+ Strand=Plus/Plus
+
+Query  1     ATGACCATGATTACGGATTCACTGGCCGTCGTTTTACAACGTCGTGACTGGGAAAACCCT  60
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  1     ATGACCATGATTACGGATTCACTGGCCGTCGTTTTACAACGTCGTGACTGGGAAAACCCT  60
+
+Query  61    GGCGTTACCCAACTTAATCGCCTTGCAGCACATCCCCCTTTCGCCAGCTGGCGTAATAGC  120
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  61    GGCGTTACCCAACTTAATCGCCTTGCAGCACATCCCCCTTTCGCCAGCTGGCGTAATAGC  120
+
+Query  121   GAAGAGGCCCGCACCGATCGCCCTTCCCAACAGTTGCGCAGCCTGAATGGCGAATGGCGC  180
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  121   GAAGAGGCCCGCACCGATCGCCCTTCCCAACAGTTGCGCAGCCTGAATGGCGAATGGCGC  180
+
+Query  181   TTTGCCTGGTTTCCGGCACCAGAAGCGGTGCCGGAAAGCTGGCTGGAGTGCGATCTTCCT  240
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  181   TTTGCCTGGTTTCCGGCACCAGAAGCGGTGCCGGAAAGCTGGCTGGAGTGCGATCTTCCT  240
+
+Query  241   GAGGCCGATACTGTCGTCGTCCCCTCAAACTGGCAGATGCACGGTTACGATGCGCCCATC  300
+             ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Sbjct  241   GAGGCCGATACTGTCGTCGTCCCCTCAAACTGGCAGATGCACGGTTACGATGCGCCCATC  300
+
+...............................................................................
+....TRUNCATED TO SAVE SPACE....................................................
+...............................................................................
+
+Lambda      K        H
+    1.33    0.621     1.12 
+
+Gapped
+Lambda      K        H
+    1.28    0.460    0.850 
+
+Effective search space used: 11966980014
+
+
+  Database: ASM584v2.fna
+    Posted date:  Sep 10, 2024  1:42 AM
+  Number of letters in database: 4,025,874
+  Number of sequences in database:  4,315
+
+
+
+Matrix: blastn matrix 1 -2
+Gap Penalties: Existence: 0, Extension: 2.5
+
+```
+
+Resulting in a successful BLAST hit!
+
+There are more ways to customize your BLAST search. Other options include:
+- `-outfmt`: which allows you to pick the output format. Ther are 13 different output formats, tabular (`-outfmt 6`) is the most popular.
+- `-evalue`: allows you to pick the E-value threshold (expected value), the number of hits you would expect to see by chance. Lower the E-value the more significant the match. A standard E-value is `-evalue 1e-5`
+- `-max_target_seqs`: limits the number of alignments to report per query sequence. E.g., `-max_target_seqs 10` will report a max of 10 matches per sequence.
+- `num_threads`: specifies the number of threads for parallel processing. A trick: a thread per computer core.
+
 ---
 
 ### BWA: Mapping Short Reads to Longer Genomes
