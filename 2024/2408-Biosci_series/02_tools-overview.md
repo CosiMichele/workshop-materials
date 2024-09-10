@@ -393,7 +393,7 @@ There are more ways to customize your BLAST search. Other options include:
 
 ### BWA: Mapping Short Reads to Longer Genomes
 
-**BWA** (Burrows-Wheeler Aligner) is a widely used software package for mapping sequencing reads against a reference genome. It is designed for high-throughput sequence alignment and is known for its speed and accuracy. BWA can handle both short and long reads and is commonly used in genomics for aligning reads from DNA sequencing experiments.
+[**BWA** (Burrows-Wheeler Aligner)](https://bio-bwa.sourceforge.net/) is a widely used software package for mapping sequencing reads against a reference genome. It is designed for high-throughput sequence alignment and is known for its speed and accuracy. BWA can handle both short and long reads and is commonly used in genomics for aligning reads from DNA sequencing experiments.
 
 It has 3 algorithms:
 - **BWA-MEM**: The most commonly used algorithm, especially for long reads and high-throughput sequencing. It is designed for accurate and fast alignment of reads.
@@ -427,7 +427,7 @@ The output SAM file is a format used to store alignment data. SAM is human reada
 > [!IMPORTANT]
 > #### Minimap2: BWA for Longer Reads
 > 
-> As BWA is used mainly for shorter reads, a sister tool has been created in order to align longer reads (e.g., nanopore and PacBio sequences): Minimap2.
+> As BWA is used mainly for shorter reads, a sister tool has been created in order to align longer reads (e.g., nanopore and PacBio sequences): [Minimap2](https://github.com/lh3/minimap2).
 > The main difference is in the algorithms used, as Minimap2's algorithm is more efficient and accurate with longer read sequences.
 > The two operate with a similar synthax.
 
