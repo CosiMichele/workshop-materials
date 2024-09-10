@@ -13,9 +13,8 @@
 > - 3:00pm-3:05pm: Welcome and introdution to topic
 > - 3:05pm-3:10pm: The Command Line in <5 Minutes
 > - 3:10pm-3:20pm: Quality Control Tools
-> - 3:20pm-3:45pm: Sequence Alignment and Assembly Tools
-> - 3:45pm-3:55pm: Variant Calling Tools
-> - 3:55pm-4:00pm: Closing remarks
+> - 3:20pm-3:55pm: Sequence Alignment and Assembly Tools
+> - 3:55pm-4:00pm: Honorable Mentions Closing remarks
 
 >[!important]
 > :heavy_exclamation_mark: **Requirements**
@@ -201,8 +200,9 @@ In this section, we are going to cover [BLAST](https://en.wikipedia.org/wiki/BLA
     - [Minimap2](#minimap2-bwa-for-longer-reads)
 - [Bowtie2](#bowtie2-fast-and-memory-efficient)
 - [STAR](#star-aligning-rna-seq-data)
+- [HISAT2](#hisat2-aligning-spliced-rna-seq-data)
 - [SAMTools](#samtools-manipulating-sequences)
-
+- [StringTie, Ballgown, DESeq2](#honorable-downstream-tools-mention-stringtie-ballgown-and-deseq2)
 
 ### The Tool Every Bioinformatician Needs to Know: BLAST
 
@@ -349,7 +349,7 @@ Query  241   GAGGCCGATACTGTCGTCGTCCCCTCAAACTGGCAGATGCACGGTTACGATGCGCCCATC  300
 Sbjct  241   GAGGCCGATACTGTCGTCGTCCCCTCAAACTGGCAGATGCACGGTTACGATGCGCCCATC  300
 
 ...............................................................................
-....TRUNCATED TO SAVE SPACE....................................................
+..........................TRUNCATED TO SAVE SPACE..............................
 ...............................................................................
 
 Lambda      K        H
@@ -469,7 +469,6 @@ For alignning multiple paired-end reads using Bowtie2, you can concatenate them 
 
 ```
 bowtie2 -x reference_index -1 reads_1a.fastq,reads_1b.fastq -2 reads_2a.fastq,reads_2b.fastq -S output.sam
-
 ```
 
 ---
@@ -484,7 +483,6 @@ Like the previous aligner, STAR first requires an indexed genome:
 
 ```
 STAR --runThreadN 8 --runMode genomeGenerate --genomeDir /path/to/genomeDir --genomeFastaFiles genome.fasta --sjdbGTFfile annotations.gtf --sjdbOverhang 100
-
 ```
 
 Notice how it's options are more complicated (for the better!):
@@ -514,7 +512,6 @@ Simiar to Bowtie2, you use a comma to concatenate multiple pair-end reads:
 STAR --genomeDir genome_directory --readFilesIn sample1_R1.fastq,sample2_R1.fastq sample1_R2.fastq,sample2_R2.fastq --outFileNamePrefix output_prefix
 ```
 
-
 STAR can also quantify gene expressions using the option `--quantMode GeneCounts`
 
 ```
@@ -524,6 +521,10 @@ STAR --runThreadN 8 --genomeDir /path/to/genomeDir --readFilesIn reads_1.fastq r
 ---
 
 ### HISAT2: Aligning Spliced RNA-Seq data
+
+<p align="center">
+    <img src="https://daehwankimlab.github.io/hisat2/assets/img/ogp.png" width="250">
+</p>
 
 Talking about the complications of spliced junctions, [**HISAT2**](https://daehwankimlab.github.io/hisat2/) is a tool optimized to deal with extactly that. It uses the similar algorithms to the BWA aligner, paired with [FM-index](https://en.wikipedia.org/wiki/FM-index), a compression algorithm for improved memory efficiency (unlike STAR!). HISAT2 can handle larger genomes and more complex transcriptomes.
 
@@ -553,51 +554,125 @@ Some other popular options are:
 - `--rna-strandness`: Specify RNA strandness (use `FR` for forward, `RF` for reverse, or `NONE` for no specific strandness).
 - `--spliced-align`: Ensure the aligner considers splicing events.
 - `--max-intron-len <preferred intron length>`: Set the maximum allowed intron length for spliced alignments.
+
+---
+
+> [!NOTE]
+> Have you noticed how every single aligner so far outputs files in SAM format?
+
 ---
 
 ### SAMtools: Manipulating Sequences
 
----
+SAMtools is a suite of tools used for manipulating and analyzing files in the SAM (Sequence Alignment/Map) and BAM (Binary Alignment/Map) formats. These formats are commonly used to store alignment data from various sequencing technologies. SAMtools provides a variety of functionalities to process alignment files, including sorting, indexing, and variant calling.
+
+As mentioned before, SAM and BAM files are essentially the same, with one (SAM, Sequence Alignment/Map, larger size) being human readable whilst the other (BAM, Binary Alignment/Map, more compact) is machine readable. 
+
+It is typical to first convert SAM files to BAM as these save space:
+
+```
+samtools view -bS input.sam > output.bam
+```
+
+SAMtools is able to **sort** SAM/BAM files by the genomic coordinates of the alignments, which is necessary for many downstream analyses:
+
+```
+samtools sort output.bam -o sorted.bam
+```
+
+Typically this is followed by **indexing**, which creates an index file for BAM files to allow fast access to specific regions of the genome:
+
+```
+samtools index sorted.bam
+```
+
+Users can then create aligment statistics. These can be added to the MultiQC report:
+
+```
+samtools flagstat sorted.bam
+```
+
+At this point, a pileup file can be created for variant calling: 
+
+```
+samtools mpileup -f reference.fasta sorted.bam > variants.bcf
+```
+
+A pileup file is a data format used to represent the sequence coverage at each position in the genome across multiple reads. It provides a compact summary of read alignments and is particularly useful for variant calling and other genomic analyses.
+
+It is useful for the following reasons:
+
+- **Coverage Information**: shows how many reads cover each position in the genome, helping to identify regions with high or low sequencing coverage.
+- **Can be used for Base Calls**: lists the base calls (nucleotides) observed at each position along with their quality scores.
+- **Variations**: allows for the identification of variations such as SNPs (single nucleotide polymorphisms) and indels (insertions and deletions) by comparing observed bases to the reference genome.
+
+> [!NOTE]
+> Variant calling will be covered in the coming workshop session.
 
 ---
 
-### Section 1 Subsection 2
+### Honorable Downstream Tools mention: StringTie, Ballgown and DeSEQ2 
 
----
----
+At this point, users have a well aligned sequence in BAM format that can be used for transcriptomic and differential expression analysis. Here are 3 tools that are worth noting (DESeq2 will have its own section later on in the series!).
 
-## Transcript Assembly Tools
+#### StringTie
 
 <p align="center">
-    <img src="image" width="450">
+    <img src="https://ccb.jhu.edu/software/stringtie/stringtie_logo.png" width="80">
 </p>
 
-- [content 1](#section-1-subsection-1) 
-- [content 2](#section-1-subsection-2)
+[**StringTie**](https://ccb.jhu.edu/software/stringtie/) is a tool for transcript assembly and quantification from RNA-seq data. It reconstructs transcript structures and estimates their expression levels.
 
-### Section 1 Subsection 1
+**Key Features**:
+- Transcript Assembly: Assembles transcript models from aligned RNA-seq reads.
+- Expression Quantification: Estimates transcript abundance in terms of FPKM (Fragments Per Kilobase of transcript per Million mapped reads) or TPM (Transcripts Per Million).
+- Output: Provides GTF/GFF files with transcript annotations and expression levels.
 
----
+**Basic Workflow**:
+1. Input: Aligned reads (BAM files).
+2. Assembly: Reconstructs transcript models from alignments.
+3. Quantification: Estimates transcript abundance.
+4. Output: GTF files with transcript annotations and expression levels.
 
-### Section 1 Subsection 2
+A simple command to run stringTie is
 
----
----
+```
+stringtie aligned_reads.bam -o transcripts.gtf -p 8 -B
+```
 
-## Variant Calling Tools
+where `-p` is the amount of processors and `-B` outputs a folder that can be read in Ballgown
 
-<p align="center">
-    <img src="image" width="450">
-</p>
+#### Ballgown
 
-- [content 1](#section-1-subsection-1) 
-- [content 2](#section-1-subsection-2)
+[**Ballgown**](https://github.com/alyssafrazee/ballgown) is an R package used for analyzing and visualizing transcript-level expression data. It works well with data processed by StringTie or other transcript assemblers.
 
-### Section 1 Subsection 1
+**Key Features**:
+- Differential Expression Analysis: Allows for the comparison of transcript expression between conditions.
+- Visualization: Provides tools for visualizing expression data, such as heatmaps and boxplots.
+- Integration: Works with GTF files from transcript assemblers and quantification results.
 
----
+**Basic Workflow**:
+1. Input: Transcript-level expression data (e.g., from StringTie) and sample information.
+2. Data Loading: Imports data into R for analysis.
+3. Differential Expression: Analyzes differences in transcript expression between conditions.
+4. Visualization: Creates plots to visualize expression patterns and results.
 
-### Section 1 Subsection 2
+#### DESeq2 (in a heartbeat)
+
+
+[**DESeq2**](https://www.bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html) is a statistical tool used for analyzing count data from RNA-seq experiments to identify differentially expressed genes.
+
+**Key Features**:
+- Differential Expression Analysis: Identifies genes that are significantly differentially expressed between conditions or treatments.
+- Normalization: Accounts for differences in sequencing depth and library size by normalizing count data.
+- Statistical Modeling: Uses a negative binomial distribution to model count data and perform hypothesis testing.
+Results Visualization: Provides methods for generating plots such as MA plots and volcano plots to visualize results.
+
+**Basic Workflow**:
+1. Input: Raw count data (e.g., from HTSeq or featureCounts) and sample information.
+2. Normalization: Normalizes data to account for library size.
+3. Statistical Testing: Performs differential expression analysis using a negative binomial model.
+4. Output: Results include log fold changes, p-values, and adjusted p-values (e.g., using the Benjamini-Hochberg procedure).
 
 ---
 ---
