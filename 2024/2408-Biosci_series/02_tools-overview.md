@@ -393,7 +393,43 @@ There are more ways to customize your BLAST search. Other options include:
 
 ### BWA: Mapping Short Reads to Longer Genomes
 
-#### Minimap2: BWA for Longer Reads
+**BWA** (Burrows-Wheeler Aligner) is a widely used software package for mapping sequencing reads against a reference genome. It is designed for high-throughput sequence alignment and is known for its speed and accuracy. BWA can handle both short and long reads and is commonly used in genomics for aligning reads from DNA sequencing experiments.
+
+It has 3 algorithms:
+- **BWA-MEM**: The most commonly used algorithm, especially for long reads and high-throughput sequencing. It is designed for accurate and fast alignment of reads.
+- **WA-ALN**: Used for aligning short reads, particularly useful for older versions of sequencing technologies.
+- **BWA-SW**: Used for aligning longer reads and for more sensitive alignment, but it is slower compared to BWA-MEM.
+
+BWA use cases include: 
+- **Variant Calling**: Aligning sequencing reads to detect genetic variations such as SNPs and indels.
+- **Gene Expression Analysis**: Aligning RNA-seq reads to measure gene expression levels.
+- **Structural Variation Detection**: Identifying larger genomic rearrangements and structural variants.
+
+The implementation of BWA in a pipeline is similar to the following:
+
+1. Index the Reference Genone
+
+```
+bwa index reference_genome.fasta
+```
+
+2. Aligning Reads with BWA-MEM and redirect the output to a SAM file. 
+
+```
+bwa mem reference_genome.fasta reads.fq > aligned_reads.sam
+
+```
+**Note**: `reads.fq` in the example above is a reads in a FASTQ format, a popular format that not only contains the sequence information, but also the quality score (similar to the Phred score discussed earlier -- the higher the better.) Quality scores are represented by a mix of symbols and letters ([reference](https://help.basespace.illumina.com/files-used-by-basespace/quality-scores)).
+
+The output SAM file is a format used to store alignment data. SAM is human readable, whilst BAM is the computer readable counterpart (both can be outputted).
+
+
+> [!IMPORTANT]
+> #### Minimap2: BWA for Longer Reads
+> 
+> As BWA is used mainly for shorter reads, a sister tool has been created in order to align longer reads (e.g., nanopore and PacBio sequences): Minimap2.
+> The main difference is in the algorithms used, as Minimap2's algorithm is more efficient and accurate with longer read sequences.
+> The two operate with a similar synthax.
 
 ---
 
