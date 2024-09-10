@@ -12,7 +12,7 @@
 > :clock1: **Schedule**
 > - 3:00pm-2:05pm: Welcome and introdution to topic
 > - 3:05pm-2:10pm: The Command Line in <5 Minutes
-> - 3:10pm-2:20pm: Quality Control & Post-Assembly Quality Assessment Tools
+> - 3:10pm-2:20pm: Quality Control Tools
 > - 3:20pm-3:45pm: Sequence Alignment and Assembly Tools
 > - 3:45pm-3:55pm: Variant Calling Tools
 > - 3:55pm-4:00pm: Closing remarks
@@ -56,7 +56,8 @@ This workshop focuses on the various tools every bioinformatician should know ab
 >
 > - The *E. coli* genome used will be the [ASM584v2](https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000005845.2/) (4.6MB).
 > - Curated RefSeq annotations (gff) for the genome can be found in the same location as above.
-> - Raw reads used are from [here](https://www.ncbi.nlm.nih.gov/sra/SRX26020219[accn]) (302.8MB) (Note: sequenced with an Illumina NovaSeq 6000 machine).
+> - Raw reads used are from [here](https://www.ncbi.nlm.nih.gov/sra/SRX26020219[accn]) (302.8MB) and [here](https://www.ncbi.nlm.nih.gov/sra/?term=SRR30597479) (Note: these sequences come from the [same project](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA1158507) and have been processed with an Illumina NovaSeq 6000 machine).
+>   - These reads have been fetched with the `sra-tools` (`prefetch <SRA sample>`) and extracted (`fastq-dump <SRA sample>.sra`).
 >
 > We are also going to be using some famous genes that access:
 > - [HBB (hemoglobin subunit beta)](https://www.ncbi.nlm.nih.gov/gene/3043)
@@ -97,18 +98,15 @@ user           current location     flag/option            flags/options--------
 > Always remember: **Spaces in Paths are *bad*.**
 > 
 
-## Quality Control & Post-Assembly Quality Assessment Tools
+## Quality Control Tools
 
 <p align="center">
     <img src="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/per_base_quality.png" width="450">
 </p>
 
-This section covers popular methods to assess quality of data. **FastQC** assesses raw data from sequencing runs, useful before an assembly or analysis starts. **MultiQC** takes outputs of other tools (but including FastQC) to give a more in depth report across multiple samples. With BUSCO, users can assess the completeness of a specific genome assembly and comparing the genes within the assembly with other well conserved orthologs.
+This section covers popular methods to assess quality of data. **FastQC** assesses raw data from sequencing runs, useful before an assembly or analysis starts. **MultiQC** takes outputs of other tools (but including FastQC) to give a more in depth report across multiple samples. 
 
-- [FastQC and MutliQC](#fastqc-and-multiqc) 
-- [BUSCO](#busco)
-
-### FastQC and MultiQC
+### FastQC
 
 Upon obtaining raw sequencing data and before starting your downstream analysis, it is common that at the beginning of your pipeline you run **FastQC**.
 
@@ -160,9 +158,27 @@ Other important results:
 - **Per base N content**: If a sequencer is unable to make a base call with sufficient confidence then it will normally substitute an N rather than a conventional base call. This module plots out the percentage of base calls at each position for which an N was called.
 - **Sequence Length Distribution**: shows the distribution of sequence length.
 
----
+#### MultiQC
 
-### BUSCO
+MultiQC is similar to FastQC in a sense that both generate reports. However, MultiQC is able to aggregate reports from various sources and for various reasons including but not limited to:
+
+- Sequence Quality Control (from FastQC)
+- Alignment and Mapping (from STAR, HISAT2, Bowtiw2, BWA, Minimap2)
+- Variant Calling (from GATK, Bcftools)
+- Quantifiation (from Salmon, Kallisto)
+- Differential Expression (DESeq2)
+
+Notice how MultiQC relies on these tools to create reports first. As an aggregator, the power of MultQC lies in the ability to take all of your produced reports and have them all in a single place.
+
+To run MultiQC, one must first designate a folder with all of the generated reports and analyses. Once the folder is created, once can generate the MultiQC report by doing 
+
+```
+multiqc /path/to/folder
+```
+
+A report is going to be generated, similar to one available at in the [data commons](https://de.cyverse.org/api/download?path=%2Fiplant%2Fhome%2Fshared%2Fcyverse_training%2Fdatalab%2Fbiosciences%2Ffastqc_multiqc_reports%2Fmultiqc_report.html&attachment=0&url=display-download) or `data/iplant/home/shared/cyverse_training/datalab/biosciences/fastqc_multiqc_reports/` if you are following the workshop. Once logged in CyVerse, [you should be able to view the report from your browser](https://de.cyverse.org/api/download?path=%2Fiplant%2Fhome%2Fshared%2Fcyverse_training%2Fdatalab%2Fbiosciences%2Ffastqc_multiqc_reports%2Fmultiqc_report.html&attachment=0&url=display-download).
+
+This MultiQC report was created by first creating the FastQC reports for samples SRR30597479 and SRR30597506. No other tool was aggregated to the report.
 
 ---
 ---
