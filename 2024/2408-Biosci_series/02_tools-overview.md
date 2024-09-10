@@ -384,6 +384,13 @@ There are more ways to customize your BLAST search. Other options include:
 
 ---
 
+> [!NOTE]
+> As you may have noticed, BLAST is used to search for alignments between sequences, giving you a number of information per alignment. The following alignment tools are used for a different type of alignment: mapping reads and sequences in order to assemble genomes and RNA-seq data.
+
+> [!Important]
+> Due to time constraints, we won't be able to play around with these. From here on, the workshop is going to be more theorical. We will be able to use some of these tools in the coming workshop dates.
+---
+
 ### BWA: Mapping Short Reads to Longer Genomes
 
 #### Minimap2: BWA for Longer Reads
