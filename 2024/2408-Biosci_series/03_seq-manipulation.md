@@ -54,9 +54,9 @@ This workshop introduces participants to the **fundamentals of RNA-seq data anal
 > **Overview of Pipeline**
 > As this can be classified as an analysis pipeline, it is important for us to highlight what the major steps are:
 > 
-> [Raw RNA-seq Data (SRA)]                  # 
->         ↓                                 # These have been pre-made in preparation for the workshop.
-> [Convert to FASTQ]                        #
+> [Raw RNA-seq Data (SRA)]                   
+>         ↓                                 
+> [Convert to FASTQ]                        
 >         ↓
 > [Align with Hisat2] 
 >         ↓
