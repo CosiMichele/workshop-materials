@@ -8,11 +8,13 @@
 <br>
 
 ---
+>[!important]
 > :clock1: **Schedule**
-> - 2:00pm-2:10pm: 
-> - 2:10pm-2:45pm:
-> - 2:45pm-3:00pm:
+> - 3:00pm-3:10pm: 
+> - 3:10pm-3:45pm:
+> - 3:45pm-4:00pm:
 
+>[!important]
 > :heavy_exclamation_mark: **Requirements**
 > - Basic command line knowledge
 >- Access to a [Terminal](https://en.wikipedia.org/wiki/Unix_shell)
@@ -20,6 +22,7 @@
 >    - Windows users can use either [PowerShell](https://en.wikipedia.org/wiki/PowerShell) or the [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install)
 > - A registered CyVerse account (Register for a CyVerse account)
 
+>[!important]
 > :white_check_mark: **Expected Outcomes**
 > - 
 > - 
