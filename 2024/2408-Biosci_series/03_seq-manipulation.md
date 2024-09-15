@@ -95,8 +95,12 @@ In order to get things started:
     ```
     mkdir week_3 && \ 
     mv e_coli_gen_dir/ASM584v2.fna e_coli_gen_dir/ASM584v2_genomic.gtf week_3/ && \
-    mv e_coli_sra/SRR30597*/*.fastq week_3
+    mv e_coli_sra/SRR30597*/*.fastq week_3 && \
+    cd week_3
     ```
+
+You are now ready for the workshop!
+
 ---
 
 ## Alignment and Data Preparation
@@ -114,17 +118,30 @@ In this section, we will learn how to process and prepare RNA-seq data for analy
 
 ### Alignment via HISAT2
 
-Prior to alignment with HISAT2, we require to index the genome. This can be carried out with the following command. Note, we have added the `-p <threads>` flag for threads (decreasing the indexing time for larger genomes):
+Prior to alignment with HISAT2, we require to index the genome. This can be carried out with the following command synthax. Note, we have added the `-p <threads>` flag for threads (decreasing the indexing time for larger genomes):
 
 ```
-hisat2-build -p 8 <reference-genome.fasta> reference_index
+hisat2-build -p <threads> <reference-genome.fasta> <reference_index>
 ```
 
-
-The baseline HISAT2 command for alignment is the following:
+Thus, do:
 
 ```
-hisat2 -x reference_index -1 sample_R1.fastq -2 sample_R2.fastq -S output.sam
+hisat2-build -p 8 ASM584v2.fna ecoli_index
+```
+
+This command will build the *E. coli* database using 8 threads (time estimation: ~10s).
+
+> [!NOTE]
+> If you ever need to index larger genomes, do also include the `--large-idex` flag.
+> Other flags that are worth using:
+> - `--ss <splice-sites.txt>`: where you point HISAT2 to a txt file where known splice sites are reported.
+> - `--exon <exons.txt>:` similar to the splice site option, but for exon information. 
+
+Now, you can align your reads. The baseline HISAT2 command for alignment is the following:
+
+```
+hisat2 -x <reference_index> -1 <sample_R1.fastq> -2 <sample_R2.fastq> -S <output.sam>
 ```
 
 Since we are using single reads and not pair ends, we should use the following command:
@@ -133,9 +150,95 @@ Since we are using single reads and not pair ends, we should use the following c
 hisat2 -x <index_basename> -U <reads.fastq> -S <output.sam>
 ```
 
+We will also use the `<read1.fastq>,<read2.fastq>` synthax to include both the reads available to us, as well as using the `-p 8` to run 8 threads. Execute:
+
+```
+hisat2 -p 8 -x ecoli_index -U SRR30597479.fastq,SRR30597506.fastq -S output.sam
+```
+
+The command will run for ~1-2 minutes, creating the `output.sam` file (~5.1GB)
+
+You will notice that this will wild a really poor alignmet:
+
+```
+8343493 reads; of these:
+  8343493 (100.00%) were unpaired; of these:
+    8343461 (100.00%) aligned 0 times
+    32 (0.00%) aligned exactly 1 time
+    0 (0.00%) aligned >1 times
+0.00% overall alignment rate
+```
+
+**Only 32 aligned!!!** ... so what now?
+
+> [!NOTE]
+> **Exercise: Downlaod more read sequences (not required but recommended)**
+> 1. Go to the NCBI SRA repository: https://www.ncbi.nlm.nih.gov/sra/
+> 2. In the search field, search for *E. coli*. Select any of the experiments, *or* if you know any experiment you know of, search for that!
+> 3. In the terminal, download the reads:
+>    - This uses the `sra-toolkit` which is a powerful tool that allows you to download any experimental data hosted by NCBI.
+>    - Use `prefetch <sra run #>`, such as `prefetch SRR30660439`. You can get this number once you open one of the experiments (close to the bottom of the page).
+> 4. extract the reads using `fastq-dump <sra run #>` such as `fastq-dump SRR30660439`. This will generate the fastq file you can use for alignment.
+> You will notice that the alignment number will increase (perhaps, not by much as these are from different experiments).
+> 
+> Why do you think the alignment is so low?
+
+As this workshop is concentrated around the techniques, we will continue with the poor alignment. *All is good!*
+
 ---
 
 ### Data Formatting Using SAMtools 
+
+Using SAMtools, we are going to do a few things:
+
+1. Convert SAM to BAM. This allows for the downstream analyses to be quicker.
+2. Sort the reads by genomic coordinates.
+3. Index the output BAM, allowing fast access to specific regions in the BAM file.
+4. Check stats.
+
+To convert SAM to BAM, one must do:
+
+```
+samtools view -S -b <output.sam> > <output.bam>
+```
+
+The command `samtools view` converts SAM to BAM. The `-S` flag specifies the input SAM, and -b outputs the BAM file. Notice how the command generates a much smaller file (~5.1GB vs ~1.1GB).
+
+The next command is the `samtools sort` command, with `-@ <threads>` to specify how many threads you want to run it with, `-m <memory per thread followed by size (G for GB)>`. It's good practice to find ways to multithread your analyses.
+
+```
+samtools sort -@ 8 -m 4G output.bam -o output_sorted.bam
+```
+
+Sorting refers to organizing the alignments in a BAM (or SAM) file based on the genomic coordinates where the reads align to the reference genome. It makes a lot of downstream analyses quicker and more accurate.
+
+Before sorting, the BAM file might look like this:
+
+|Read ID | Chromosome |	Position |
+| --- | --- | ---|
+| R1 |chr1 | 500 |
+| R2 | chr2 | 1000 |
+| R3 | chr1 | 1500 |
+
+Notice how read ID R2 is on a different chromosome. Post sorting, read ID R3 should be moved closer to R1, as both are on the same chromosome (quicker access downstream).
+
+|Read ID | Chromosome |	Position |
+| --- | --- | ---|
+| R1 |chr1 | 500 |
+| R3 | chr1 | 1500 |
+| R2 | chr2 | 1000 |
+
+Now you can index your sorted output file; Use `-@ <threads>` to speed things up and `-b` to point to the file.
+
+```
+samtools index -@ 8 -b output_sorted.bam
+```
+
+This creates a `.bai` file, which is your BAM index file.
+
+> [!NOTE]
+> Check Stats (Optional)
+> You can check the stats of your indexed BAM file by doing `samtools flasgstat -@ 8 output_sorted.bam
 
 ---
 ---
