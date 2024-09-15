@@ -70,6 +70,35 @@ This workshop introduces participants to the **fundamentals of RNA-seq data anal
 ---
 ---
 
+## Getting Things Started
+
+In order to get things started:
+
+1. Execute the [JupyterLab Bioscience CyVerse App](https://de.cyverse.org/apps/de/cc046834-5907-11ef-bcd7-008cfa5ae621) and open the Terminal.
+2. Initiate GoCommands, the CyVerse in-house transfer tool using `gocmd init`.
+    - Press enter (don't input anything) when propted for **iRODS Host**, **Port**, **Zone**; put your CyVerse username when asked for **iRODS Username** and your CyVerse password when asked for **iRODS Password** (**Note**: you will not see the password being typed as per standard Ubuntu security).
+3. Copy the genome files using the following command:
+
+    ```
+    gocmd get --progress /iplant/home/shared/cyverse_training/datalab/biosciences/e_coli_gen_dir
+    ```
+
+    This will copy:
+    
+    - The *E. coli* reference genome (`ASM584v2.fna `)
+    - The reference transcript annotations (`ASM584v2_genomic.gtf`)
+4. Copy the SRA files with:
+    ```
+    gocmd get --progress /iplant/home/shared/cyverse_training/datalab/biosciences/e_coli_sra
+    ```
+5. Optional (recommended): execute the following command to move files to a single folder
+    ```
+    mkdir week_3 && \ 
+    mv e_coli_gen_dir/ASM584v2.fna e_coli_gen_dir/ASM584v2_genomic.gtf week_3/ && \
+    mv e_coli_sra/SRR30597*/*.fastq week_3
+    ```
+---
+
 ## Alignment and Data Preparation
 
 <p align="center">
@@ -84,6 +113,25 @@ In this section, we will learn how to process and prepare RNA-seq data for analy
 - [Data Formatting Using SAMtools ](#data-formatting-using-samtools)
 
 ### Alignment via HISAT2
+
+Prior to alignment with HISAT2, we require to index the genome. This can be carried out with the following command. Note, we have added the `-p <threads>` flag for threads (decreasing the indexing time for larger genomes):
+
+```
+hisat2-build -p 8 <reference-genome.fasta> reference_index
+```
+
+
+The baseline HISAT2 command for alignment is the following:
+
+```
+hisat2 -x reference_index -1 sample_R1.fastq -2 sample_R2.fastq -S output.sam
+```
+
+Since we are using single reads and not pair ends, we should use the following command:
+
+```
+hisat2 -x <index_basename> -U <reads.fastq> -S <output.sam>
+```
 
 ---
 
