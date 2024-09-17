@@ -380,14 +380,31 @@ This will open RStudio in a new tab.
 
 Image source: [Harvard Chan Bioinformatics Core](https://hbctraining.github.io/DGE_workshop/lessons/02_DGE_count_normalization.html). In the figure above, each pink and green rectangle represents a read aligned to a gene. Reads connected by dashed lines connect a read spanning an intron.
 
-In the final section, participants will be introduced to the basics of differential gene expression analysis using Ballgown. We will cover how to load and interpret the output from StringTie in Ballgown, focusing on identifying and exploring differential expression patterns between samples. This section will give participants a foundational understanding of how to analyze and visualize gene expression data to uncover meaningful biological insights.
+In the following analysis we use R and [DESeq2](https://www.bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html) to perform normalization and some differential gene expression analysis. The analysis itself leads us to uncover which genes are most highly expressed in the sample, normalize the data to make it comparable, and visualize gene expression patterns. 
 
-- [Visualizing Differential Expression with Ballgown](#visualizing-differential-expression-with-ballgown) 
+Code is available in the R script provided at `data/iplant/home/shared/cyverse_training/datalab/biosciences/deseq2_viz.R`; copy it to your location (`cp data/iplant/home/shared/cyverse_training/datalab/biosciences/deseq2_viz.R .`). Here's a general summary of what is covered in this section:
 
-> [!NOTE]
-> We will be needing the use of the statistical software **R**, available in the [CyVerse Bioscience App](https://de.cyverse.org/apps/de/cc046834-5907-11ef-bcd7-008cfa5ae621).
+1. **Loading the Count Data**: We begin by reading in the raw counts matrix, which contains the number of reads assigned to each gene across different samples. This count data is necessary for downstream analysis.
+2. **Creating the DESeqDataSet Object**: We create a DESeqDataSet object, which structures the raw count data and defines the experimental design (conditions or groups being compared). This object is essential for normalizing and analyzing RNA-seq data.
+3. **Normalization of Count Data**: RNA-seq data can have biases due to varying sequencing depths across samples. DESeq2 performs size factor estimation to account for these differences, generating normalized counts that can be compared across genes and samples.
+4. **Visualization**: With normalized counts, we generate visualizations like heatmaps using ggplot2 in R. These visualizations provide an overview of gene expression patterns across different conditions or samples.
+5. **Identifying Highly Expressed Genes**: By calculating the average expression for each gene, we can rank and identify highly expressed genes. These genes may be of particular interest for further study.
 
-### Visualizing Differential Expression with Ballgown
+By the end, you should be able to create a small table of the highest expressed genes in our alignment (which should look like the following)!
+
+```
+                           Gene Average_Expression
+BW25113_RS19530 BW25113_RS19530                378
+BW25113_RS16985 BW25113_RS16985                173
+BW25113_RS19520 BW25113_RS19520                140
+BW25113_RS13525 BW25113_RS13525                132
+BW25113_RS17000 BW25113_RS17000                 96
+BW25113_RS01025 BW25113_RS01025                 51
+BW25113_RS13535 BW25113_RS13535                 34
+BW25113_RS20600 BW25113_RS20600                 30
+BW25113_RS19995 BW25113_RS19995                 28
+BW25113_RS20800 BW25113_RS20800                 12
+```
 
 ---
 ---
