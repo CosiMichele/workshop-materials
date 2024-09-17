@@ -39,32 +39,34 @@ Image credits: [Griffith Lab](https://griffithlab.org/) ([GitHub](https://github
 
 ## Topic overview
 
-This workshop introduces participants to the **fundamentals of RNA-seq data analysis** by building a streamlined pipeline for transcriptomics. Using *E. coli* as a model organism, attendees will work hands-on with real RNA-seq data, **learning to align reads** to a reference genome, **assemble transcripts**, and **perform basic differential gene expression analysis**. By the end of the session, participants will have a working knowledge of key bioinformatics tools— HISAT2, SAMtools, StringTie, and Ballgown—and how these tools fit together in a transcriptomics workflow.
+This workshop introduces participants to the **fundamentals of RNA-seq data analysis** by building a streamlined pipeline for transcriptomics. Using *E. coli* as a model organism, attendees will work hands-on with real RNA-seq data, **learning to align reads** to a reference genome, **quantify gene expression**, and **perform differential gene expression analysis**. By the end of the session, participants will have a working knowledge of key bioinformatics tools— HISAT2, SAMtools, featureCounts, and DESeq2—and understand how these tools fit together in a typical RNA-seq workflow.
 
 > [!IMPORTANT]
 > This workshop uses data obtained by the [National Center of Biotechnology Information (NCBI)](https://www.ncbi.nlm.nih.gov/).  
 > We are going to be using *E. coli* as the example organism throughout this workshop. All files are made available on CyVerse [here](https://datacommons.cyverse.org/browse/iplant/home/shared/cyverse_training/datalab/biosciences) or if you are using the command line here: `/iplant/home/shared/cyverse_training/datalab/biosciences`.
 >
-> - The *E. coli* genome used will be the [ASM584v2](https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000005845.2/) (4.6MB).
+> - The *E. coli* genome used will be the [ASM75055v1](https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000750555.1/) (4.6MB).
 > - Curated RefSeq annotations (gtf) for the genome can be found in the same location as above.
-> - Raw reads used are from [here](https://www.ncbi.nlm.nih.gov/sra/SRX26020219[accn]) (302.8MB) and [here](https://www.ncbi.nlm.nih.gov/sra/?term=SRR30597479) (Note: these sequences come from the [same project](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA1158507) and have been processed with an Illumina NovaSeq 6000 machine).
+> - Raw reads are taken from a recent study, [Transcriptome RNA Sequencing Data Set of Differential Gene Expression in *Escherichia coli* BW25113 Wild-Type and *slyA* Mutant Strains](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8142576/) by Frank J. Stewart (Microbiology Resoururce Announcements, 2021). 
+>   - Reads used are [SRX10348166](https://www.ncbi.nlm.nih.gov/sra/SRX10348166) (run SRR13970433), [SRX10348167](https://www.ncbi.nlm.nih.gov/sra/SRX10348167) (run SRR13970434), [SRX10348168](https://www.ncbi.nlm.nih.gov/sra/SRX10348168) (run SRR13970435), and [SRX10348169](https://www.ncbi.nlm.nih.gov/sra/SRX10348169) (run SRR13970436). Reads have been processed using the Illumina NextSeq 500 machine.
 >   - These reads have been fetched with the `sra-tools` (`prefetch <SRA sample>`) and extracted (`fastq-dump <SRA sample>.sra`).
+>   - Note: 
 
 > [!NOTE]
 > **Overview of Pipeline**
 > As this can be classified as an analysis pipeline, it is important for us to highlight what the major steps are:
 > ```
 > [Raw RNA-seq Data (SRA)]                  # 
->         ↓                                 # These have been pre-made in preparation for the workshop.
+>         ↓                                 # Pre-made data in preparation for the workshop.
 > [Convert to FASTQ]                        #
 >         ↓
-> [Align with Hisat2] 
+> [Align with HISAT2] 
 >         ↓
 > [Convert & Sort BAM with SAMtools]
 >         ↓
-> [Assemble & Quantify with StringTie] 
+> [Quantify Reads with featureCounts] 
 >         ↓
-> [Analyze with Ballgown]
+> [Perform Differential Expression Analysis with DESeq2]
 > ```
 
 ---
@@ -74,30 +76,24 @@ This workshop introduces participants to the **fundamentals of RNA-seq data anal
 
 In order to get things started:
 
-1. Execute the [JupyterLab Bioscience CyVerse App](https://de.cyverse.org/apps/de/cc046834-5907-11ef-bcd7-008cfa5ae621) and open the Terminal.
+1. Execute the [JupyterLab Bioscience CyVerse App](https://de.cyverse.org/apps/de/cc046834-5907-11ef-bcd7-008cfa5ae621) and open the Terminal with 16 CPU cores (min and max) and 16GB RAM memory.
 2. Initiate GoCommands, the CyVerse in-house transfer tool using `gocmd init`.
     - Press enter (don't input anything) when propted for **iRODS Host**, **Port**, **Zone**; put your CyVerse username when asked for **iRODS Username** and your CyVerse password when asked for **iRODS Password** (**Note**: you will not see the password being typed as per standard Ubuntu security).
 3. Copy the genome files using the following command:
 
     ```
-    gocmd get --progress /iplant/home/shared/cyverse_training/datalab/biosciences/e_coli_gen_dir
+    gocmd get --progress /iplant/home/shared/cyverse_training/datalab/biosciences/e_coli_genomic/
     ```
 
     This will copy:
     
-    - The *E. coli* reference genome (`ASM584v2.fna `)
-    - The reference transcript annotations (`ASM584v2_genomic.gtf`)
-4. Copy the SRA files with:
-    ```
-    gocmd get --progress /iplant/home/shared/cyverse_training/datalab/biosciences/e_coli_sra
-    ```
-5. Optional (recommended): execute the following command to move files to a single folder
-    ```
-    mkdir week_3 && \ 
-    mv e_coli_gen_dir/ASM584v2.fna e_coli_gen_dir/ASM584v2_genomic.gtf week_3/ && \
-    mv e_coli_sra/SRR30597*/*.fastq week_3 && \
-    cd week_3
-    ```
+    - The *E. coli* reference genome (`ASM75055v1_genomic.fna`)
+    - The reference transcript annotations (`ASM75055v1_genomic.gtf`)
+    - The processed fastq files:
+        - SRR13970433.fastq  
+        - SRR13970434.fastq  
+        - SRR13970435.fastq  
+        - SRR13970436.fastq
 
 You are now ready for the workshop!
 
@@ -127,10 +123,10 @@ hisat2-build -p <threads> <reference-genome.fasta> <reference_index>
 Thus, do:
 
 ```
-hisat2-build -p 8 ASM584v2.fna ecoli_index
+hisat2-build -p 16 ASM75055v1_genomic.fna ecoli_index
 ```
 
-This command will build the *E. coli* database using 8 threads (time estimation: ~10s).
+This command will build the *E. coli* database using 16 threads (time estimation: ~<10s).
 
 > [!NOTE]
 > If you ever need to index larger genomes, do also include the `--large-idex` flag.
@@ -153,35 +149,36 @@ hisat2 -x <index_basename> -U <reads.fastq> -S <output.sam>
 We will also use the `<read1.fastq>,<read2.fastq>` synthax to include both the reads available to us, as well as using the `-p 8` to run 8 threads. Execute:
 
 ```
-hisat2 -p 8 -x ecoli_index -U SRR30597479.fastq,SRR30597506.fastq -S output.sam
+hisat2 -p 16 -x ecoli_index -U SRR13970433.fastq,SRR13970434.fastq,SRR13970435.fastq,SRR13970436.fastq -S output.sam
 ```
 
-The command will run for ~1-2 minutes, creating the `output.sam` file (~5.1GB)
+The command will run for ~1-2 minutes, creating the `output.sam` file (~3.8GB, time estimate ~10-15m)
 
 You will notice that this will wild a really poor alignmet:
 
 ```
-8343493 reads; of these:
-  8343493 (100.00%) were unpaired; of these:
-    8343461 (100.00%) aligned 0 times
-    32 (0.00%) aligned exactly 1 time
-    0 (0.00%) aligned >1 times
-0.00% overall alignment rate
+11395529 reads; of these:
+  11395529 (100.00%) were unpaired; of these:
+    11232207 (98.57%) aligned 0 times
+    148028 (1.30%) aligned exactly 1 time
+    15294 (0.13%) aligned >1 times
+1.43% overall alignment rate
 ```
 
-**Only 32 aligned!!!** ... so what now?
+**Only 1.30% aligned!!!** ... so what now?
 
 > [!NOTE]
 > **Exercise: Downlaod more read sequences (not required but recommended)**
+> Base your searches on the SRA files presented in the [Transcriptome RNA Sequencing Data Set of Differential Gene Expression in *Escherichia coli* BW25113 Wild-Type and *slyA* Mutant Strains](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8142576/) publication.
 > 1. Go to the NCBI SRA repository: https://www.ncbi.nlm.nih.gov/sra/
-> 2. In the search field, search for *E. coli*. Select any of the experiments, *or* if you know any experiment you know of, search for that!
+> 2. In the search field, search for *E. coli*. Select any of the experiments, *or* if you know any experiment you know of, search for that! \*wink\* \*wink\* 
 > 3. In the terminal, download the reads:
 >    - This uses the `sra-toolkit` which is a powerful tool that allows you to download any experimental data hosted by NCBI.
 >    - Use `prefetch <sra run #>`, such as `prefetch SRR30660439`. You can get this number once you open one of the experiments (close to the bottom of the page).
 > 4. extract the reads using `fastq-dump <sra run #>` such as `fastq-dump SRR30660439`. This will generate the fastq file you can use for alignment.
 > You will notice that the alignment number will increase (perhaps, not by much as these are from different experiments).
 > 
-> Why do you think the alignment is so low?
+> Question: Why do you think the alignment is so low?
 
 As this workshop is concentrated around the techniques, we will continue with the poor alignment. *All is good!*
 
@@ -199,10 +196,10 @@ Using SAMtools, we are going to do a few things:
 To convert SAM to BAM, one must do:
 
 ```
-samtools view -S -b <output.sam> > <output.bam>
+samtools view -@ 16 -S -b output.sam > output.bam
 ```
 
-The command `samtools view` converts SAM to BAM. The `-S` flag specifies the input SAM, and -b outputs the BAM file. Notice how the command generates a much smaller file (~5.1GB vs ~1.1GB).
+The command `samtools view` converts SAM to BAM. The `-S` flag specifies the input SAM, `-@ <threads>` to speed up processing, and `-b` outputs the BAM file. Notice how the command generates a much smaller file (~3.8GB vs ~700MB).
 
 The next command is the `samtools sort` command, with `-@ <threads>` to specify how many threads you want to run it with, `-m <memory per thread followed by size (G for GB)>`. It's good practice to find ways to multithread your analyses.
 
@@ -231,52 +228,157 @@ Notice how read ID R2 is on a different chromosome. Post sorting, read ID R3 sho
 Now you can index your sorted output file; Use `-@ <threads>` to speed things up and `-b` to point to the file.
 
 ```
-samtools index -@ 8 -b output_sorted.bam
+samtools index -@ 16 -b output_sorted.bam
 ```
 
 This creates a `.bai` file, which is your BAM index file.
 
 > [!NOTE]
 > Check Stats (Optional)
-> You can check the stats of your indexed BAM file by doing `samtools flasgstat -@ 8 output_sorted.bam
+> You can check the stats of your indexed BAM file by doing `samtools flasgstat -@ 16 output_sorted.bam
 
 ---
 ---
 
-## Transcript Assembly and Quantification
+## Quantifying Gene Expression
 
 <p align="center">
-    <img src="https://ccb.jhu.edu/software/stringtie/DE_pipeline_refonly.png" width="450">
+    <img src="https://hbctraining.github.io/Intro-to-rnaseq-hpc-O2/img/union.png" width="350">
 </p>
 
-Image source: [StringTie manual](https://ccb.jhu.edu/software/stringtie/index.shtml?t=manual).
+Image source: [Harvard Chan Bioinformatics Core](https://hbctraining.github.io/DGE_workshop/lessons/02_DGE_count_normalization.html).
 
-This section focuses on assembling and quantifying transcripts from the aligned RNA-seq data. Learners will use StringTie to assemble the RNA-seq reads into transcript structures and quantify gene expression levels. We’ll discuss how to use the GTF annotation file to guide the assembly process and generate a GTF file representing the assembled transcripts. This step provides crucial insights into gene expression and transcript levels.
+In this step, learners will learn how to use featureCounts to assign aligned reads from RNA-seq data to genomic features, such as genes. This tool efficiently counts the number of reads mapping to each gene, providing a crucial input for downstream differential expression analysis. By accurately quantifying gene expression, participants will better understand how different genes are expressed in their RNA-seq dataset.
 
-- [StringTie: Assembling RNA-seq Reads Into Transcripts](#stringtie-assembling-rna-seq-reads-into-transcripts)
+- [Quantify Reads with featureCounts](#quantify-reads-with-featurecounts)
 
 > [!NOTE]
-> **File formats: GTF vs GFF**
+> **File formats: GFF vs GTF**
+> Common feature annotations are found in 2 formats: GFF and GTF. Both files contain tabular information with 9 columns: chromosome, source, feature, start, end, score, strand, frame, attributes.
+> GFF:
+> - General Feature Format
+> - Describes any genomic feature
+> GTF:
+> - Gene Transfer Format
+> - Contains only gene annotation 
 
-### StringTie: Assembling RNA-seq Reads Into Transcripts
+### Quantify Reads with featureCounts
 
-[**StringTie**](https://ccb.jhu.edu/software/stringtie/) is a tool for transcript assembly and quantification from RNA-seq data. It reconstructs transcript structures and estimates their expression levels.
+ [featureCounts](https://subread.sourceforge.net/featureCounts.html) is used for counting the number of reads that map to each feature (e.g., genes, exons) in a reference annotation. It operates on aligned RNA-Seq reads (e.g., SAM/BAM files) and is focused on providing read counts for predefined genomic features.
 
-**Key Features**:
-- Transcript Assembly: Assembles transcript models from aligned RNA-seq reads.
-- Expression Quantification: Estimates transcript abundance in terms of FPKM (Fragments Per Kilobase of transcript per Million mapped reads) or TPM (Transcripts Per Million).
-- Output: Provides GTF/GFF files with transcript annotations and expression levels.
+> [!NOTE]
+> There are different path one can take in order to proceed the pipeline. Another option, for example, is to use StringTe and Ballgown.
+>  StringTie is primarily used for assembling transcripts and estimating their expression levels from RNA-Seq data. It can create a transcriptome assembly from aligned RNA-Seq reads and generate gene and transcript expression levels.
+> Meanwhile, featureCounts is used for counting the number of reads that map to each feature (e.g., genes, exons) in a reference annotation. It operates on aligned RNA-Seq reads (e.g., SAM/BAM files) and is focused on providing read counts for predefined genomic features.
+>
+> **Both serve important purposes, it all depends what the end goal is.**
+
+We run featureCounts with the following command synthax:
+
+```
+featureCounts -a <reference.gtf> -o counts.txt <output_sorted.bam>
+```
+
+There are a few flags that we want to use:
+
+- `-a <reference.gtf>`: Specifies the annotation file in GTF format.
+- `-o <output.txt>`: Specifies the output file for counts.
+- `-T <threads>`: Uses 4 threads (adjust according to the number of available cores).
+- `-g gene-id`: specifies the gene ID in the output.
+- `--ignoreDup`: counts only non-duplicate reads (useful if your data might include duplicates).
+
+thus we run:
+
+```
+featureCounts -T 16 -a ASM75055v1_genomic.gtf -o counts.txt -g gene_id --fraction --ignoreDup output_sorted.bam
+```
+
+We can then check the `counts.txt` output by doing `head counts.txt`. Output should look something like this:
+
+```
+# Program:featureCounts v2.0.3; Command:"featureCounts" "-T" "16" "-a" "ASM75055v1_genomic.gtf" "-o" "counts.txt" "-g" "gene_id" "--fraction" "--ignoreDup" "output_sorted.bam" 
+Geneid  Chr     Start   End     Strand  Length  output_sorted.bam
+BW25113_RS01010 NZ_CP009273.1   220258  221799  +       1542    10
+BW25113_RS01015 NZ_CP009273.1   221868  221944  +       77      0
+BW25113_RS01020 NZ_CP009273.1   221987  222062  +       76      0
+BW25113_RS01025 NZ_CP009273.1   222246  225149  +       2904    51
+BW25113_RS01030 NZ_CP009273.1   225245  225360  +       116     0
+BW25113_RS01035 NZ_CP009273.1   225415  225491  +       77      0
+BW25113_RS01085 NZ_CP009273.1   233418  233494  +       77      0
+BW25113_RS01235 NZ_CP009273.1   258582  258657  +       76      0
+```
+
+This output tells us the following:
+
+- **Geneid**: The identifier for the gene, here using the *E. coli* gene names (e.g., BW25113_RS01010). This tells you which gene each row is summarizing.
+- **Chr**: The chromosome (or contig) where the gene is located. For instance, NZ_CP009273.1 refers to the name of the contig (which could be the chromosome or a plasmid).
+- **Start**: The starting position of the gene on the chromosome (in base pairs). For example, the gene BW25113_RS01010 starts at position 220258.
+- **End**: The ending position of the gene on the chromosome. For BW25113_RS01010, the gene ends at position 221799.
+- **Strand**: The strand the gene is located on, either "+" (forward strand) or "−" (reverse strand). In this case, all genes are on the forward strand (+).
+- **Length**: The length of the gene (in base pairs). For example, the length of BW25113_RS01010 is 1542 bp.
+- *output_sorted*.bam: This column shows the number of reads that were assigned to each gene in your sorted BAM file (output_sorted.bam). For BW25113_RS01010, there are 10 reads assigned, while other genes like BW25113_RS01015 and BW25113_RS01020 have 0 reads assigned.
+
+As we are going to be using DESeq2, we need to modify the formatting and keep only the features that we care about.
+
+>[!IMPORTANT]
+> ALWAYS. KEEP. YOUR DATA. Make a backup, rename files differently, but always find a way to keep your data (so that when you make mistakes, you can always go back!).
+
+There are a few ways to modify this data; Using R is a popular option, but we can be quicker with the Command Line. We are going to use a powerful editing software called [awk](https://www.geeksforgeeks.org/awk-command-unixlinux-examples/) to remove the columns we do not need. Run the following:
+
+```
+awk 'NR > 1 {print $1, $NF}' counts.txt > cleaned_counts.txt
+```
+
+- `NR > 1` skips the first line (metadata).
+- `{print $1, $NF}` prints only the first column (gene ID) and the last column (count). If we do `head cleaned_counts.txt` you will see something similar to this:
+
+```
+Geneid output_sorted.bam
+BW25113_RS01010 10
+BW25113_RS01015 0
+BW25113_RS01020 0
+BW25113_RS01025 51
+BW25113_RS01030 0
+BW25113_RS01035 0
+BW25113_RS01085 0
+BW25113_RS01235 0
+BW25113_RS23035 0
+```
+
+We then need to use an editing sofware (e.g., `nano`) to edit output_sorted.bam to `sample1` (as we only have a single sample).
+
+```
+Geneid sample1
+BW25113_RS01010 10
+BW25113_RS01015 0
+BW25113_RS01020 0
+BW25113_RS01025 51
+BW25113_RS01030 0
+BW25113_RS01035 0
+BW25113_RS01085 0
+BW25113_RS01235 0
+BW25113_RS23035 0
+```
+
+The file is not ready for the next step!
 
 ---
+
+## It's *R* time
+
+As we are going to be using R for the next step, in the JupyterLab click **Laucher :heavy_plus_sign:** and the **RStudio :arrow_upper_right:** vignette.
+
+This will open RStudio in a new tab.
+
 ---
 
 ## Exploring Differential Gene Expression
 
 <p align="center">
-    <img src="https://raw.githubusercontent.com/alyssafrazee/ballgown/master/figure/plotMeans-1.png" width="450">
+    <img src="https://hbctraining.github.io/DGE_workshop/img/normalization_methods_depth.png" width="450">
 </p>
 
-Image source: [Ballgown GitHub repository](https://github.com/alyssafrazee/ballgown). Pictured is a comparison of mean abundances between two groups.
+Image source: [Harvard Chan Bioinformatics Core](https://hbctraining.github.io/DGE_workshop/lessons/02_DGE_count_normalization.html). In the figure above, each pink and green rectangle represents a read aligned to a gene. Reads connected by dashed lines connect a read spanning an intron.
 
 In the final section, participants will be introduced to the basics of differential gene expression analysis using Ballgown. We will cover how to load and interpret the output from StringTie in Ballgown, focusing on identifying and exploring differential expression patterns between samples. This section will give participants a foundational understanding of how to analyze and visualize gene expression data to uncover meaningful biological insights.
 
