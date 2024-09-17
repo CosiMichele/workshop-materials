@@ -94,6 +94,8 @@ In order to get things started:
         - SRR13970434.fastq  
         - SRR13970435.fastq  
         - SRR13970436.fastq
+    - The Jupyter Notebook you can use to replicate the workshop.
+    - The R script we will use for the last part of the workshop.
 
 You are now ready for the workshop!
 
@@ -204,7 +206,7 @@ The command `samtools view` converts SAM to BAM. The `-S` flag specifies the inp
 The next command is the `samtools sort` command, with `-@ <threads>` to specify how many threads you want to run it with, `-m <memory per thread followed by size (G for GB)>`. It's good practice to find ways to multithread your analyses.
 
 ```
-samtools sort -@ 8 -m 4G output.bam -o output_sorted.bam
+samtools sort -@ 16 -m 8G output.bam -o output_sorted.bam
 ```
 
 Sorting refers to organizing the alignments in a BAM (or SAM) file based on the genomic coordinates where the reads align to the reference genome. It makes a lot of downstream analyses quicker and more accurate.
@@ -382,7 +384,7 @@ Image source: [Harvard Chan Bioinformatics Core](https://hbctraining.github.io/D
 
 In the following analysis we use R and [DESeq2](https://www.bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html) to perform normalization and some differential gene expression analysis. The analysis itself leads us to uncover which genes are most highly expressed in the sample, normalize the data to make it comparable, and visualize gene expression patterns. 
 
-Code is available in the R script provided at `data/iplant/home/shared/cyverse_training/datalab/biosciences/deseq2_viz.R`; copy it to your location (`cp data/iplant/home/shared/cyverse_training/datalab/biosciences/deseq2_viz.R .`). Here's a general summary of what is covered in this section:
+Code is available in the R script provided at `data/iplant/home/shared/cyverse_training/datalab/biosciences/e_coli_genomic/deseq2_viz.R`. Here's a general summary of what is covered in this section:
 
 1. **Loading the Count Data**: We begin by reading in the raw counts matrix, which contains the number of reads assigned to each gene across different samples. This count data is necessary for downstream analysis.
 2. **Creating the DESeqDataSet Object**: We create a DESeqDataSet object, which structures the raw count data and defines the experimental design (conditions or groups being compared). This object is essential for normalizing and analyzing RNA-seq data.
