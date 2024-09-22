@@ -94,6 +94,7 @@ In order to get things started:
         - SRR13970434.fastq  
         - SRR13970435.fastq  
         - SRR13970436.fastq
+    - The compiled reads in sam format (`output.sam`)
     - The Jupyter Notebook you can use to replicate the workshop.
     - The R script we will use for the last part of the workshop.
 
@@ -167,10 +168,10 @@ You will notice that this will wild a really poor alignmet:
 1.43% overall alignment rate
 ```
 
-**Only 1.30% aligned!!!** ... so what now?
+**Only 1.43% aligned!!!** ... so what now?
 
 > [!NOTE]
-> **Exercise: Downlaod more read sequences (not required but recommended)**
+> **Exercise: Download more read sequences (not required but recommended)**
 > Base your searches on the SRA files presented in the [Transcriptome RNA Sequencing Data Set of Differential Gene Expression in *Escherichia coli* BW25113 Wild-Type and *slyA* Mutant Strains](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8142576/) publication.
 > 1. Go to the NCBI SRA repository: https://www.ncbi.nlm.nih.gov/sra/
 > 2. In the search field, search for *E. coli*. Select any of the experiments, *or* if you know any experiment you know of, search for that! \*wink\* \*wink\* 
@@ -257,9 +258,11 @@ In this step, learners will learn how to use featureCounts to assign aligned rea
 > [!NOTE]
 > **File formats: GFF vs GTF**
 > Common feature annotations are found in 2 formats: GFF and GTF. Both files contain tabular information with 9 columns: chromosome, source, feature, start, end, score, strand, frame, attributes.
+> 
 > GFF:
 > - General Feature Format
 > - Describes any genomic feature
+>
 > GTF:
 > - Gene Transfer Format
 > - Contains only gene annotation 
