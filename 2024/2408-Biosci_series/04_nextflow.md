@@ -14,10 +14,10 @@ Image credits: [Workflows community's article by Paolo di Tommaso (NextFlow crea
 
 >[!important]
 > :clock1: **Schedule**
-> - 3:00pm-3:05pm: Welcome and introdution to topic
-> - 3:05pm-3:25pm: Alignment and Data Preparation
-> - 3:25pm-3:45pm: Transcript Assembly and Quantification
-> - 3:45pm-4:00pm: Exploring Differential Gene Expression and closing remarks
+> - 3:00pm-3:10pm: Welcome and introdution to topic (What is Nextflow?)
+> - 3:10pm-3:20pm: The importance of pipeline management and the direction of bioinformatics
+> - 3:20pm-3:50pm: Understanding Nextflow Syntax and pipeline execution
+> - 3:50pm-4:00pm: Resources and closing remarks
 
 >[!important]
 > :heavy_exclamation_mark: **Requirements**
@@ -29,9 +29,11 @@ Image credits: [Workflows community's article by Paolo di Tommaso (NextFlow crea
 
 >[!important]
 > :white_check_mark: **Expected Outcomes**
-> - Hands-on Experience with RNA-seq Data Processing
-> - Understanding Transcript Assembly and Quantification
-> - Understand basic Differential Gene Expression Analysis
+> - Understand the concept and significance of workflow management in bioinformatics.
+> - Identify the advantages of using Nextflow for data-driven analysis.
+> - Navigate the Nextflow syntax and structure, including processes, channels, and workflows.
+> - Break down a practical Nextflow script and explain its components.
+> - Execute a basic RNA-Seq analysis pipeline, integrating tools like FastQC, Salmon, and MultiQC.
 
 <br>
 
@@ -40,34 +42,22 @@ Image credits: [Workflows community's article by Paolo di Tommaso (NextFlow crea
 
 ## Topic overview
 
-This workshop introduces participants to the **fundamentals of RNA-seq data analysis** by building a streamlined pipeline for transcriptomics. Using *E. coli* as a model organism, attendees will work hands-on with real RNA-seq data, **learning to align reads** to a reference genome, **quantify gene expression**, and **perform differential gene expression analysis**. By the end of the session, participants will have a working knowledge of key bioinformatics tools— HISAT2, SAMtools, featureCounts, and DESeq2—and understand how these tools fit together in a typical RNA-seq workflow.
+This workshop is designed to introduce participants to Nextflow, a powerful workflow management system that enables the creation, execution, and sharing of reproducible computational pipelines in bioinformatics. Participants will learn the fundamentals of Nextflow, including its importance in modern research, its unique features, and how it compares to other workflow management tools.
 
 > [!IMPORTANT]
-> This workshop uses data obtained by the [National Center of Biotechnology Information (NCBI)](https://www.ncbi.nlm.nih.gov/).  
-> We are going to be using *E. coli* as the example organism throughout this workshop. All files are made available on CyVerse [here](https://datacommons.cyverse.org/browse/iplant/home/shared/cyverse_training/datalab/biosciences) or if you are using the command line here: `/iplant/home/shared/cyverse_training/datalab/biosciences`.
->
-> - The *E. coli* genome used will be the [ASM75055v1](https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000750555.1/) (4.6MB).
-> - Curated RefSeq annotations (gtf) for the genome can be found in the same location as above.
-> - Raw reads are taken from a recent study, [Transcriptome RNA Sequencing Data Set of Differential Gene Expression in *Escherichia coli* BW25113 Wild-Type and *slyA* Mutant Strains](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8142576/) by Frank J. Stewart (Microbiology Resoururce Announcements, 2021). 
->   - Reads used are [SRX10348166](https://www.ncbi.nlm.nih.gov/sra/SRX10348166) (run SRR13970433), [SRX10348167](https://www.ncbi.nlm.nih.gov/sra/SRX10348167) (run SRR13970434), [SRX10348168](https://www.ncbi.nlm.nih.gov/sra/SRX10348168) (run SRR13970435), and [SRX10348169](https://www.ncbi.nlm.nih.gov/sra/SRX10348169) (run SRR13970436). Reads have been processed using the Illumina NextSeq 500 machine.
->   - These reads have been fetched with the `sra-tools` (`prefetch <SRA sample>`) and extracted (`fastq-dump <SRA sample>.sra`).
->   - Note: 
+> This workshop uses is an adaptation of the [Sequera Nextflow tutorial](https://github.com/seqeralabs/nextflow-tutorial), shortened in order to fit time limits. **Nextflow is something that cannot be learned in 1 hour or less**, <u> *but its components are worth understanding* </u>. For this tutorial, the organism used is *G. gallus*, the red junglefoul (the o.g. chicken :chicken:). All files (transcriptome, fastq files) are made available on CyVerse. 
 
 > [!NOTE]
 > **Overview of Pipeline**
 > As this can be classified as an analysis pipeline, it is important for us to highlight what the major steps are:
 > ```
-> [Raw RNA-seq Data (SRA)]                  # 
->         ↓                                 # Pre-made data in preparation for the workshop.
-> [Convert to FASTQ]                        #
+> [Indexing trascriptome]                   
+>         ↓ 
+> [Perform QC]                        
 >         ↓
-> [Trim reads with Trimmomatic]            
+> [Perform quantification]            
 >         ↓
-> [Align with HISAT2] 
->         ↓
-> [Convert & Sort BAM with SAMtools]
->         ↓
-> [Output alignment statistics]
+> [Create MultiQC report] 
 > ```
 
 <br>
@@ -92,142 +82,148 @@ In order to get things started:
 3. Copy the genome files using the following command:
 
     ```
-    gocmd get --progress /iplant/home/shared/cyverse_training/datalab/biosciences/e_coli_genomic/
+    gocmd get --progress /iplant/home/shared/cyverse_training/datalab/biosciences/nextflow_tutorial/
     ```
 
     This will copy:
     
-    - The *E. coli* reference genome (`ASM75055v1_genomic.fna`)
-    - The reference transcript annotations (`ASM75055v1_genomic.gtf`)
-    - The processed fastq files:
-        - SRR13970433.fastq  
-        - SRR13970434.fastq  
-    - The compiled reads in sam format (`output.sam`)
+    - The *G. gallus* transcriptome (`transcriptome.fa`)
+    - Gut pair-end reads (`gut_1.fq`, `gut_2.fq`)
     - The NextFlow code required for the workshop.
+    - Other read files for exercise purposes (liver, lung) 
 
 You are now ready for the workshop!
-
-
 
 <details>
   <summary>Click here for the raw NextFlow code</summary>
 
 ```  
-#!/usr/bin/env nextflow
+nextflow.enable.dsl=2
 
-params.reads = "./data/*.fastq"  // Path to input FastQ files
-params.index = "./hisat2_index/genome"  // Path to HISAT2 index
-params.threads = 4  // Number of threads for each process
-params.outputDir = "./results"  // Output directory
+/* 
+ * pipeline input parameters 
+ */
+params.reads = "$baseDir/data/ggal/gut_{1,2}.fq"
+params.transcriptome = "$baseDir/data/ggal/transcriptome.fa"
+params.multiqc = "$baseDir/multiqc"
+params.outdir = "results"
 
-// Define the input channel for FastQ files
-Channel
-    .fromPath(params.reads)
-    .set { reads_ch }
+println """\
+         R N A S E Q - N F   P I P E L I N E    
+         ===================================
+         transcriptome: ${params.transcriptome}
+         reads        : ${params.reads}
+         outdir       : ${params.outdir}
+         """
+         .stripIndent()
 
-// Step 1: Run FastQC in parallel on all input reads
+/* 
+ * create a transcriptome file object given the transcriptome string parameter
+ */
+transcriptome_file = file(params.transcriptome)
+
+/* 
+ * Define the `index` process that creates a binary index 
+ * from the transcriptome file
+ */
+process index {
+    conda 'bioconda::salmon'
+
+    input:
+    path transcriptome_file
+
+    output:
+    path 'index'
+
+    script:
+    """
+    salmon index --threads ${task.cpus} -t ${transcriptome_file} -i index
+    """
+}
+
+/* 
+ * Define a channel for paired reads and set the channel name to `read_pairs_ch`
+ */
+Channel.fromFilePairs(params.reads)
+    .ifEmpty { error "Cannot find any reads matching: ${params.reads}" }
+    .set { read_pairs_ch }
+
+/*
+ * Define the `quantification` process that runs Salmon quantification
+ */
+process quantification {
+    conda 'bioconda::salmon'
+
+    input:
+    path index
+    tuple val(pair_id), path(reads)
+
+    output:
+    path "${pair_id}_quant"
+
+    script:
+    """
+    salmon quant --threads ${task.cpus} --libType=U -i ${index} -1 ${reads[0]} -2 ${reads[1]} -o ${pair_id}_quant
+    """
+}
+
+/*
+ * Define the `fastqc` process that performs quality control on reads
+ */
 process fastqc {
-    tag "${sample_id}"
+    conda 'bioconda::fastqc'
+    tag "FASTQC on ${sample_id}"
 
     input:
-    path read_file from reads_ch
+    tuple val(sample_id), path(reads)
 
     output:
-    path "${sample_id}_fastqc.zip" into fastqc_ch
-
-    script:
-    sample_id = read_file.baseName
-    """
-    fastqc ${read_file} -o ./
-    """
-}
-
-// Step 2: Trim adapters and low-quality sequences using Trimmomatic
-process trimReads {
-    tag "${sample_id}"
-
-    input:
-    path read_file from reads_ch
-
-    output:
-    path "${sample_id}_trimmed.fastq" into trimmed_ch
-
-    script:
-    sample_id = read_file.baseName
-    """
-    trimmomatic SE -threads ${params.threads} ${read_file} ${sample_id}_trimmed.fastq SLIDINGWINDOW:4:20 MINLEN:36
-    """
-}
-
-// Step 3: Align trimmed reads using HISAT2 in parallel
-process alignReads {
-    tag "${sample_id}"
-
-    input:
-    path read_file from trimmed_ch
-
-    output:
-    path "${sample_id}.sam" into aligned_ch
-
-    script:
-    sample_id = read_file.baseName
-    """
-    hisat2 -p ${params.threads} -x ${params.index} -U ${read_file} -S ${sample_id}.sam
-    """
-}
-
-// Step 4: Convert SAM to BAM and sort using SAMtools
-process sortBam {
-    tag "${sample_id}"
-
-    input:
-    path sam_file from aligned_ch
-
-    output:
-    path "${sample_id}.sorted.bam" into sorted_bam_ch
-
-    script:
-    sample_id = sam_file.baseName
-    """
-    samtools view -bS ${sam_file} | samtools sort -@ ${params.threads} -o ${sample_id}.sorted.bam
-    """
-}
-
-// Step 5: Generate alignment statistics with SAMtools
-process alignmentStats {
-    tag "${sample_id}"
-
-    input:
-    path bam_file from sorted_bam_ch
-
-    output:
-    path "${sample_id}.stats.txt" into stats_ch
-
-    script:
-    sample_id = bam_file.baseName
-    """
-    samtools flagstat ${bam_file} > ${sample_id}.stats.txt
-    """
-}
-
-// Step 6: Organize final results into output directory
-process organizeResults {
-    input:
-    path stats_files from stats_ch
-
-    output:
-    path("${params.outputDir}")
+    path "fastqc_${sample_id}_logs"
 
     script:
     """
-    mkdir -p ${params.outputDir}
-    mv *.sorted.bam *.stats.txt *.fastqc.zip ${params.outputDir}
+    mkdir fastqc_${sample_id}_logs
+    fastqc -o fastqc_${sample_id}_logs -f fastq -q ${reads}
     """
 }
 
+/*
+ * Define the `multiqc` process that generates a report from fastqc and quant outputs
+ */
+process multiqc {
+    publishDir params.outdir, mode: 'copy'
+    conda "bioconda::multiqc"
+
+    input:
+    path fastqc_files
+    path quant_files
+
+    output:
+    path 'multiqc_report.html'
+
+    script:
+    """
+    multiqc .
+    """
+}
+
+/* 
+ * Workflow definition that orchestrates the execution of processes 
+ */
 workflow {
-    // Run FastQC in parallel, trim reads, then process with HISAT2 and SAMtools
-    organizeResults(stats_ch)
+    /*
+     * Pass the transcriptome file to the `index` process
+     */
+    index_ch = index(transcriptome_file)
+
+    /*
+     * Run the processes in the desired order and collect outputs
+     */
+    fastqc_ch = fastqc(read_pairs_ch)
+
+    quant_ch = quantification(index_ch, read_pairs_ch)
+
+    multiqc(fastqc_ch, quant_ch)
 }
 
   ```
