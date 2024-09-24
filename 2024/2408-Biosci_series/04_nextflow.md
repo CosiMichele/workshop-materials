@@ -242,7 +242,7 @@ workflow {
 
 Image source: [nf-core/rnaseq](https://nf-co.re/rnaseq/3.15.1/).
 
-**Nextflow** is an open-source workflow management system that allows researchers to write and execute data-driven computational workflows. It is designed to handle complex workflows in a scalable and reproducible manner.
+Written in [Groovy](https://en.wikipedia.org/wiki/Apache_Groovy), **Nextflow** is an open-source workflow management system that allows researchers to write and execute data-driven computational workflows. It is designed to handle complex workflows in a scalable and reproducible manner.
 
 Although Nextflow is heavily used in the bioinformatics field, its processes are used in other fields including cloud computing, data science, image analysis and machine learining.
 
@@ -279,7 +279,7 @@ There really isn't a single answer to all problems. Knowing what resources are a
 
 ---
 
-## Breaking down Nextflow
+## Understanding the Nextflow Components
 
 Nextflow has a number of complex components that need to be understood prior to using or writing a pipeline: **Processes**, **Channels**, **Workflows**, **Directives**.
 
@@ -444,7 +444,7 @@ workflow {
 }
 ```
 <details>
-  <summary>Click here for an annotated (`// <notes>`) version of the mock-pipeline</summary>
+  <summary>Click here for an annotated version of the mock-pipeline</summary>
 
     ```
     nextflow.enable.dsl=2  // Enable Nextflow DSL2 syntax
@@ -536,3 +536,244 @@ workflow {
 > **Directives (Kitchen Rules):**
 > 
 > The directives are the kitchen rules and guidelines, like the types of equipment (Conda environments) each chef should use and how they should present the finished dishes (output directories). For instance, a directive might state that the align chef must use specific tools (bowtie2) and that the results should be plated in a particular way (published to the 'results/aligned' directory).
+
+---
+
+## Running the Example Pipeline
+
+<br>
+<br>
+<p align="center">
+    <img src="https://combine-lab.github.io/salmon/images/SalmonLogo.png" width="450">
+</p>
+<br>
+
+Image source: [salmon aligner](https://combine-lab.github.io/salmon/about/) (no joke, this is their logo).
+
+In this tutorial we are running a curated Nextflow workflow. The workflow will index the provided genome, align sequences (1/3), run QC and output a summary. 
+
+The alignment is carried out using [**Salmon**](https://combine-lab.github.io/salmon/about/), used for quantifying the expression levels of transcripts from RNA-Seq data. Unlike traditional aligners that map reads to a reference genome, Salmon directly estimates transcript abundance by utilizing the concept of pseudo-alignment (first mapping reads to a database of known short sequences, and then using these mapped positions to infer the position of each read on the target genome/transcriptome).
+
+FastQC is used to do QC and MultiQC to summarize FastQC and Salmon outputs.
+
+To execute the provided example, change directory to the `nextflow_tutorial` folder (`cd nextflow_tutorial`) and execute:
+
+```
+nextflow transcriptome_qc.nf
+```
+
+The output should be similar to this:
+
+```
+ N E X T F L O W   ~  version 24.04.4
+
+Launching `transcriptome_qc.nf` [admiring_knuth] DSL2 - revision: 3004fdc561
+
+R N A S E Q - N F   P I P E L I N E    
+===================================
+transcriptome: /home/jovyan/data-store/nextflow_tutorial/data/ggal/transcriptome.fa
+reads        : /home/jovyan/data-store/nextflow_tutorial/data/ggal/gut_{1,2}.fq
+outdir       : results
+
+executor >  local (4)
+[e1/6abbeb] process > index                  [100%] 1 of 1 ✔
+[f4/d72072] process > fastqc (FASTQC on gut) [100%] 1 of 1 ✔
+[24/30d512] process > quantification (1)     [100%] 1 of 1 ✔
+[98/1c93ee] process > multiqc (1)            [100%] 1 of 1 ✔
+```
+
+### Breaking Things Down
+
+```
+nextflow.enable.dsl=2
+```
+
+- **Enables DSL2**: we are enabling Nextflow's second domain-specific language (DSL2), which allows for more structured and modular workflows.
+
+---
+
+```
+params.reads = "$baseDir/data/ggal/gut_{1,2}.fq"
+params.transcriptome = "$baseDir/data/ggal/transcriptome.fa"
+params.multiqc = "$baseDir/multiqc"
+params.outdir = "results"
+```
+
+- These lines define input parameters for the workflow, specifying file paths for the RNA-Seq reads and the transcriptome.
+
+---
+
+```
+println """\
+         R N A S E Q - N F   P I P E L I N E    
+         ===================================
+         transcriptome: ${params.transcriptome}
+         reads        : ${params.reads}
+         outdir       : ${params.outdir}
+         """
+```
+
+- This block prints the title and input parameters to the console, providing immediate feedback about the configuration.
+
+---
+
+```
+transcriptome_file = file(params.transcriptome)
+```
+
+- This line creates a file object for the transcriptome, making it easier to reference later in the script.
+
+---
+
+```
+process index {
+    conda 'bioconda::salmon'
+
+    input:
+    path transcriptome_file
+
+    output:
+    path 'index'
+
+    script:
+    """
+    salmon index --threads ${task.cpus} -t ${transcriptome_file} -i index
+    """
+}
+```
+
+- This is the indexing process, which creates a binary index for the transcriptome using Salmon.
+-  It uses a single directive (`conda 'bioconda::salmon'`): it specifies that the process should run in the `bioconda::salmon` environment (already present).
+- Input and Output: It takes the transcriptome as input and produces an output named `index`.
+
+---
+
+```
+Channel.fromFilePairs(params.reads)
+    .ifEmpty { error "Cannot find any reads matching: ${params.reads}" }
+    .set { read_pairs_ch }
+```
+
+- This block creates a channel from paired FASTQ files based on the specified pattern and checks for the existence of files.
+
+---
+
+```
+process quantification {
+    conda 'bioconda::salmon'
+
+    input:
+    path index
+    tuple val(pair_id), path(reads)
+
+    output:
+    path "${pair_id}_quant"
+
+    script:
+    """
+    salmon quant --threads ${task.cpus} --libType=U -i ${index} -1 ${reads[0]} -2 ${reads[1]} -o ${pair_id}_quant
+    """
+}
+```
+
+- This process quantifies the expression levels of transcripts using the Salmon quantification tool (`salmon quant`).
+- As input takes the index created in the index process and paired reads; as output it produces quantification results named after the sample IDs.
+
+---
+
+```
+process fastqc {
+    conda 'bioconda::fastqc'
+    tag "FASTQC on ${sample_id}"
+
+    input:
+    tuple val(sample_id), path(reads)
+
+    output:
+    path "fastqc_${sample_id}_logs"
+
+    script:
+    """
+    mkdir fastqc_${sample_id}_logs
+    fastqc -o fastqc_${sample_id}_logs -f fastq -q ${reads}
+    """
+}
+```
+- This process runs FastQC on the input reads to assess their qualit and  generates a log directory for the FastQC results.
+
+---
+
+```
+process multiqc {
+    publishDir params.outdir, mode: 'copy'
+    conda "bioconda::multiqc"
+
+    input:
+    path fastqc_files
+    path quant_files
+
+    output:
+    path 'multiqc_report.html'
+
+    script:
+    """
+    multiqc .
+    """
+}
+```
+
+- This process runs MultiQC to aggregate the results from FastQC and Salmon quantification and produces an the MultiQC HTML report summarizing the results.
+
+---
+
+```
+workflow {
+    index_ch = index(transcriptome_file)
+    fastqc_ch = fastqc(read_pairs_ch)
+    quant_ch = quantification(index_ch, read_pairs_ch)
+    multiqc(fastqc_ch, quant_ch)
+}
+```
+
+- The workflow block defines the order of execution for the processes, linking the outputs of one process to the inputs of another, Establishing the flow of data throughout the pipeline.
+
+---
+
+We can now visualize the output, in `results`.
+
+---
+
+## Closing Remarks and Resources
+
+<br>
+<br>
+<p align="center">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/2/23/Red_jungle_fowl.png" width="450">
+</p>
+<br>
+
+Image source: [wikipedia](https://en.wikipedia.org/wiki/Red_junglefowl).
+
+
+This is **BY NO MEANS** something simple to grasp. If anything, only a fool would try to explain Nextflow in 1 hour (I am, indeed, that fool).
+
+Nextflow is complex, and it has a steep learning curve. There are things we did not cover:
+- What's the `work` folder created?
+- How can I check logs?
+- Error handling??!?
+- What's a `resume`?
+
+Learning Nextflow is, however, extremely rewarding:
+- Extremely well integrated with containers.
+- Support for SLURM and PBS HPC systems.
+- "Easily" sharable workflows.
+- Honestly, pretty good on your CV.
+
+Here are some great Nextflow resources for you to learn more:
+
+- [General Documentation](https://www.nextflow.io/docs/latest/overview.html)
+- [Nextflow training](https://training.nextflow.io/hands_on/)
+- [Find well supported and extremely powerful pipelines at nf-co.re](https://nf-co.re/)
+- [rna-seq specific pipeline using the aligner of your choice](https://nf-co.re/rnaseq/3.15.1/)
+- [The full extended tutorial this was inspired by (note: this might only run on previous iterations of Nextflow, using dsl1)](https://github.com/seqeralabs/nextflow-tutorial)
+- [CyVerse Webinar on NextFlow](https://www.youtube.com/watch?v=umd0ikOCxgM) (shoutout to Conner Copeland!)
