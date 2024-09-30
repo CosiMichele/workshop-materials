@@ -116,9 +116,28 @@ Snakemake was launched in the early 2020s and has seen rapid growth and use in t
 
 Due to its closeness to Python, Snakemake is often cited as a great integrator of [**Conda**](https://en.wikipedia.org/wiki/Conda_(package_manager)), an extremely popular package and enviroment manager hosting python and other non-python software (e.g., BLAST, BWA, Samtools, etc). 
 
+<br>
+<br>
+<p align="center">
+    <img src="https://learn.flowdeploy.com/img/star-history-2023830.png" width="450">
+</p>
+<br>
+
+Image source: [Noah Lebovic, Nextflow vs Snakemake, flowdeploy CEO](https://learn.flowdeploy.com/blog/nextflow-vs-snakemake); the image depics the repositories' GitHub star count (aka "followers", but for geeks and nerds).
+
 ---
 
 ## Understanding the Snakemake Components
+
+<br>
+<br>
+<p align="center">
+    <img src="https://f1000research.s3.amazonaws.com/manuscripts/56004/3c3b99f9-b002-4f62-b11c-18cca6cf9ed4_figure3.gif" width="650">
+</p>
+<br>
+
+Image source: [Felix Mölder *et al.*, Sustainable data analysis with Snakemake, *F1000 Research*, 2021](https://f1000research.com/articles/10-33/v2).
+
 
 Snakemake's main features revolve around **Rules**, with each rule having an **input**, **output**, (facultatively) a **conda** directive, and a **shell** OR a **script**. Additionally, Snakemake has a *special* rule: the **All** rule. This ensures that the workflow is done by checking on the last expected output. **Wildcards**, **DAG** (Directed Acyclic Graph) are two other important components to any Snakemake workflow.
 
@@ -184,6 +203,7 @@ rule plot_quals:
         "plots/quals.svg"
     script:
         "scripts/plot-quals.py"
+```
 </details>
 
 > [!Note]
