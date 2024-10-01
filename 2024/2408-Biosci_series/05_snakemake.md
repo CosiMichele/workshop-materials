@@ -14,9 +14,8 @@ Image credits: [Snakemake logo from the University of Edinburgh's Snakemake work
 
 >[!important]
 > :clock1: **Schedule**
-> - 3:00pm-3:10pm: Welcome and introdution to topic (What is Nextflow?)
-> - 3:10pm-3:20pm: The importance of pipeline management and the direction of bioinformatics
-> - 3:20pm-3:50pm: Understanding Nextflow Syntax and pipeline execution
+> - 3:00pm-3:15pm: Welcome and introdution to topic (What is Snakemake?)
+> - 3:15pm-3:50pm: Understanding Snakemake Syntax and pipeline execution
 > - 3:50pm-4:00pm: Resources and closing remarks
 
 >[!important]
@@ -30,10 +29,10 @@ Image credits: [Snakemake logo from the University of Edinburgh's Snakemake work
 >[!important]
 > :white_check_mark: **Expected Outcomes**
 > - Understand the concept and significance of workflow management in bioinformatics.
-> - Identify the advantages of using Nextflow for data-driven analysis.
-> - Navigate the Nextflow syntax and structure, including processes, channels, and workflows.
+> - Identify the advantages of using Snakemake for pipeline management.
+> - Break down and navigate the Snakemake syntax and structure.
 > - Break down a practical Nextflow script and explain its components.
-> - Execute a basic RNA-Seq analysis pipeline, integrating tools like FastQC, Salmon, and MultiQC.
+> - Execute a basic Snakemake pipeline.
 
 <br>
 
@@ -310,5 +309,177 @@ These are established at the beginning of the script (e.g., `SAMPLES = ["A", "B"
 
 ---
 
-## Running the Example Pipeline
+## Snakemake Execution
 
+Popular Snakemake commands include:
+
+1. Basic workflow execution: this command executes the workflow defined in the Snakefile, building the output files specified in the rule all.
+    ```
+    snakemake
+    ```
+    You can specify a target file with `snakemake <target>`.
+2. Dry run: extremely useful to test the consistency of the pipeline without creating outputs; time saver.
+    ```
+    snakemake -n
+    ```
+3. Specify the cores to be used:
+    ```
+    snakemake --cores <number of cores>
+    ```
+    or
+    ```
+    snakemake -j <number of cores>
+    ```
+4. Specify a configuration file (we have not covered `config.yaml`, [explanation here](https://snakemake.readthedocs.io/en/stable/tutorial/advanced.html#step-2-config-files) and [here](https://snakemake.readthedocs.io/en/latest/snakefiles/configuration.html))
+    ```
+    snakemake --configfile <config.yaml>
+    ```
+5. Creating a pipeline diagram (DAG):
+    ```
+    snakemake --dag | dot -Tpng > dag.png
+    ```
+
+In this workshop, we are going to execute a dry run, create a DAG diagram, and running the pipeline. The commands to execute in order are:
+
+1. `snakemake -n`
+2. `snakemake --dag | dot -Tpng > dag.png`
+3. `snakemake --cores 4`
+
+### Running the Pipeline
+
+**1. Sample List Declaration**
+
+```
+SAMPLES = ["A", "B"]
+```
+
+This line defines a list called `SAMPLES`, containing the sample identifiers "A" and "B". This variable is later used to expand rules for each **sample**, allowing for scalable processing of multiple samples without hardcoding paths.
+
+**2. Final Target Rule**
+
+```
+rule all:
+    input:
+        "plots/quals.svg"
+```
+
+The `rule all` specifies the final output file that the entire workflow aims to produce: `plots/quals.svg`. This serves as a target for Snakemake, indicating what the workflow should ultimately generate. Snakemake will automatically determine all required intermediate steps to produce this file.
+
+**3. Mapping Reads with BWA**
+
+```
+rule bwa_map:
+    input:
+        "data/genome.fa",
+        "data/samples/{sample}.fastq"
+    output:
+        "mapped_reads/{sample}.bam"
+    shell:
+        "bwa mem {input} | samtools view -Sb - > {output}"
+```
+
+The `bwa_map` rule performs read mapping using the BWA (Burrows-Wheeler Aligner) tool, using `bwa mem` to align the reads and pipes the output to samtools view to convert it into BAM format.
+
+- Input: It takes the reference genome (`data/genome.fa`) and the fastq file for a specific sample (denoted by `{sample}`).
+- Output: The output is a BAM file (`mapped_reads/{sample}.bam`), which contains the mapped reads.
+
+**4. Sorting Mapped Reads**
+
+```
+rule samtools_sort:
+    input:
+        "mapped_reads/{sample}.bam"
+    output:
+        "sorted_reads/{sample}.bam"
+    shell:
+        "samtools sort -T sorted_reads/{wildcards.sample} "
+        "-O bam {input} > {output}"
+```
+
+The `samtools_sort` rule sorts the mapped BAM files using samtools sort, with the `-T` option specifying a temporary file location based on the sample name.
+
+- Input: It takes the BAM file produced by the bwa_map rule.
+- Output: The output is a sorted BAM file (`sorted_reads/{sample}.bam`).
+Execution: The command 
+
+**5. Indexing Sorted BAM Files**
+
+```
+rule samtools_index:
+    input:
+        "sorted_reads/{sample}.bam"
+    output:
+        "sorted_reads/{sample}.bam.bai"
+    shell:
+        "samtools index {input}"
+```
+The `samtools_index` rule creates an index for the sorted BAM files, simply calling samtools index to generate the index.
+
+- Input: It takes the sorted BAM file from the samtools_sort rule.
+- Output: The output is the index file (`sorted_reads/{sample}.bam.bai`), which allows for efficient access to the BAM file during analysis.
+
+**6. Calling Variants with BCFtools**
+
+```
+rule bcftools_call:
+    input:
+        fa="data/genome.fa",
+        bam=expand("sorted_reads/{sample}.bam", sample=SAMPLES),
+        bai=expand("sorted_reads/{sample}.bam.bai", sample=SAMPLES)
+    output:
+        "calls/all.vcf"
+    shell:
+        "bcftools mpileup -f {input.fa} {input.bam} | "
+        "bcftools call -mv - > {output}"
+```
+
+The `bcftools_call` rule performs variant calling on the sorted BAM files, using bcftools mpileup to generate the necessary data for variant calling and pipes it to bcftools call to produce the [VCF](https://support.illumina.com/help/BaseSpace_App_WGS_BWA_help/Content/Vault/Informatics/Sequencing_Analysis/Apps/swSEQ_mAPP_WGS_VCF.htm).
+
+- Input: It requires the reference genome, as well as the sorted BAM and index files for all samples (using expand to generate the paths for both samples "A" and "B").
+- Output: The output is a [VCF](https://support.illumina.com/help/BaseSpace_App_WGS_BWA_help/Content/Vault/Informatics/Sequencing_Analysis/Apps/swSEQ_mAPP_WGS_VCF.htm) file (`calls/all.vcf`), which contains the variant calls.
+Execution: 
+
+**7. Plotting Quality Scores**
+
+```
+rule plot_quals:
+    input:
+        "calls/all.vcf"
+    output:
+        "plots/quals.svg"
+    script:
+        "scripts/plot-quals.py"
+```
+The `plot_quals` rule generates a plot of quality scores from the variant calls.  Instead of a shell command, this rule runs a Python script (`scripts/plot-quals.py`) that generates the plot based on the input VCF data.
+
+- Input: It takes the VCF file generated by the bcftools_call rule.
+- Output: The output is a plot in SVG format ("plots/quals.svg").
+
+---
+
+## Closing Remarks and Resources
+
+<br>
+<br>
+<p align="center">
+    <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExd3JrOGJpcjQ0Ynloa2RycGZyNXByNmd4bjNvZ2doOWZhYzhyZm54MiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/zPdwt79PXjMEo/giphy.webp" width="250">
+</p>
+<br>
+
+Snakemake is a powerful tool that will allow you to keep your pipelines clean and reproducible. Its extra layer of simplicity in comparison to Nextflow makes it less daunting and more easiliy picked up. It however isn't as versed in its parallelization and job scheduling as Nextflow is (also mentioned in their [official publication](https://f1000research.com/articles/10-33/v2#:~:text=2.5.1%20Job%20scheduling.)) -- however this issue may already have been addressed.
+
+Regardless of (potentially) minor issues, Snakemake is a great tool to learn for every bioinformatician needing to implement a workflow manager.
+
+
+
+**Resources**:
+
+- [Official documentation](https://snakemake.readthedocs.io/en/stable/)
+- Official publication by [Felix Mölder *et al.*, Sustainable data analysis with Snakemake, *F1000 Research*, 2021](https://f1000research.com/articles/10-33/v2)
+- [Best Practices with Snakemake](https://snakemake.readthedocs.io/en/stable/snakefiles/best_practices.html#snakefiles-best-practices)
+- [Official Tutorial](https://snakemake.readthedocs.io/en/stable/tutorial/tutorial.html)
+    - [Basics tutorial (basic)](https://snakemake.readthedocs.io/en/stable/tutorial/basics.html)
+    - [Advanced tutorial](https://snakemake.readthedocs.io/en/stable/tutorial/advanced.html)
+    - [SLIDES!](https://slides.com/johanneskoester/snakemake-tutorial)
+- [Snakemake github.io home](https://snakemake.github.io/)
+- [Public workflow catalog](https://snakemake.github.io/snakemake-workflow-catalog/)
