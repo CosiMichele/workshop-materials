@@ -10,9 +10,9 @@
 ---
 >[!important]
 > :clock1: **Schedule**
-> - 3:00pm-3:10pm: 
-> - 3:10pm-3:45pm:
-> - 3:45pm-4:00pm:
+> - 3:00pm-3:15pm: Welcome and introdution to topic (What is DEA?)
+> - 3:15pm-3:25pm: Experiment Design and Data Preparation (What's upstream?)
+> - 3:25pm-4:00pm: Differential Expression Analysis with DESeq2 and visualizations
 
 >[!important]
 > :heavy_exclamation_mark: **Requirements**
@@ -35,7 +35,7 @@
 
 ## Topic overview
 
-This workshop focuses on **RNA-seq analysis** and **differential expression analysis (DEA)**, core techniques for examining gene expression. 
+This workshop focuses on **RNA-seq analysis** and **Differential Expression Analysis (DEA)**, core techniques for examining gene expression. 
 
 We’ll start by revisiting what a typical RNA-seq analysis workflow looks like, taking raw sequencing data and processing it to uncover genes that show significant changes in expression between conditions. 
 
@@ -93,20 +93,80 @@ Let's break DEA down into 4 steps:
 >    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Volcano_eg.jpg/1280px-Volcano_eg.jpg" width="550">
 >   <figcaption> Volcano plot showing metabolomic data. The red arrows indicate points-of-interest that display both large magnitude fold-changes (x axis) and high statistical significance (-log10 of p value, y axis). The dashed red line shows where p = 0.05 with points above the line having p < 0.05 and points below the line having p > 0.05. This plot is colored such that those points having a fold-change less than 2 (log2 = 1) are shown in gray. </figcaption>
 > </p>
-> Image source: [Wikipedia](https://en.wikipedia.org/wiki/Fold_change). 
-
-
-- [content 1](#section-1-subsection-1) 
-- [content 2](#section-1-subsection-2)
-
-### Section 1 Subsection 1
+> Image source: https://en.wikipedia.org/wiki/Fold_change. 
 
 ---
 
-### Section 1 Subsection 2
+## Experiment Design and Data Preparation
 
 ---
----
+
+## Differential Expression Analysis with DESeq2
+
+**DESeq2** ([R's Bioconductor page](https://bioconductor.org/packages/release/bioc/html/DESeq2.html), [BMC article by Love, Huber & Anders, 2014](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0550-8)) is an R package widely used for analyzing RNA-seq data to identify differentially expressed genes. It takes raw read counts from sequencing data, normalizes them, performs statistical testing, and returns results that help determine which genes are significantly up- or down-regulated between conditions.
+
+**How it works**
+
+1. **Input Data**: DESeq2 takes in raw count data for genes across samples. These counts represent the number of reads aligning to each gene in each sample.
+2. **Normalization**: DESeq2 normalizes these counts to account for factors like sequencing depth or differences between samples, ensuring a fair comparison.
+3. **Modeling**: The package models gene expression differences between conditions using a generalized linear model (GLM) and applies shrinkage to control for noise in low-expressed genes.
+4. **Statistical Testing**: DESeq2 performs statistical tests to determine if the observed changes are significant, returning metrics like the log2 fold-change and adjusted p-values for each gene.
+
+(These are essentially the same 4 steps described above!)
+
+**Expected outputs**
+
+- **Log2 fold-change**: Shows the magnitude of change in gene expression between conditions. Positive values indicate up-regulation, and negative values indicate down-regulation.
+- **p-value**: Indicates whether the observed difference is statistically significant.
+- **Adjusted p-value (padj)**: Corrects for multiple testing, helping identify genes that are reliably differentially expressed.
+
+**Quickstart** (taken from the official DESeq2 guide "[Analyzing RNA-seq data with DESeq2](https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html)", from Love *et al.*)
+
+>[!NOTE]
+> There are a variety of steps upstream of DESeq2 that result in the generation of counts or estimated counts for each sample, discussed in the above section.
+
+Here are most basic steps for a differential expression analysis. This code chunk assumes that you have a count matrix called `cts` and a table of sample information called `coldata`. The `design` indicates how to model the samples, here, that we want to measure the effect of the condition, controlling for batch differences. The two factor variables `batch` and condition should be columns of `coldata`.
+
+```
+dds <- DESeqDataSetFromMatrix(countData = cts,
+                              colData = coldata,
+                              design= ~ batch + condition)
+dds <- DESeq(dds)
+resultsNames(dds)                                           # lists the coefficients
+res <- results(dds, name="condition_trt_vs_untrt")
+
+# or to shrink log fold changes association with condition:
+res <- lfcShrink(dds, coef="condition_trt_vs_untrt", type="apeglm")
+```
+
+There is a variety of statements that DESeq2 uses that are different from the example above, such as using `DESeqDataSetFromHTSeq()` instead of `DESeqDataSetFromMatrix()` if you're using data from *htseq-count* or `DESeqDataSetFromTximport()` if your data is crated with *Salmon*. 
+
+The `design` parameter specifies how the experimental conditions are structured and analyzed in your RNA-seq dataset. This parameter is crucial because it tells DESeq2 which variables to use when estimating differential expression and how to model relationships between samples. Here are a few options:
+
+- Single Factor Design: used when you have one condition or treatment group to compare, like "treated" vs. "control." (`design = ~ condition`).
+- Two-Factor Design: used when you want to account for two independent factors, such as "condition" and "batch." (`design = ~ batch + condition`).
+- Interaction Model: used when you have two factors and want to test if there’s an interaction between them (i.e., if the effect of one factor depends on the other) (`design = ~ condition + treatment + condition:treatment`).
+- Multi-Factor Design: used for complex experimental setups with more than two factors, where each factor’s main effects and/or interactions are modele (` design = ~ timepoint + condition + batch`).
+
+>[!IMPORTANT]
+>
+> DESeq2 **only** creates the statistical inference. It is up to you to create the visualization plots! 
+
+### Learning by Example(s)
+
+Tutorial time: DESeq2 on CyVerse. We have made available an R script that will run through DESeq2 and creating PCA,volcano and heatmap plots. To get to the R script:
+
+1. Log in into CyVerse
+2. Go to Apps and start the [JupyterLab Bioscience](https://de.cyverse.org/apps/de/cc046834-5907-11ef-bcd7-008cfa5ae621/launch) (8 cores min/max and 16GB memory)
+3. Once the App is launched, go to the Terminal:
+    - Do `gocmd init` and login using their CyVerse credentials (username and password)
+    - Do `gocmd get --progress /iplant/home/shared/cyverse_training/datalab/biosciences/diff-exp-analysis_tutorial/r_tutorial/`
+4. Open RStudio and open the file using the file browser. (data-store > r_tutorial > deseq2_tut.R)
+
+The code is runnable from beginning to end and annotated accordingly. May this be useful to you as an example in the future!
+
+<details>
+  <summary>Click here for the raw code</summary>
 
 ```
 ###########################################################
@@ -234,3 +294,15 @@ pheatmap(assay(transformed_readcounts)[selected,],
          labels_col = colData(dds)$sampleName)           # Plots heatmap with clustering of samples and genes
 
 ```
+
+</details>
+
+## Resources
+
+- [The official DESeq2 tutorial on Bioconductor](https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html)
+- [The DESeq2 paper by Love, Huber & Anders, *BMC*, 2014](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0550-8)
+- ["Beginner's guide to using the DESeq2 package" by Love, Anders & Huber](https://bioconductor.statistik.tu-dortmund.de/packages/2.14/bioc/vignettes/DESeq2/inst/doc/beginner.pdf) (*not really for beginners, but hey, they tried*)
+- [An advanced tutorial on DEA by Single Cell Best Practices using Python](https://www.sc-best-practices.org/conditions/differential_gene_expression.html)
+
+---
+---
