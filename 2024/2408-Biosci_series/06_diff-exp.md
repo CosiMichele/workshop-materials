@@ -168,7 +168,7 @@ The code is runnable from beginning to end and annotated accordingly. May this b
 <details>
   <summary>Click here for the raw code</summary>
 
-```
+```{r}
 ###########################################################
 # 0. LOAD NECESSARY LIBRARIES AND SET WORKING DIRECTORY  ##
 ###########################################################
