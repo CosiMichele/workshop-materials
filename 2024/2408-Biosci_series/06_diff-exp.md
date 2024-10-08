@@ -99,6 +99,127 @@ Let's break DEA down into 4 steps:
 
 ## Experiment Design and Data Preparation
 
+In this section we discuss the steps taken prior to Differential Expression Analysis.
+
+As mentioned above, we use the house mouse ([Mus musculus, GRCm39](https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000001635.27/) as model organism, and RNA-seq data obtained by Texas A&M and cleaned by us.
+
+The tools used are:
+
+- **[FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)**: quality control
+- **[TrimGalore](https://github.com/FelixKrueger/TrimGalore)**: trimming
+- **[HISAT2](https://daehwankimlab.github.io/hisat2/)**: indexing genome, alignment to genome
+- **[SAMtools](https://www.htslib.org/)**: sorting and indexing alignment
+- **[HTSeq](https://htseq.readthedocs.io/en/latest/)**: count reads in features
+
+### Raw Quality Control
+
+We have used FastQC in the past, a popular tool used to assess the quality of raw reads. The command used was: 
+
+```
+ fastqc -t 2 -o . Control1_R1.fastq.gz Control1_R2.fastq.gz
+```
+
+The output from FastQC was:
+
+<p align="center">
+    <img src="" width="750">
+</p>
+
+and
+
+<p align="center">
+    <img src="" width="750">
+</p>
+
+How would you interpret these readings?
+
+### Trimming
+
+Although we have not covered **TrimGalore**, it is tool for trimming low-quality bases and adapter sequences from high-throughput sequencing reads.
+
+Based on the QC output above, we use TrimGalore's default settings which trims any read that is below length 20. We add the `--paired` option/flag to only return paired reads.
+
+```
+trim_galore --paired --fastqc Control1_R1.fastq.gz Control1_R2.fastq.gz
+```
+
+The `--fastqc` option/flag outputs a report we can read in FastQC.
+
+<p align="center">
+    <img src="" width="750">
+</p>
+
+and
+
+<p align="center">
+    <img src="" width="750">
+</p>
+
+Do you think TrimGalore did well? (yes).
+
+### Indexing, Alignment... and Indexing Again 
+
+HISAT2 is used to index the model organism of the Mouse first.
+
+```
+hisat2-build GCF_000001635.27_GRCm39_genomic.fna GCF_000001635.27_GRCm39_genomic
+```
+
+Then, HISAT2 is used to align our trimmed reads about outputting a SAM file.
+
+```
+ hisat2 -x GCF_000001635.27_GRCm39_genomic -p 2 -1 Control1_R1_val_1.fq.gz -2 Control1_R2_val_2.fq.gz -S Control1.sam
+        .
+        .
+        .
+236499 reads; of these:
+ 236499 (100.00%) were paired; of these:
+30736 (13.00%) aligned concordantly 0 times
+197200 (83.38%) aligned concordantly exactly 1 time
+8563 (3.62%) aligned concordantly >1 times
+----
+30736 pairs aligned concordantly 0 times; of these:
+ 3583 (11.66%) aligned discordantly 1 time
+----
+27153 pairs aligned 0 times concordantly or discordantly; of these:
+ 54306 mates make up the pairs; of these:
+ 30660 (56.46%) aligned 0 times
+ 21188 (39.02%) aligned exactly 1 time
+ 2458 (4.53%) aligned >1 times
+93.52% overall alignment rate
+```
+
+With 93.52% overall alignmet, we score well!
+
+We then use SAMtools to sort our alignment and convert SAM into BAM ... 
+
+```
+samtools sort --threads 8 \
+-o Control1_sorted.bam Control1.sam
+```
+
+... and idex the sorted BAM file.
+
+
+```
+samtools index Control1_sorted.bam
+```
+
+### Counting Reads in Features
+
+HTSeq-count is a tool for counting the number of reads mapped to specific genomic features (like genes) in RNA-seq data.
+
+We use flags:
+- `-r pos`: tells HTSeq that the reads in the BAM file are sorted by position (i.e., genomic coordinate), which can be faster if the BAM file is already sorted by position.
+- `-i gene`: sets the feature ID attribute to use for counting ("count the genes for me please!")
+
+```
+htseq-count -r pos -i gene Control1_sorted.bam GCF_000001635.27_GRCm39_genomic.gff > Control1_counts.txt
+```
+
+---
+
+**We now have the data needed for DESeq2!**
 ---
 
 ## Differential Expression Analysis with DESeq2
