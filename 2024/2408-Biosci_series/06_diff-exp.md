@@ -220,6 +220,7 @@ htseq-count -r pos -i gene Control1_sorted.bam GCF_000001635.27_GRCm39_genomic.g
 ---
 
 **We now have the data needed for DESeq2!**
+
 ---
 
 ## Differential Expression Analysis with DESeq2
