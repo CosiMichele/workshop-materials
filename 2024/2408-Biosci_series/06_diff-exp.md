@@ -122,13 +122,13 @@ We have used FastQC in the past, a popular tool used to assess the quality of ra
 The output from FastQC was:
 
 <p align="center">
-    <img src="https://raw.githubusercontent.com/CosiMichele/workshop-materials/refs/heads/main/2024/2408-Biosci_series/assets/control_r1.png" width="750">
+    <img src="https://raw.githubusercontent.com/CosiMichele/workshop-materials/refs/heads/main/2024/2408-Biosci_series/assets/control_r1.png" width="450">
 </p>
 
 and
 
 <p align="center">
-    <img src="https://raw.githubusercontent.com/CosiMichele/workshop-materials/refs/heads/main/2024/2408-Biosci_series/assets/control_r2.png" width="750">
+    <img src="https://raw.githubusercontent.com/CosiMichele/workshop-materials/refs/heads/main/2024/2408-Biosci_series/assets/control_r2.png" width="450">
 </p>
 
 How would you interpret these readings?
@@ -146,13 +146,13 @@ trim_galore --paired --fastqc Control1_R1.fastq.gz Control1_R2.fastq.gz
 The `--fastqc` option/flag outputs a report we can read in FastQC.
 
 <p align="center">
-    <img src="https://raw.githubusercontent.com/CosiMichele/workshop-materials/refs/heads/main/2024/2408-Biosci_series/assets/control_r1_val.png" width="750">
+    <img src="https://raw.githubusercontent.com/CosiMichele/workshop-materials/refs/heads/main/2024/2408-Biosci_series/assets/control_r1_val.png" width="450">
 </p>
 
 and
 
 <p align="center">
-    <img src="https://raw.githubusercontent.com/CosiMichele/workshop-materials/refs/heads/main/2024/2408-Biosci_series/assets/control_r2_val.png" width="750">
+    <img src="https://raw.githubusercontent.com/CosiMichele/workshop-materials/refs/heads/main/2024/2408-Biosci_series/assets/control_r2_val.png" width="450">
 </p>
 
 Do you think TrimGalore did well? (yes).
