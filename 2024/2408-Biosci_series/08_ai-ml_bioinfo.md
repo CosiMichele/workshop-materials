@@ -127,8 +127,10 @@ Here are a few examples of groups that were able to take this technology and giv
 ### [Machine learning algorithms to infer trait-matching and predict species interactions in ecological networks](https://paperswithcode.com/paper/machine-learning-algorithms-to-infer-trait)
 
 <p align="center">
-    <img src="https://besjournals.onlinelibrary.wiley.com/cms/asset/8d221383-9cc3-4f63-a6c9-0a760e368e11/mee313329-fig-0003-m.jpg" width="600">
+    <img src="https://raw.githubusercontent.com/CosiMichele/workshop-materials/refs/heads/main/2024/2408-Biosci_series/assets/bioinfo_1.jpg" width="600">
 </p>
+
+*Predictive performance of different ML methods (naive Bayes, SVM, BRT, kNN, DNN, CNN, RF) and GLM in a global database of plant-pollinator interactions. Dotted lines depict training and solid lines validation performances. Models were sorted from left to right with increasing true skill statistic. The central figure compares directly the models’ performances. Sen = Sensitivity (recall, true positive rate); Spec = Specificity (true negative rate); Prec = Precision; Acc = Accuracy; AUC = Area under the receiver operating characteristic curve (AUC); TSS in % = True skill statistic rescaled to 0 – 1.*
 
 This paper investigates the use of machine learning algorithms to infer trait-matching and predict species interactions in ecological networks. 
 
@@ -166,9 +168,36 @@ The authors emphasize the potential of machine learning for advancing our unders
 
 ### [RNA-seq assistant: machine learning based methods to identify more transcriptional regulated genes](https://link.springer.com/article/10.1186/s12864-018-4932-2)
 
+<p align="center">
+    <img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1186%2Fs12864-018-4932-2/MediaObjects/12864_2018_4932_Fig1_HTML.png?as=webp" width="600">
+</p>
+
 This paper proposes a machine learning method for identifying differentially expressed genes (DEGs) in RNA sequencing data. 
 
 By using epigenomic data from histone modifications such as acetylation, the model learns the association of these markers with gene expression and uses this to predict DEGs. The authors found that the model using InfoGain feature selection and Logistic Regression classification was most effective for identifying DEGs in the response to ethylene, and validated the prediction results through qRT-PCR. 
+
+While RNA sequencing (RNA-seq) is a popular method for identifying differentially expressed genes (DEGs), its sensitivity can be limited by experimental design and data analysis processes. ML is being used to find ways to enhance DEG identification.
+
+Here's how ML enhances sensitivity:
+
+- **Identifying Subtle Patterns**: ML algorithms can learn complex patterns in data that traditional RNA-seq methods might overlook. This allows ML to identify DEGs that exhibit subtle changes in expression, leading to a higher sensitivity. For example, the study in the source used ML to analyze features related to histone modifications and their connection to gene expression regulation in response to ethylene.
+- **Integration of Multiple Data Types**: ML models can integrate information from various sources, such as RNA-seq data, histone modification data, and DNA methylation data. This comprehensive approach provides a richer context for identifying DEGs, increasing sensitivity compared to using RNA-seq data alone. The study used data from histone H3 modification markers (H3K9Ac, H3K14Ac, and H3K23Ac) and RNA-seq data from Arabidopsis seedlings treated with or without ethylene gas to extract features for their ML analysis.●
+- **Overcoming Bias and Limitations**: ML can help mitigate biases and limitations inherent in RNA-seq experimental design and data analysis. For example, ML models can account for variations in sequencing depth, library preparation, and normalization methods, leading to more accurate DEG identification. The study successfully predicted DEGs that were missed by traditional RNA-seq analysis, such as EIN3-BINDING F BOX PROTEIN 1 (EBF1).
+- **Prediction of Novel DEGs**: By learning from existing data, ML models can predict the differential expression of genes that have not been previously identified as DEGs. This predictive capability expands the pool of potential DEGs for further investigation, increasing the sensitivity of DEG identification. The study found that more than 70% of the genes predicted by their ML model were not previously reported as DEGs in response to ethylene.
+
+The study was split into 2 main sections: Feature Selection (idenfitying the DEGs) and Classification (ML)
+
+Feature Selection:
+- **Information Gain (InfoGain)**: This algorithm measures the reduction in entropy (uncertainty) of a variable given the value of another variable. It was used to identify features that were most informative for predicting DEGs.
+- **Correlation Feature Selection (CFS)**: This algorithm selects a subset of features that are highly correlated with the class (DEG status) while having low inter-correlation among themselves.
+- **ReliefF**: This algorithm assigns weights to features based on their ability to distinguish between instances that are close to each other but belong to different classes.
+
+Classification:
+- **Logistic Regression**: This algorithm models the probability of a binary outcome (DEG status) based on a linear combination of input features. It was found to be the most effective classification method when combined with InfoGain feature selection.
+Classification Via Regression: This algorithm transforms a regression problem into a classification problem. It showed good performance in predicting DEGs.
+- **Random Forest**: This algorithm constructs multiple decision trees during training and outputs the class that is the mode of the classes output by individual trees. It was found to be the best-performing algorithm when applied to human and rice cell data.
+- **Logistic Model Trees (LMT)**: This algorithm combines logistic regression and decision tree learning.
+- **Random Subspace**: This algorithm creates multiple classifiers by training them on random subsets of features. It performed well in predicting DEGs.
 
 Their research suggests that combining epigenomic information with RNA-seq data analysis using machine learning methods could significantly improve the sensitivity of DEG identification.
 
@@ -176,7 +205,7 @@ Their research suggests that combining epigenomic information with RNA-seq data 
 
 ### [Large-scale machine learning-based phenotyping significantly improves genomic discovery for optic nerve head morphology](https://paperswithcode.com/paper/large-scale-machine-learning-based)
 
-This scientific research article examines the use of machine learning (ML) models to predict glaucoma-related traits from color fundus photographs. 
+This article examines the use of machine learning (ML) models to predict glaucoma-related traits from color fundus photographs. 
 
 The authors developed an ML model that accurately predicts the vertical cup-to-disc ratio (VCDR) and identified 299 independent genome-wide significant hits in 156 loci associated with VCDR, replicating known loci and discovering 92 novel ones. 
 
