@@ -119,7 +119,7 @@ ML/AI has accented this data discovery, but it comes with a couple of caveats:
 
 Here are a few examples of groups that were able to take this technology and give us a window on the potential applications of ML/AI in Bioinformatics.
 
-> ! [!IMPORTANT]
+> [!IMPORTANT]
 > Most of the following examples are searchable through [Papers With Code](https://paperswithcode.com/): a powerful website that allows to look for papers that have made their code available.
 >
 > This is extremely useful for folks (and skeptics!) that want to take a look at the code itself!
@@ -134,7 +134,7 @@ Here are a few examples of groups that were able to take this technology and giv
 
 This paper investigates the use of machine learning algorithms to infer trait-matching and predict species interactions in ecological networks. 
 
-Specifically, the authors compare the performance of various machine learning models, including** random forests**, **boosted regression trees**, **deep neural networks**, and **support vector machines**, with traditional generalized linear models (GLMs) in predicting plant-pollinator interactions based on species traits. 
+Specifically, the authors compare the performance of various machine learning models, including **random forests**, **boosted regression trees**, **deep neural networks**, and **support vector machines**, with traditional generalized linear models (GLMs) in predicting plant-pollinator interactions based on species traits. 
 
 The study finds that the best machine learning models outperform GLMs in both prediction accuracy and identification of the causal trait-trait combinations responsible for interactions. 
 
@@ -222,7 +222,7 @@ The authors conducted a genome-wide association study (GWAS) using the ML-based 
 ### [AlphaFold](https://golgi.sandbox.google.com/about)
 
 <p align="center">
-    <img src="https://github.com/google-deepmind/alphafold/blob/main/imgs/casp14_predictions.gif?raw=true" width="400">
+    <img src="https://github.com/google-deepmind/alphafold/blob/main/imgs/casp14_predictions.gif?raw=true" width="500">
 </p>
 
 > [!IMPORTANT]
@@ -240,10 +240,15 @@ AlphaFold is an artificial intelligence (AI) system developed by DeepMind for pr
 
 ---
 
-### [deepvariant](https://github.com/google/deepvariant)
+### [DeepVariant](https://github.com/google/deepvariant)
 
 <p align="center">
     <img src="https://raw.githubusercontent.com/google/deepvariant/r1.6.1/docs/images/dv_logo.png" width="400">
+</p>
+
+
+<p align="center">
+    <img src="https://miro.medium.com/v2/resize:fit:1400/1*uAeANQIOQPqWZnnuH-VEyw.jpeg" width="500">
 </p>
 
 DeepVariant is an open-source software tool developed by Google for variant calling in genomics. It uses deep learning techniques to identify genetic variants from next-generation sequencing (NGS) data. DeepVariant processes the data through a neural network, transforming raw sequence data (from a BAM file or CRAM) into images (a 2 dimensional matrix) of aligned reads and then classifies these images to predict the presence of genetic variants, such as SNPs (single nucleotide polymorphisms) and indels (insertions or deletions).
