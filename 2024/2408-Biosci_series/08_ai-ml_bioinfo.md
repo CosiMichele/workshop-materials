@@ -205,11 +205,17 @@ Their research suggests that combining epigenomic information with RNA-seq data 
 
 ### [Large-scale machine learning-based phenotyping significantly improves genomic discovery for optic nerve head morphology](https://paperswithcode.com/paper/large-scale-machine-learning-based)
 
-This article examines the use of machine learning (ML) models to predict glaucoma-related traits from color fundus photographs. 
+<p align="center">
+    <img src="https://raw.githubusercontent.com/CosiMichele/workshop-materials/refs/heads/main/2024/2408-Biosci_series/assets/bioinfo_2.png" width="500">
+</p>
 
-The authors developed an ML model that accurately predicts the vertical cup-to-disc ratio (VCDR) and identified 299 independent genome-wide significant hits in 156 loci associated with VCDR, replicating known loci and discovering 92 novel ones. 
+This article examines the use of machine learning (ML) models to predict glaucoma-related traits from color fundus photographs. The authors developed an ML model that accurately predicts the vertical cup-to-disc ratio (VCDR) and identified 299 independent genome-wide significant hits in 156 loci associated with VCDR, replicating known loci and discovering 92 novel ones. 
 
-They also found that the model improved polygenic risk scores for VCDR and primary open-angle glaucoma, demonstrating the potential for ML-based phenotyping to enhance large-scale genetic studies of complex diseases.
+This paper used machine learning (ML) to automatically predict VCDR from fundus photographs, an important endophenotype for glaucoma. The ML model was trained using 81,830 fundus photographs that were graded by experts for image gradability, VCDR, and referable glaucoma risk. These photographs were split into training, tuning, and test sets. The authors trained an ensemble of ten Inception V3 deep convolutional neural networks, a type of ML model well-suited for image analysis.
+
+Once trained and validated, the ML model was applied to 175,337 fundus photographs from the UK Biobank. The model predicted VCDR for each image and also identified images that were ungradable.
+
+The authors conducted a genome-wide association study (GWAS) using the ML-based VCDR predictions. They compared the results to previous GWAS of VCDR, including one based on manually-labeled UK Biobank images. The ML-based GWAS replicated a majority of known genetic associations with VCDR and discovered 92 novel loci. This finding suggests that ML-based phenotyping can improve the power of genomic discovery.
 
 ---
 
@@ -219,9 +225,42 @@ They also found that the model improved polygenic risk scores for VCDR and prima
     <img src="https://github.com/google-deepmind/alphafold/blob/main/imgs/casp14_predictions.gif?raw=true" width="400">
 </p>
 
+> [!IMPORTANT]
+> Who won the Nobel Prize for chemistry this year? One of the winners is Demis Hassabis and John Jumper, from the team that developed AlphaFold for their work on “protein structure prediction”.
+
+AlphaFold is an artificial intelligence (AI) system developed by DeepMind for predicting the 3D structure of proteins from their amino acid sequences. It has revolutionized structural biology by providing highly accurate protein structure predictions, which are crucial for understanding biological processes, drug design, and many other applications in molecular biology.
+
+**How AplhaFold works:**
+
+1. Input: The primary input to AlphaFold is a protein’s amino acid sequence. This is analogous to a string of letters representing the order of the protein's building blocks.
+2. Multiple Sequence Alignment (MSA): AlphaFold compares the input sequence with known protein sequences in public databases. This comparison, called a multiple sequence alignment (MSA), helps AlphaFold understand evolutionary relationships between proteins and infer constraints on how the protein can fold.
+3. Neural Network Architecture: AlphaFold uses a transformer neural network model, which processes both the sequence data and the information from the MSA to make predictions about how close different pairs of amino acids will be in the 3D structure. It also models the geometric constraints of protein folding, like bond angles and distances between atoms.
+4. Structure Prediction: The model generates a predicted 3D structure, which it refines iteratively. AlphaFold optimizes the prediction by minimizing errors related to the physical and chemical properties of proteins.
+5. Confidence Metric: Along with the 3D structure, AlphaFold provides a confidence score (called a pLDDT score), which indicates how certain the model is about each part of the structure.
+
 ---
 
 ### [deepvariant](https://github.com/google/deepvariant)
+
+<p align="center">
+    <img src="https://raw.githubusercontent.com/google/deepvariant/r1.6.1/docs/images/dv_logo.png" width="400">
+</p>
+
+DeepVariant is an open-source software tool developed by Google for variant calling in genomics. It uses deep learning techniques to identify genetic variants from next-generation sequencing (NGS) data. DeepVariant processes the data through a neural network, transforming raw sequence data (from a BAM file or CRAM) into images (a 2 dimensional matrix) of aligned reads and then classifies these images to predict the presence of genetic variants, such as SNPs (single nucleotide polymorphisms) and indels (insertions or deletions).
+
+In order to carry out the analysis of the matrices, DeepVariant uses a Convolutional Neural Network (CNN), a method that is often used in image analysis, to the pileup of images. The CNN then analyzes the pileup images to detect patterns associated with genetic variants, learning from both variant and non-variant regions.
+
+Why DeepVariant is Effective:
+- **Deep Learning for Accuracy**: Unlike traditional rule-based variant callers (like GATK), DeepVariant uses deep learning to learn subtle patterns in sequencing data, which helps it to be more accurate, particularly in challenging genomic regions (e.g., repetitive sequences, homopolymers).
+- **Training on Large Datasets**: DeepVariant was trained on large reference datasets such as the Genome in a Bottle (GIAB) benchmarks, improving its ability to generalize and accurately call variants in various samples.
+
+How is it so affective?
+- DeepVariant creates **tensors** from the pileup images. A tensor is a generalization of vectors and matrices to potentially higher dimensions, and it's a fundamental data structure used in deep learning models. Tensors are used to represent data in a way that can be efficiently processed by neural networks.
+- In DeepVariant, a pileup image tensor is a 3D data structure. It holds sequencing information in a format that a deep learning model can process:
+    - The first dimension is typically the height (number of reads aligned at a particular position).
+    - The second dimension is the width (corresponding to base positions along the reference genome).
+    - The third dimension contains different channels representing additional features (e.g., base information, quality scores, mapping quality, strand information).
+- This tensor then becomes the input to the CNN, which then the CNN interprets the tensor’s patterns to classify positions in the genome as variant or non-variant.
 
 ---
 ---
