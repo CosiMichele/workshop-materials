@@ -92,6 +92,44 @@ Obviously, different fields of research have different standardized procedures f
 
 ### The Present State of Science
 
+Similar to governmental and other official procedures, the field of science is guided by the outcomes: grants are awarded to groups that have submitted successful proposals, funds are used for research, and the research finds are used to bolster the credibility of the funding agency.
+
+In a sense, ***science is a business***.
+
+Like many businesses, science adapts to the latest trends, and making science Open is latest goal for this cycle.
+
+There are numerous reasons why making science Open is a positive goal:
+1. **Accelerates Innovation and Discovery**:
+    - Open science allows researchers worldwide to access data, tools, and publications freely. This reduces duplication of effort, fosters collaboration, and speeds up the pace of innovation. Scientists can build on each other’s work more effectively, leading to breakthroughs in less time.
+2. **Improves Reproducibility and Credibility**:
+    - Sharing data, methodologies, and results openly ensures that studies can be independently verified and reproduced. This strengthens the credibility of scientific findings and reduces instances of irreproducible or questionable research.
+3. **Democratizes Knowledge Access**:
+    - Open science removes barriers like paywalls, making knowledge accessible to researchers, educators, students, and the general public, regardless of their financial or institutional resources. This promotes equity in learning and research opportunities.
+4. **Enhances Public Trust in Science**:
+    - When research is transparent and openly shared, it becomes easier for the public to see how conclusions are reached. This fosters trust in scientific processes and can help counter misinformation and skepticism.
+5. **Addresses Real-World Problems More Effectively**:
+    - Open access to research enables governments, non-profits, and industry to quickly adopt scientific findings to address societal challenges such as climate change, public health crises, and technological advancement. It empowers citizens and organizations to contribute to solutions in meaningful ways.
+
+Furthermore, Open Science (or making science Open) follows a framework that funding agencies are implementing in order for researchers to obtain grants: the Research Life Cycle.
+
+<p align="center">
+    <img src="https://foss.cyverse.org/assets/life_cycle.png" width="400">
+</p>
+
+The Research Life Cycle from [Open Science Framework](https://osf.io/).
+
+As graduate students, staff and faculty, we are often "forced" to work within a few blocks of the Research Life Cycle. For example, a Data Scientist might be asked to help to collect, store and analyze data whilst a faculty member might be the one driving the research ideas and writing a final report.
+
+We all play a role in the Research Life Cycle, even without us knowing. Often, we find ourselves questioning what we are doing and why we are doing it -- the figure above helps us remind what the big picture is.
+
+>[!note]
+> :question: **Last but not least...**
+> 
+> [... the National Science Foundation (NSF) is pushing to make all publication using taxpayer's money to become open and accessible by 2026.](https://new.nsf.gov/public-access)
+> This process requires the use of the framework shown above in the proposals, requiring clear Data Management Plans, detailed list of personnel, collaborations, and material handling.
+
+> **It is of utmost importance that us as scientists understand these requirements to become successful.**
+
 ---
 ---
 
@@ -145,6 +183,8 @@ Here is a great visualization of the Git workflow:
 
 Visualizing the commands through a workflow example
 (graphic's correction: ~~marged~~ merged), from [C#Corner](https://www.c-sharpcorner.com/article/git-and-github-version-control-local-and-remote-repository/).
+
+
 
 ---
 ---
