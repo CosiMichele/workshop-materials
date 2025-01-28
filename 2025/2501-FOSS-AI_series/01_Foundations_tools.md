@@ -56,7 +56,6 @@ In this session we will cover the following:
 - Reproducibility
     - Software Environments & Conda
     - Containers
-    - Workflows
 
 >[!note]
 > :question: **Noticing Anything?**
@@ -201,7 +200,6 @@ Thi section is going to cover 3 methods to help you achieve/improve Reproducibil
 
 - [Software Environments & Conda](#software-environments--conda)
 - [Containers](#containers)
-- [Workflows](#workflows)
 
 ### Software Environments & Conda
 
@@ -252,17 +250,17 @@ Containers are similar to virtual machines (VMs), but are smaller and easier to 
 
 Software containers, such as those managed by Docker or Singularity, are incredibly useful for reproducible science for several reasons:
 
-- Environment Consistency:¶
+- **Environment Consistency**:¶
     - Containers encapsulate the software environment, ensuring that the same versions of software, libraries, and dependencies are used every time, reducing the "it works on my machine" problem.
-- Ease of Sharing:
+- **Ease of Sharing**:
   - Containers can be easily shared with other researchers, allowing them to replicate the exact software environment used in a study.
-- Platform Independence:
+- **Platform Independence**:
   - Containers can run on different operating systems and cloud platforms, allowing for consistency across different hardware and infrastructure.
-- Version Control:
+- **Version Control**:
   - Containers can be versioned, making it easy to keep track of changes in the software environment over time.
-- Scalability:
+- **Scalability**:
   - Containers can be easily scaled and deployed on cloud infrastructure, allowing for reproducible science at scale.
-- Isolation:
+- **Isolation**:
   - Containers isolate the software environment from the host system, reducing the risk of conflicts with other software and ensuring a clean and controlled environment.
 
 <p align="center">
@@ -273,5 +271,3 @@ The container's life cycle. Figure source: [Tutorialspoint](https://www.tutorial
 
 ---
 ---
-
-## Bringing It All Together

@@ -1,4 +1,4 @@
-# The moving parts of Functional Open Science
+# The role of AI in Open Science
 
 <br>
 <br>
@@ -10,10 +10,8 @@
 ---
 >[!important]
 > :clock1: **Schedule**
-> - 2:00pm-2:15pm: Introduction to the topic and series (what are we going to learn?) 
-> - 2:15pm-2:30pm: What is Open Science?
-> - 2:30pm-2:45pm: Version Control
-> - 2:45pm-3:00pm: Reproducibility
+> - 2:00pm-2:15pm: Welcome and reconnecting to previous topics
+> - 2:15pm-2:45pm: Discussion
 
 >[!important]
 > :heavy_exclamation_mark: **Requirements**
@@ -27,9 +25,7 @@
 
 >[!important]
 > :white_check_mark: **Expected Outcomes**
-> - Understand what Open Science is
-> - Lay the foundations for understanding tools and resources in Open Science
-> - Understand the outcomes of the workshop series
+> - 
 
 <br>
 
