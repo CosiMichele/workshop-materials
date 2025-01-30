@@ -1,4 +1,4 @@
-# An Introduction to Building a Transcriptomics Pipeline: RNA-Seq Alignment and Analysis
+# An Introduction to Sequence manipulation, Alignment, and Assessment
 
 <br>
 <br>
@@ -13,7 +13,8 @@ Image credits: [Griffith Lab](https://griffithlab.org/) ([GitHub](https://github
 
 >[!important]
 > :clock1: **Schedule**
-> - 2:00pm-2:05pm: Welcome and introdution to topic
+> - 2:00pm-2:15pm: Welcome and introdution to topic
+> - 2:15pm-2:25pm: Quality Control for Raw Reads
 > - 2:05pm-2:25pm: Alignment and Data Preparation
 > - 2:25pm-2:45pm: Transcript Assembly and Quantification
 > - 2:45pm-3:00pm: Exploring Differential Gene Expression and closing remarks
@@ -39,34 +40,29 @@ Image credits: [Griffith Lab](https://griffithlab.org/) ([GitHub](https://github
 
 ## Topic overview
 
-This workshop introduces participants to the **fundamentals of RNA-seq data analysis** by building a streamlined pipeline for transcriptomics. Using *E. coli* as a model organism, attendees will work hands-on with real RNA-seq data, **learning to align reads** to a reference genome, **quantify gene expression**, and **perform differential gene expression analysis**. By the end of the session, participants will have a working knowledge of key bioinformatics tools— HISAT2, SAMtools, featureCounts, and DESeq2—and understand how these tools fit together in a typical RNA-seq workflow.
+This workshop introduces participants to the **fundamentals of Sequence manipulation, Alignment, and Assessment** by building a streamlined pipeline for transcriptomics. Using *M. Musculus* (house mouse) as a model organism, attendees will work hands-on with real RNA-seq data, **learning to align reads** to a reference genome, **quantify gene expression**. By the end of the session, participants will have a working knowledge of key bioinformatics tools— HISAT2, SAMtools, featureCounts, and DESeq2—and understand how these tools fit together in a typical RNA-seq workflow.
 
 > [!IMPORTANT]
 > This workshop uses data obtained by the [National Center of Biotechnology Information (NCBI)](https://www.ncbi.nlm.nih.gov/).  
-> We are going to be using *E. coli* as the example organism throughout this workshop. All files are made available on CyVerse [here](https://datacommons.cyverse.org/browse/iplant/home/shared/cyverse_training/datalab/biosciences) or if you are using the command line here: `/iplant/home/shared/cyverse_training/datalab/biosciences`.
+> We are going to be using *M. Musculus* as the example organism throughout this workshop. All files are made available on CyVerse [here](https://datacommons.cyverse.org/browse/iplant/home/shared/cyverse_training/datalab/biosciences/) or if you are using the command line here: `/iplant/home/shared/cyverse_training/datalab/biosciences`.
 >
-> - The *E. coli* genome used will be the [ASM75055v1](https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000750555.1/) (4.6MB).
-> - Curated RefSeq annotations (gtf) for the genome can be found in the same location as above.
-> - Raw reads are taken from a recent study, [Transcriptome RNA Sequencing Data Set of Differential Gene Expression in *Escherichia coli* BW25113 Wild-Type and *slyA* Mutant Strains](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8142576/) by Frank J. Stewart (Microbiology Resoururce Announcements, 2021). 
->   - Reads used are [SRX10348166](https://www.ncbi.nlm.nih.gov/sra/SRX10348166) (run SRR13970433), [SRX10348167](https://www.ncbi.nlm.nih.gov/sra/SRX10348167) (run SRR13970434), [SRX10348168](https://www.ncbi.nlm.nih.gov/sra/SRX10348168) (run SRR13970435), and [SRX10348169](https://www.ncbi.nlm.nih.gov/sra/SRX10348169) (run SRR13970436). Reads have been processed using the Illumina NextSeq 500 machine.
->   - These reads have been fetched with the `sra-tools` (`prefetch <SRA sample>`) and extracted (`fastq-dump <SRA sample>.sra`).
->   - Note: 
+> - The *M. Musculus* genome used will be the [GRCm39](https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000001635.27/).
+> - Curated RefSeq annotations (gff) for the genome can be found in the same location as above.
+> - RNA-seq data was obtained from the  "RNA-seq and Differential Expression" Workshop by Texas A&M HPC group ([ACES](https://hprc.tamu.edu/aces/)) for the University of Arizona, first held in April 2024.
 
 > [!NOTE]
 > **Overview of Pipeline**
 > As this can be classified as an analysis pipeline, it is important for us to highlight what the major steps are:
 > ```
-> [Raw RNA-seq Data (SRA)]                  # 
->         ↓                                 # Pre-made data in preparation for the workshop.
-> [Convert to FASTQ]                        #
+> [Raw RNA-seq Data QC]               
 >         ↓
-> [Align with HISAT2] 
+> [Trimming]               
+>         ↓
+> [HISAT2 indexing and alignment] 
 >         ↓
 > [Convert & Sort BAM with SAMtools]
 >         ↓
-> [Quantify Reads with featureCounts] 
->         ↓
-> [Perform Differential Expression Analysis with DESeq2]
+> [Counting Reads in Features with HTSeq] 
 > ```
 
 ---
@@ -101,23 +97,172 @@ In order to get things started:
 You are now ready for the workshop!
 
 ---
+---
 
-## Alignment and Data Preparation
+## Handling Raw Reads with FastQC and TrimGalore 
+
+<p align="center">
+    <img src="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/per_base_quality.png" width="450">
+</p>
+
+This section covers popular methods to assess quality of data. **FastQC** assesses raw data from sequencing runs, useful before an assembly or analysis starts.
+
+Upon obtaining raw sequencing data and before starting your downstream analysis, it is common that at the beginning of your pipeline you run **FastQC**.
+
+FastQC will help you identify potential issues such as 
+- Low quality scores at certain positions.
+- Adapter contamination.
+- Overrepresented sequences.
+- GC content anomalies.
+
+The typical workflow including FastQC is the following: 
+- Run FastQC on the raw reads.
+- Review the report for quality issues.
+- Perform trimming/cleaning if needed (using tools like Trimmomatic or Cutadapt).
+- Optionally, re-run FastQC to confirm the data is clean.
+
+To run fastqc, the commands are
+
+```
+fastqc <sample_data>.fastq -o /path/to/output
+```
+
+Or, if you have multiple samples
+
+```
+fastqc *.fastq -o /path/to/output
+```
+
+### Reading the FastQC Results
+
+Let's use the figure above to help us understand the output FastQC, called the the **Per base sequence quality** plot, and it provides the distribution of quality scores at each position in the read across all reads.
+- The y-axis gives the quality scores, while the x-axis represents the position in the read. 
+- The color coding of the plot denotes what are considered high, medium and low quality scores.
+- The yellow box represents the 25th and 75th percentiles, with the red line as the median. The whiskers are the 10th and 90th percentiles.
+- The blue line represents the average quality score for the nucleotide.
+
+> [!IMPORTANT]
+> **What's the Phred Quality Score?**
+> 
+> The y-axis typically represents [Phred](https://en.wikipedia.org/wiki/Phred_(software)) quality scores, which measure the probability of an incorrect base call. Quality scores are logarithmic and can theoretically go beyond 40. Scores above 40 represent very high confidence in base calls, with probabilities of incorrect base calls being very low (less than 1 in 10,000). Setting the y-axis limit at 40 helps in standardizing the plot and avoiding unnecessary scaling for the majority of sequencing data, where scores often peak around 30 to 40. Scores higher than 40 are relatively rare in most datasets.
+><p align="center">
+>    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Phred_Figure_1.jpg" width="450">
+></p>
+
+Other important results:
+- **Per tile sequence quality** (only if sequencing was carried out with Illumina): The plot shows the deviation from the average quality for each tile, blue = good, red = bad (heat scale blue to red). [Here's an example of a not so great result](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/per_tile_quality.png) ([source](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/12%20Per%20Tile%20Sequence%20Quality.html)).
+- **Per sequence quality scores**: the average quality score on the x-axis and the number of sequences with that average on the y-axis.
+- **Per base sequence content**:  plots out the proportion of each base position in a file for which each of the four normal DNA bases has been called. [In a random library you would expect that there would be little to no difference between the different bases of a sequence run, so the lines in this plot should run parallel with each other](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/4%20Per%20Base%20Sequence%20Content.html). **Note:** this will always fail with RNA-seq data.
+- **Per sequence GC content**: plots the GC distribution over all sequences
+- **Per base N content**: If a sequencer is unable to make a base call with sufficient confidence then it will normally substitute an N rather than a conventional base call. This module plots out the percentage of base calls at each position for which an N was called.
+- **Sequence Length Distribution**: shows the distribution of sequence length.
+
+### Raw Quality Control
+
+Execute the command: 
+
+```
+ fastqc -t 2 -o . Control1_R1.fastq.gz Control1_R2.fastq.gz
+```
+
+The output from FastQC is:
+
+<p align="center">
+    <img src="https://raw.githubusercontent.com/CosiMichele/workshop-materials/refs/heads/main/2024/2408-Biosci_series/assets/control_r1.png" width="450">
+</p>
+
+and
+
+<p align="center">
+    <img src="https://raw.githubusercontent.com/CosiMichele/workshop-materials/refs/heads/main/2024/2408-Biosci_series/assets/control_r2.png" width="450">
+</p>
+
+How would you interpret these readings?
+
+### Trimming
+
+**TrimGalore**, is a tool for trimming low-quality bases and adapter sequences from high-throughput sequencing reads.
+
+Based on the QC output above, we use TrimGalore's default settings which trims any read that is below length 20. We add the `--paired` option/flag to only return paired reads.
+
+```
+trim_galore --paired --fastqc Control1_R1.fastq.gz Control1_R2.fastq.gz
+```
+
+The `--fastqc` option/flag outputs a report we can read in FastQC.
+
+<p align="center">
+    <img src="https://raw.githubusercontent.com/CosiMichele/workshop-materials/refs/heads/main/2024/2408-Biosci_series/assets/control_r1_val.png" width="450">
+</p>
+
+and
+
+<p align="center">
+    <img src="https://raw.githubusercontent.com/CosiMichele/workshop-materials/refs/heads/main/2024/2408-Biosci_series/assets/control_r2_val.png" width="450">
+</p>
+
+Do you think TrimGalore did well? (yes).
+
+---
+---
+
+## Alignment and Data Formatting
 
 <p align="center">
     <img src="https://www.petagene.com/wp-content/uploads/2021/01/HISAT2-performance-with-PetaGene-e1611335725386.png" width="450">
 </p>
 
-Image source: [Petagene](https://www.petagene.com/a-practical-example-of-hisat2-smaller-files-same-tools-faster-analysis/). Note, the image above uses the human genome as reference ([GRCh38](https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000001405.26/)) and specific instant specs. We will be using *E. coli* and different resources instead.
+Image source: [Petagene](https://www.petagene.com/a-practical-example-of-hisat2-smaller-files-same-tools-faster-analysis/). Note: the image above uses the human genome as reference ([GRCh38](https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000001405.26/)) and specific instant specs.
 
-In this section, we will learn how to process and prepare RNA-seq data for analysis. FASTQ formatted data has been made available on CyVerse (users should first move this data to a local directory). We will then cover how to align these reads to the *E. coli* reference genome using HISAT2, a tool designed for efficient and accurate RNA-seq alignment. Following alignment, we'll use SAMtools to convert the alignment results from SAM to BAM format and sort them, preparing the data for downstream analysis.
+In this section, we will learn how to process and prepare RNA-seq data for analysis. FASTQ formatted data has been made available on CyVerse (users should first move this data to a local directory). We will then cover how to align these reads to the *M. Musculus* reference genome using HISAT2, a tool designed for efficient and accurate RNA-seq alignment. Following alignment, we'll use SAMtools to convert the alignment results from SAM to BAM format and sort them, preparing the data for downstream analysis.
 
 - [Alignment via HISAT2](#alignment-via-hisat2) 
 - [Data Formatting Using SAMtools ](#data-formatting-using-samtools)
 
+---
+
+### HISAT2: Aligning Spliced RNA-Seq data
+
+<p align="center">
+    <img src="https://daehwankimlab.github.io/hisat2/assets/img/ogp.png" width="250">
+</p>
+
+[**HISAT2**](https://daehwankimlab.github.io/hisat2/) is a tool optimized to deal with spliced junctions. It uses the similar algorithms to the [BWA aligner](https://bio-bwa.sourceforge.net/bwa.shtml), paired with [FM-index](https://en.wikipedia.org/wiki/FM-index), a compression algorithm for improved memory efficiency. HISAT2 can handle larger genomes and more complex transcriptomes.
+
+HISAT2 requires an indexed genome, obtainable with a simple synthax:
+
+```
+hisat2-build reference_genome.fa genome_index
+```
+
+Basic synthax:
+
+```
+hisat2 -x genome_index -1 read1.fastq -2 read2.fastq -S output.sam
+```
+
+The options used here are:
+
+- `-x`: Specifies the index of the reference genome.
+- `-1`: Specifies the file containing the first reads of paired-end data.
+- `-2`: Specifies the file containing the second reads of paired-end data.
+- `-S`: Specifies the output file in SAM format.
+
+Some other popular options are:
+
+- `-U <single_end_read.fq>`: for single end reads
+- `--dta`: Use this option for transcriptome alignments to improve alignments for transcript quantification.
+- `--rna-strandness`: Specify RNA strandness (use `FR` for forward, `RF` for reverse, or `NONE` for no specific strandness).
+- `--spliced-align`: Ensure the aligner considers splicing events.
+- `--max-intron-len <preferred intron length>`: Set the maximum allowed intron length for spliced alignments.
+
+---
+
 ### Alignment via HISAT2
 
-Prior to alignment with HISAT2, we require to index the genome. This can be carried out with the following command synthax. Note, we have added the `-p <threads>` flag for threads (decreasing the indexing time for larger genomes):
+Prior to alignment with HISAT2, we require to index the genome. This can be carried out with the following command synthax. Note, we have added the `-p <threads>` flag for threads (decreasing the indexing time for larger genomes).
+
+HISAT2 is used to index the model organism of the Mouse first.
 
 ```
 hisat2-build -p <threads> <reference-genome.fasta> <reference_index>
@@ -126,10 +271,10 @@ hisat2-build -p <threads> <reference-genome.fasta> <reference_index>
 Thus, do:
 
 ```
-hisat2-build -p 16 ASM75055v1_genomic.fna ecoli_index
+hisat2-build -p 16 GCF_000001635.27_GRCm39_genomic.fna GCF_000001635.27_GRCm39_genomic
 ```
 
-This command will build the *E. coli* database using 16 threads (time estimation: ~<10s).
+This command will build the *M. musculus* database using 16 threads (time estimation: ~10m).
 
 > [!NOTE]
 > If you ever need to index larger genomes, do also include the `--large-idex` flag.
@@ -143,51 +288,41 @@ Now, you can align your reads. The baseline HISAT2 command for alignment is the 
 hisat2 -x <reference_index> -1 <sample_R1.fastq> -2 <sample_R2.fastq> -S <output.sam>
 ```
 
-Since we are using single reads and not pair ends, we should use the following command:
+Then, HISAT2 is used to align our trimmed reads about outputting a SAM file.
 
 ```
-hisat2 -x <index_basename> -U <reads.fastq> -S <output.sam>
+ hisat2 -x GCF_000001635.27_GRCm39_genomic -p 2 -1 Control1_R1_val_1.fq.gz -2 Control1_R2_val_2.fq.gz -S Control1.sam
+        .
+        .
+        .
+236499 reads; of these:
+ 236499 (100.00%) were paired; of these:
+30736 (13.00%) aligned concordantly 0 times
+197200 (83.38%) aligned concordantly exactly 1 time
+8563 (3.62%) aligned concordantly >1 times
+----
+30736 pairs aligned concordantly 0 times; of these:
+ 3583 (11.66%) aligned discordantly 1 time
+----
+27153 pairs aligned 0 times concordantly or discordantly; of these:
+ 54306 mates make up the pairs; of these:
+ 30660 (56.46%) aligned 0 times
+ 21188 (39.02%) aligned exactly 1 time
+ 2458 (4.53%) aligned >1 times
+93.52% overall alignment rate
 ```
 
-We will also use the `<read1.fastq>,<read2.fastq>` synthax to include both the reads available to us, as well as using the `-p 8` to run 8 threads. Execute:
-
-```
-hisat2 -p 16 -x ecoli_index -U SRR13970433.fastq,SRR13970434.fastq,SRR13970435.fastq,SRR13970436.fastq -S output.sam
-```
-
-The command will run for ~1-2 minutes, creating the `output.sam` file (~3.8GB, time estimate ~10-15m)
-
-You will notice that this will wild a really poor alignmet:
-
-```
-11395529 reads; of these:
-  11395529 (100.00%) were unpaired; of these:
-    11232207 (98.57%) aligned 0 times
-    148028 (1.30%) aligned exactly 1 time
-    15294 (0.13%) aligned >1 times
-1.43% overall alignment rate
-```
-
-**Only 1.43% aligned!!!** ... so what now?
-
-> [!NOTE]
-> **Exercise: Download more read sequences (not required but recommended)**
-> Base your searches on the SRA files presented in the [Transcriptome RNA Sequencing Data Set of Differential Gene Expression in *Escherichia coli* BW25113 Wild-Type and *slyA* Mutant Strains](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8142576/) publication.
-> 1. Go to the NCBI SRA repository: https://www.ncbi.nlm.nih.gov/sra/
-> 2. In the search field, search for *E. coli*. Select any of the experiments, *or* if you know any experiment you know of, search for that! \*wink\* \*wink\* 
-> 3. In the terminal, download the reads:
->    - This uses the `sra-toolkit` which is a powerful tool that allows you to download any experimental data hosted by NCBI.
->    - Use `prefetch <sra run #>`, such as `prefetch SRR30660439`. You can get this number once you open one of the experiments (close to the bottom of the page).
-> 4. extract the reads using `fastq-dump <sra run #>` such as `fastq-dump SRR30660439`. This will generate the fastq file you can use for alignment.
-> You will notice that the alignment number will increase (perhaps, not by much as these are from different experiments).
-> 
-> Question: Why do you think the alignment is so low?
-
-As this workshop is concentrated around the techniques, we will continue with the poor alignment. *All is good!*
+With 93.52% overall alignmet, we score well!
 
 ---
 
 ### Data Formatting Using SAMtools 
+
+Notice how the output from our most recent alignment is in SAM format. To operate SAM/BAM files, we use **SAMtools**.
+
+SAMtools is a suite of tools used for manipulating and analyzing files in the SAM (Sequence Alignment/Map) and BAM (Binary Alignment/Map) formats. These formats are commonly used to store alignment data from various sequencing technologies. SAMtools provides a variety of functionalities to process alignment files, including sorting, indexing, and variant calling.
+
+As mentioned before, SAM and BAM files are essentially the same, with one (SAM, Sequence Alignment/Map, larger size) being human readable whilst the other (BAM, Binary Alignment/Map, more compact) is machine readable. 
 
 Using SAMtools, we are going to do a few things:
 
@@ -236,180 +371,76 @@ samtools index -@ 16 -b output_sorted.bam
 
 This creates a `.bai` file, which is your BAM index file.
 
-> [!NOTE]
-> Check Stats (Optional)
-> You can check the stats of your indexed BAM file by doing `samtools flasgstat -@ 16 output_sorted.bam
+It is typical to first convert SAM files to BAM as these save space:
 
----
----
+```
+samtools view -bS input.sam > output.bam
+```
 
-## Quantifying Gene Expression
+SAMtools is able to **sort** SAM/BAM files by the genomic coordinates of the alignments, which is necessary for many downstream analyses:
 
-<p align="center">
-    <img src="https://hbctraining.github.io/Intro-to-rnaseq-hpc-O2/img/union.png" width="350">
-</p>
+```
+samtools sort output.bam -o sorted.bam
+```
 
-Image source: [Harvard Chan Bioinformatics Core](https://hbctraining.github.io/DGE_workshop/lessons/02_DGE_count_normalization.html).
+Typically this is followed by **indexing**, which creates an index file for BAM files to allow fast access to specific regions of the genome:
 
-In this step, learners will learn how to use featureCounts to assign aligned reads from RNA-seq data to genomic features, such as genes. This tool efficiently counts the number of reads mapping to each gene, providing a crucial input for downstream differential expression analysis. By accurately quantifying gene expression, participants will better understand how different genes are expressed in their RNA-seq dataset.
+```
+samtools index sorted.bam
+```
 
-- [Quantify Reads with featureCounts](#quantify-reads-with-featurecounts)
+**Returning to our pipeline**, we then use SAMtools to sort our alignment and convert SAM into BAM ... 
 
-> [!NOTE]
-> **File formats: GFF vs GTF**
-> Common feature annotations are found in 2 formats: GFF and GTF. Both files contain tabular information with 9 columns: chromosome, source, feature, start, end, score, strand, frame, attributes.
+```
+samtools sort -@ 16 -o Control1_sorted.bam Control1.sam
+```
+
+... and idex the sorted BAM file.
+
+
+```
+samtools index Control1_sorted.bam
+```
+
+> [!Note]
+> Notice how we did not use `samtools view -bS input.sam > output.bam`
+> This is because certain actions with SAMtools can output directly in the format that we require.
+
+> [!IMPORTANT] 
+> **There is more to SAMtools that we are not covering.** 
+> Users can then create aligment statistics with
+> ```
+> samtools flagstat sorted.bam
+> ```
+> Or create a pileup file for [variant calling](https://www.ebi.ac.uk/training/online/courses/human-genetic-variation-introduction/variant-identification-and-analysis/#:~:text=What%20is%20variant%20calling%3F,creating%20BAM%20or%20CRAM%20files.): 
+> ```
+> samtools mpileup -f reference.fasta sorted.bam > variants.bcf
+> ```
+> A pileup file is a data format used to represent the sequence coverage at each position in the genome across multiple reads. It provides a compact summary of read alignments and is particularly useful for variant calling and other genomic analyses.
 > 
-> GFF:
-> - General Feature Format
-> - Describes any genomic feature
->
-> GTF:
-> - Gene Transfer Format
-> - Contains only gene annotation 
-
-### Quantify Reads with featureCounts
-
- [featureCounts](https://subread.sourceforge.net/featureCounts.html) is used for counting the number of reads that map to each feature (e.g., genes, exons) in a reference annotation. It operates on aligned RNA-Seq reads (e.g., SAM/BAM files) and is focused on providing read counts for predefined genomic features.
-
-> [!NOTE]
-> There are different path one can take in order to proceed the pipeline. Another option, for example, is to use StringTe and Ballgown.
->  StringTie is primarily used for assembling transcripts and estimating their expression levels from RNA-Seq data. It can create a transcriptome assembly from aligned RNA-Seq reads and generate gene and transcript expression levels.
-> Meanwhile, featureCounts is used for counting the number of reads that map to each feature (e.g., genes, exons) in a reference annotation. It operates on aligned RNA-Seq reads (e.g., SAM/BAM files) and is focused on providing read counts for predefined genomic features.
->
-> **Both serve important purposes, it all depends what the end goal is.**
-
-We run featureCounts with the following command synthax:
-
-```
-featureCounts -a <reference.gtf> -o counts.txt <output_sorted.bam>
-```
-
-There are a few flags that we want to use:
-
-- `-a <reference.gtf>`: Specifies the annotation file in GTF format.
-- `-o <output.txt>`: Specifies the output file for counts.
-- `-T <threads>`: Uses 4 threads (adjust according to the number of available cores).
-- `-g gene-id`: specifies the gene ID in the output.
-- `--ignoreDup`: counts only non-duplicate reads (useful if your data might include duplicates).
-
-thus we run:
-
-```
-featureCounts -T 16 -a ASM75055v1_genomic.gtf -o counts.txt -g gene_id --fraction --ignoreDup output_sorted.bam
-```
-
-We can then check the `counts.txt` output by doing `head counts.txt`. Output should look something like this:
-
-```
-# Program:featureCounts v2.0.3; Command:"featureCounts" "-T" "16" "-a" "ASM75055v1_genomic.gtf" "-o" "counts.txt" "-g" "gene_id" "--fraction" "--ignoreDup" "output_sorted.bam" 
-Geneid  Chr     Start   End     Strand  Length  output_sorted.bam
-BW25113_RS01010 NZ_CP009273.1   220258  221799  +       1542    10
-BW25113_RS01015 NZ_CP009273.1   221868  221944  +       77      0
-BW25113_RS01020 NZ_CP009273.1   221987  222062  +       76      0
-BW25113_RS01025 NZ_CP009273.1   222246  225149  +       2904    51
-BW25113_RS01030 NZ_CP009273.1   225245  225360  +       116     0
-BW25113_RS01035 NZ_CP009273.1   225415  225491  +       77      0
-BW25113_RS01085 NZ_CP009273.1   233418  233494  +       77      0
-BW25113_RS01235 NZ_CP009273.1   258582  258657  +       76      0
-```
-
-This output tells us the following:
-
-- **Geneid**: The identifier for the gene, here using the *E. coli* gene names (e.g., BW25113_RS01010). This tells you which gene each row is summarizing.
-- **Chr**: The chromosome (or contig) where the gene is located. For instance, NZ_CP009273.1 refers to the name of the contig (which could be the chromosome or a plasmid).
-- **Start**: The starting position of the gene on the chromosome (in base pairs). For example, the gene BW25113_RS01010 starts at position 220258.
-- **End**: The ending position of the gene on the chromosome. For BW25113_RS01010, the gene ends at position 221799.
-- **Strand**: The strand the gene is located on, either "+" (forward strand) or "−" (reverse strand). In this case, all genes are on the forward strand (+).
-- **Length**: The length of the gene (in base pairs). For example, the length of BW25113_RS01010 is 1542 bp.
-- *output_sorted*.bam: This column shows the number of reads that were assigned to each gene in your sorted BAM file (output_sorted.bam). For BW25113_RS01010, there are 10 reads assigned, while other genes like BW25113_RS01015 and BW25113_RS01020 have 0 reads assigned.
-
-As we are going to be using DESeq2, we need to modify the formatting and keep only the features that we care about.
-
->[!IMPORTANT]
-> ALWAYS. KEEP. YOUR DATA. Make a backup, rename files differently, but always find a way to keep your data (so that when you make mistakes, you can always go back!).
-
-There are a few ways to modify this data; Using R is a popular option, but we can be quicker with the Command Line. We are going to use a powerful editing software called [awk](https://www.geeksforgeeks.org/awk-command-unixlinux-examples/) to remove the columns we do not need. Run the following:
-
-```
-awk 'NR > 1 {print $1, $NF}' counts.txt > cleaned_counts.txt
-```
-
-- `NR > 1` skips the first line (metadata).
-- `{print $1, $NF}` prints only the first column (gene ID) and the last column (count). If we do `head cleaned_counts.txt` you will see something similar to this:
-
-```
-Geneid output_sorted.bam
-BW25113_RS01010 10
-BW25113_RS01015 0
-BW25113_RS01020 0
-BW25113_RS01025 51
-BW25113_RS01030 0
-BW25113_RS01035 0
-BW25113_RS01085 0
-BW25113_RS01235 0
-BW25113_RS23035 0
-```
-
-We then need to use an editing sofware (e.g., `nano`) to edit output_sorted.bam to `sample1` (as we only have a single sample).
-
-```
-Geneid sample1
-BW25113_RS01010 10
-BW25113_RS01015 0
-BW25113_RS01020 0
-BW25113_RS01025 51
-BW25113_RS01030 0
-BW25113_RS01035 0
-BW25113_RS01085 0
-BW25113_RS01235 0
-BW25113_RS23035 0
-```
-
-The file is not ready for the next step!
+> It is useful for the following reasons:
+> 
+> - **Coverage Information**: shows how many reads cover each position in the genome, helping to identify regions with high or low sequencing coverage.
+> - **Can be used for Base Calls**: lists the base calls (nucleotides) observed at each position along with their quality scores.
+> - **Variations**: allows for the identification of variations such as SNPs (single nucleotide polymorphisms) and indels (insertions and deletions) by comparing observed bases to the reference genome.
 
 ---
 
-## It's *R* time
+## Counting Reads in Features
 
-As we are going to be using R for the next step, in the JupyterLab click **Laucher :heavy_plus_sign:** and the **RStudio :arrow_upper_right:** vignette.
+HTSeq-count is a tool for counting the number of reads mapped to specific genomic features (like genes) in RNA-seq data.
 
-This will open RStudio in a new tab.
-
----
-
-## Exploring Differential Gene Expression
-
-<p align="center">
-    <img src="https://hbctraining.github.io/DGE_workshop/img/normalization_methods_depth.png" width="450">
-</p>
-
-Image source: [Harvard Chan Bioinformatics Core](https://hbctraining.github.io/DGE_workshop/lessons/02_DGE_count_normalization.html). In the figure above, each pink and green rectangle represents a read aligned to a gene. Reads connected by dashed lines connect a read spanning an intron.
-
-In the following analysis we use R and [DESeq2](https://www.bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html) to perform normalization and some differential gene expression analysis. The analysis itself leads us to uncover which genes are most highly expressed in the sample, normalize the data to make it comparable, and visualize gene expression patterns. 
-
-Code is available in the R script provided at `data/iplant/home/shared/cyverse_training/datalab/biosciences/e_coli_genomic/deseq2_viz.R`. Here's a general summary of what is covered in this section:
-
-1. **Loading the Count Data**: We begin by reading in the raw counts matrix, which contains the number of reads assigned to each gene across different samples. This count data is necessary for downstream analysis.
-2. **Creating the DESeqDataSet Object**: We create a DESeqDataSet object, which structures the raw count data and defines the experimental design (conditions or groups being compared). This object is essential for normalizing and analyzing RNA-seq data.
-3. **Normalization of Count Data**: RNA-seq data can have biases due to varying sequencing depths across samples. DESeq2 performs size factor estimation to account for these differences, generating normalized counts that can be compared across genes and samples.
-4. **Visualization**: With normalized counts, we generate visualizations like heatmaps using ggplot2 in R. These visualizations provide an overview of gene expression patterns across different conditions or samples.
-5. **Identifying Highly Expressed Genes**: By calculating the average expression for each gene, we can rank and identify highly expressed genes. These genes may be of particular interest for further study.
-
-By the end, you should be able to create a small table of the highest expressed genes in our alignment (which should look like the following)!
+We use flags:
+- `-r pos`: tells HTSeq that the reads in the BAM file are sorted by position (i.e., genomic coordinate), which can be faster if the BAM file is already sorted by position.
+- `-i gene`: sets the feature ID attribute to use for counting ("count the genes for me please!")
 
 ```
-                           Gene Average_Expression
-BW25113_RS19530 BW25113_RS19530                378
-BW25113_RS16985 BW25113_RS16985                173
-BW25113_RS19520 BW25113_RS19520                140
-BW25113_RS13525 BW25113_RS13525                132
-BW25113_RS17000 BW25113_RS17000                 96
-BW25113_RS01025 BW25113_RS01025                 51
-BW25113_RS13535 BW25113_RS13535                 34
-BW25113_RS20600 BW25113_RS20600                 30
-BW25113_RS19995 BW25113_RS19995                 28
-BW25113_RS20800 BW25113_RS20800                 12
+htseq-count -r pos -i gene Control1_sorted.bam GCF_000001635.27_GRCm39_genomic.gff > Control1_counts.txt
 ```
+
+As it is a txt file, one can open the txt and try to sort through the file themselves, however this is not suggested.
+
+We will be working on this file in the following week.
 
 ---
 ---
