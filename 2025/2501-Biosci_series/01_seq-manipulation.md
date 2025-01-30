@@ -14,10 +14,10 @@ Image credits: [Griffith Lab](https://griffithlab.org/) ([GitHub](https://github
 >[!important]
 > :clock1: **Schedule**
 > - 2:00pm-2:15pm: Welcome and introdution to topic
-> - 2:15pm-2:25pm: Quality Control for Raw Reads
-> - 2:05pm-2:25pm: Alignment and Data Preparation
-> - 2:25pm-2:45pm: Transcript Assembly and Quantification
-> - 2:45pm-3:00pm: Exploring Differential Gene Expression and closing remarks
+> - 2:15pm-2:30pm: Handling raw reads
+> - 2:30pm-2:40pm: Genome indexing and alignments 
+> - 2:40pm-2:50pm: Data formatting
+> - 2:50pm-3:00pm: Counting features and closing remarks
 
 >[!important]
 > :heavy_exclamation_mark: **Requirements**
@@ -30,8 +30,7 @@ Image credits: [Griffith Lab](https://griffithlab.org/) ([GitHub](https://github
 >[!important]
 > :white_check_mark: **Expected Outcomes**
 > - Hands-on Experience with RNA-seq Data Processing
-> - Understanding Transcript Assembly and Quantification
-> - Understand basic Differential Gene Expression Analysis
+> - Understanding Tools and Methods for alignments and manipulation 
 
 <br>
 
@@ -44,7 +43,7 @@ This workshop introduces participants to the **fundamentals of Sequence manipula
 
 > [!IMPORTANT]
 > This workshop uses data obtained by the [National Center of Biotechnology Information (NCBI)](https://www.ncbi.nlm.nih.gov/).  
-> We are going to be using *M. Musculus* as the example organism throughout this workshop. All files are made available on CyVerse [here](https://datacommons.cyverse.org/browse/iplant/home/shared/cyverse_training/datalab/biosciences/) or if you are using the command line here: `/iplant/home/shared/cyverse_training/datalab/biosciences`.
+> We are going to be using *M. Musculus* as the example organism throughout this workshop. All files are made available on CyVerse [here](https://datacommons.cyverse.org/browse/iplant/home/shared/cyverse_training/datalab/biosciences/m_musculus-seq-tut) or if you are using the command line here: `/iplant/home/shared/cyverse_training/datalab/biosciences/m_musculus-seq-tut`.
 >
 > - The *M. Musculus* genome used will be the [GRCm39](https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000001635.27/).
 > - Curated RefSeq annotations (gff) for the genome can be found in the same location as above.
@@ -78,21 +77,15 @@ In order to get things started:
 3. Copy the genome files using the following command:
 
     ```
-    gocmd get --progress /iplant/home/shared/cyverse_training/datalab/biosciences/e_coli_genomic/
+    gocmd get --progress /iplant/home/shared/cyverse_training/datalab/biosciences/m_musculus-seq-tut/
     ```
 
     This will copy:
     
-    - The *E. coli* reference genome (`ASM75055v1_genomic.fna`)
-    - The reference transcript annotations (`ASM75055v1_genomic.gtf`)
-    - The processed fastq files:
-        - SRR13970433.fastq  
-        - SRR13970434.fastq  
-        - SRR13970435.fastq  
-        - SRR13970436.fastq
-    - The compiled reads in sam format (`output.sam`)
-    - The Jupyter Notebook you can use to replicate the workshop.
-    - The R script we will use for the last part of the workshop.
+    - Control1_R1.fastq.gz
+    - Control1_R2.fastq.gz
+    - GCF_000001635.27_GRCm39_genomic.fna 
+    - GCF_000001635.27_GRCm39_genomic.gff
 
 You are now ready for the workshop!
 
@@ -162,7 +155,7 @@ Other important results:
 Execute the command: 
 
 ```
- fastqc -t 2 -o . Control1_R1.fastq.gz Control1_R2.fastq.gz
+ fastqc -t 16 -o . Control1_R1.fastq.gz Control1_R2.fastq.gz
 ```
 
 The output from FastQC is:
@@ -291,7 +284,7 @@ hisat2 -x <reference_index> -1 <sample_R1.fastq> -2 <sample_R2.fastq> -S <output
 Then, HISAT2 is used to align our trimmed reads about outputting a SAM file.
 
 ```
- hisat2 -x GCF_000001635.27_GRCm39_genomic -p 2 -1 Control1_R1_val_1.fq.gz -2 Control1_R2_val_2.fq.gz -S Control1.sam
+ hisat2 -x GCF_000001635.27_GRCm39_genomic -p 16 -1 Control1_R1_val_1.fq.gz -2 Control1_R2_val_2.fq.gz -S Control1.sam
         .
         .
         .
@@ -395,7 +388,7 @@ samtools index sorted.bam
 samtools sort -@ 16 -o Control1_sorted.bam Control1.sam
 ```
 
-... and idex the sorted BAM file.
+... and index the sorted BAM file.
 
 
 ```
