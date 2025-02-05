@@ -10,9 +10,9 @@
 ---
 >[!important]
 > :clock1: **Schedule**
-> - 3:00pm-3:15pm: Welcome and introdution to topic (What is DEA?)
-> - 3:15pm-3:25pm: Experiment Design and Data Preparation (What's upstream?)
-> - 3:25pm-4:00pm: Differential Expression Analysis with DESeq2 and visualizations
+> - 2:00pm-2:15pm: Welcome and introdution to topic (What is DEA?)
+> - 2:15pm-2:25pm: Experiment Design and Data Preparation (What's upstream?)
+> - 2:25pm-2:00pm: Differential Expression Analysis with DESeq2 and visualizations
 
 >[!important]
 > :heavy_exclamation_mark: **Requirements**
