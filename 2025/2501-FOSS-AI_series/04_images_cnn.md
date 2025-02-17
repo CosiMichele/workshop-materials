@@ -163,15 +163,7 @@ Also note that by learning filters that are shared across all spatial locations 
 
 Intuition: the first layers of the network learn low level, simple features. As the input progresses deeper into the architecture of the network, these are combined to create more complex features and eventually a high level semantic description of the image is extracted. This high level semantic description is then used in the fully connected network for the learning task.
 
-## Case study: VGG-16 Architecture
-
-On the ImageNet visual database, can classify images into 1000 classes with 92.7% accuracy. There are better models now, which use more advanced architectures, but this is quite simple and effective.
-
-<br>
-<p align="center">
-    <img src="https://raw.githubusercontent.com/ua-datalab/MLWorkshops/refs/heads/main/images/CNN/vgg-16-cnn-architecture.webp" width="500">
-</p>
-<br>
+---
 
 ## Sources for images and additional resources
 
@@ -182,3 +174,6 @@ On the ImageNet visual database, can classify images into 1000 classes with 92.7
 - [Comprehensive Guide to Convolutional Neural Networks - the ELI5 way](https://towardsdatascience.com/a-comprehensive-guide-to-convolutional-neural-networks-the-eli5-way-3bd2b1164a53)
 - [A guide to convolution arithmetic for deep learning](https://arxiv.org/abs/1603.07285) A thorough overview of convolution, stride, and padding
 - [Introduction to CNN](https://github.com/nextgensh/ua-teaching/blob/main/cnn/cnn-intro.ipynb). Shravan Aras.
+
+---
+---
