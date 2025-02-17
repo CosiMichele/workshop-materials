@@ -1,7 +1,7 @@
 # Handling Images & Videos pt. 1
 
 
-📓 Notebook link: [CNN.ipynb](https://github.com/ua-datalab/MLWorkshops/blob/main/Convolutional_Neural_Networks/CNN.ipynb)
+📓 Notebook link: [CNN.ipynb](https://github.com/ua-datalab/MLWorkshops/blob/main/Convolutional_Neural_Networks/CNN.ipynb) ([raw](https://github.com/ua-datalab/MLWorkshops/blob/main/Convolutional_Neural_Networks/CNN.ipynb?raw=true))
 
 <br>
 <br>
@@ -15,7 +15,7 @@
 >[!important]
 > :clock1: **Schedule**
 > - 2:00pm-2:10pm: Welcome and Introduction to the topic
-> - 2:10pm-2:20pm: 
+> - 2:10pm-2:20pm: Convolutional Neural Network Architecture (+ *what's a Convolution?*)
 > - 2:20pm-3:00pm: 
 
 >[!important]
@@ -28,8 +28,8 @@
 
 >[!important]
 > :white_check_mark: **Expected Outcomes**
-> - 
-> - 
+> - Understanding of Convolutional Neural Networks
+> - Executing a small Jupyter Notebook using JS2
 
 <br>
 
@@ -48,6 +48,8 @@ Generally, we want to automate the derivation of useful information from images.
 - **Object tracking**: propose correspondence of detected objects across frames of a video
 - **Image restoration**
 - **Feature matching**: detection of features and correspondence between multiple views
+
+---
 
 ## CNN Architecture
 
@@ -93,7 +95,9 @@ Despite both images having the same structure, the location of the white value i
 
 Convolutional neural network architectures consist of convolutional and pooling layers in addition to fully connected layers. Note that we use a common activation function, ReLU. Based on the output of the fully connected layers, we are performing a classification task between some number of classes. Note also that the network reduces the dimensionality of the input using the convolution and pooling layers to some compact representation, and then feeds this into the fully connected layers which will generate the predicted class.
 
-## Convolution
+---
+
+### Convolution
 
 In the convolution operation, we pass kernels (also known as filters) over an image. We take the inner product between the kernel and a patch of the image. The output of convolution is high where the underlying image resembles the filter, and low where it does not. Once this response is calculated, it is fed through an activation function like ReLU, similar to fully connected neural networks.
 
@@ -121,7 +125,9 @@ In addition to specifying the number of filters and the shape of the filters, we
 
 ![](https://github.com/ua-datalab/MLWorkshops/blob/main/images/CNN/stride_padding.png)
 
-## Pooling
+---
+
+### Pooling
 
 These feature maps still have very high dimension, so we pool the filter activations through a pooling layer. This can be thought of as summarizing the input. In max pool, we take the maximum of all activations, and in average pool we take the average of all activations. Typically max pool is used. There are no learnable parameters for this layer.
 
@@ -135,14 +141,19 @@ These feature maps still have very high dimension, so we pool the filter activat
 </p>
 <br>
 
-## Parameter Sharing
+---
+
+### Parameter Sharing
+
 In the AlexNet architecture, which represented a huge leap forward in image classification, input images are 227x227x3. The first convolutional layer output is 55x55x96 (290,400), so 96 filters must be learned. Each filter is 11x11x3, so we learn 11x11x3 weights and 1 bias for a total of 364 parameters per filter. Thus we need to learn 34,944 parameters in total for this convolutional layer.
 
 If we used a fully connected neural network instead, we would go from 227x227x3 (154,587) -> 55x55x96 (290,400), which requires 154587*290400 weights and 290400 biases. That's approximately 44 billion parameters for a single layer!
 
 Also note that by learning filters that are shared across all spatial locations in the image, we have achieved our goal of translation invariance.
 
-## Activations
+---
+
+### Activations
 
 <br>
 <p align="center">
@@ -163,6 +174,9 @@ On the ImageNet visual database, can classify images into 1000 classes with 92.7
 <br>
 
 ## Sources for images and additional resources
+
+- DataLab Machine Learning Workshop series (2024): [Convoultional Neural Networks](https://github.com/ua-datalab/MLWorkshops/wiki/Convolutional-Neural-Networks)
+- DataLab Geospatial Workshop series (2024): Image Object Detection ‐ [Deep Forest](https://github.com/ua-datalab/Geospatial_Workshops/wiki/Image-Object-Detection-%E2%80%90-Deep-Forest) and [Detecto](https://github.com/ua-datalab/Geospatial_Workshops/wiki/Image-Object-Detection-%E2%80%90-Detecto)
 - [Stanford's CS231n, CNNs for Visual Recognition](https://cs231n.github.io/) An excellent resource for neural networks as well as CNNs
 - [ConvNetJS CIFAR-10](https://cs.stanford.edu/people/karpathy/convnetjs/demo/cifar10.html) Train and test a model on CIFAR10 in your browser. Excellent demonstration of the activations at every step in the architecture.
 - [Comprehensive Guide to Convolutional Neural Networks - the ELI5 way](https://towardsdatascience.com/a-comprehensive-guide-to-convolutional-neural-networks-the-eli5-way-3bd2b1164a53)
