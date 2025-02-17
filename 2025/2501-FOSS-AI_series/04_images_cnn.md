@@ -1,7 +1,7 @@
 # Handling Images & Videos pt. 1
 
 
-📓 Notebook link: [CNN.ipynb](https://github.com/ua-datalab/MLWorkshops/blob/main/Convolutional_Neural_Networks/CNN.ipynb) ([raw](https://github.com/ua-datalab/MLWorkshops/blob/main/Convolutional_Neural_Networks/CNN.ipynb?raw=true))
+📓 Notebook link: [CNN.ipynb](https://github.com/ua-datalab/FOSS_AI-ML/blob/main/CNN.ipynb) ([raw](https://github.com/ua-datalab/FOSS_AI-ML/blob/main/CNN.ipynb?raw=true))
 
 <br>
 <br>
@@ -15,8 +15,8 @@
 >[!important]
 > :clock1: **Schedule**
 > - 2:00pm-2:10pm: Welcome and Introduction to the topic
-> - 2:10pm-2:20pm: Convolutional Neural Network Architecture (+ *what's a Convolution?*)
-> - 2:20pm-3:00pm: 
+> - 2:10pm-2:30pm: Overview on Convolutional Neural Network Architecture
+> - 2:30pm-end: small example through Jupyter Notebook running on JS2
 
 >[!important]
 > :heavy_exclamation_mark: **Requirements**
@@ -162,6 +162,10 @@ Also note that by learning filters that are shared across all spatial locations 
 <br>
 
 Intuition: the first layers of the network learn low level, simple features. As the input progresses deeper into the architecture of the network, these are combined to create more complex features and eventually a high level semantic description of the image is extracted. This high level semantic description is then used in the fully connected network for the learning task.
+
+---
+
+📓 Notebook link: [CNN.ipynb](https://github.com/ua-datalab/FOSS_AI-ML/blob/main/CNN.ipynb) ([raw](https://github.com/ua-datalab/FOSS_AI-ML/blob/main/CNN.ipynb?raw=true))
 
 ---
 
