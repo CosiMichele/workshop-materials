@@ -1,6 +1,3 @@
-# Handling Images & Videos pt. 1
-
-
 📓 Notebook link: [CNN.ipynb](https://github.com/ua-datalab/FOSS_AI-ML/blob/main/CNN.ipynb) ([raw](https://github.com/ua-datalab/FOSS_AI-ML/blob/main/CNN.ipynb?raw=true))
 
 <br>
@@ -73,7 +70,7 @@ Please watch these VERY useful videos to understand how Convolutional Neural Net
 
 In this workshop, we will use RGB images. Each image has dimensionality H x W x 3, where H is the height of the image, W is the width of the image, and every pixel has three color channels (Red, Green, Blue).
 
-To motivate the need for a neural network architecture for images, consider the case of classifying digits with MNIST using a fully connected neural network. In this case each pixel takes on only a single greyscale value, and thus the image has H x W values. In the fully connected neural network, we unravel the image into a one dimensional vector which is HW long, either by picking values row-wise or column-wise. 
+To motivate the need for a neural network architecture for images, consider the case of classifying digits with [MNIST](https://en.wikipedia.org/wiki/MNIST_database) (Modified [National Institute of Standards and Technology](https://en.wikipedia.org/wiki/National_Institute_of_Standards_and_Technology) database) using a fully connected neural network. In this case each pixel takes on only a single greyscale value, and thus the image has H x W values. In the fully connected neural network, we unravel the image into a one dimensional vector which is HW long, either by picking values row-wise or column-wise. 
 
 <br>
 <br>
