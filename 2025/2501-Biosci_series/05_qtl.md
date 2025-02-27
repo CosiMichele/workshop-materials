@@ -1,19 +1,20 @@
-# RNA-Seq and Differential Expression Analysis using DESeq2
+# Introduction to QTLs
 
 <br>
 <br>
 <p align="center">
-    <img src="https://raw.githubusercontent.com/CosiMichele/workshop-materials/refs/heads/main/2024/2408-Biosci_series/assets/deseq2_volcano.png" width="750">
+    <img src="https://www.researchgate.net/profile/Ronald-Sederoff-2/publication/43073276/figure/fig2/AS:601581204549663@1520439544726/QTL-mapping-in-progeny-of-heterozygous-trees-Top-Schematic-representation-of-the-use.png" width="550">
 </p>
 <br>
+
+Figure from [Genomics, Domestication, and Evolution of Forest Trees, Sederoff *et al.*, 2010](https://www.researchgate.net/publication/43073276_Genomics_Domestication_and_Evolution_of_Forest_Trees)
 
 ---
 >[!important]
 > :clock1: **Schedule**
 > - 2:00pm-2:10pm: Welcome and introdution to topic (What are QTLs?)
-> - 2:10pm-2:35pm: Study design, pipelines and experimental crosses
-> - 2:35pm-2:50pm: QTL mapping methods
-> - 2:50pm-3:00pm: Interpreting results
+> - 2:10pm-2:25pm: Study design, pipelines
+> - 2:25pm-end: QTL mapping methods
 
 >[!important]
 > :heavy_exclamation_mark: **Requirements**
@@ -25,9 +26,8 @@
 
 >[!important]
 > :white_check_mark: **Expected Outcomes**
-> - Understanding a general DEA Workflow
-> - Revisiting previously discussed tools and techniques
-> - Understanding the basics of DESeq2 
+> - Understanding what a QTL is and file structures
+> - Understand the general pipeline for QTL research
 
 <br>
 
@@ -40,6 +40,9 @@
 > The original material covers ~10 hours of content; This workshop introduces the learner to what QTLs are and the approaches required for experiments surrounding the topic.
 >
 > For a more in depth dive, visit the original material at **https://smcclatchy.github.io/qtl-mapping/**.
+
+>[!note]
+> This workshop requires the [R/qtl2](https://kbroman.org/qtl2/) package
 
 ---
 
@@ -59,7 +62,6 @@ It is extremely difficult to cover QTLs in a single hour; In today's workshop we
 
 - Study design, experimental crosses and "what does a pipeline look like"?
 - QTL mapping methods
-- Interpreting results
 
 ---
 
@@ -182,29 +184,127 @@ Here is a breakdown to the purpose and output of every step:
     - What it does: Pinpoints specific single nucleotide polymorphisms (SNPs) within the QTL region that may be causal.
     - Why it matters: Identifying SNPs allows for further functional studies, gene discovery, and marker-assisted selection in breeding programs.
 
-Due to time constraints we will not be able to follow every step of the pipeline. Rather, we will be looking at calculating genotype probabilities (and performing a genome scan with linear mix models), finding LOD peaks 
+Due to time constraints we will not be able to follow every step of the pipeline. Rather, we will be looking at calculating genotype probabilities (and performing a genome scan with linear mix models), finding LOD peaks and identifying SNPs in a QTL. 
 
+We are going to be using the Carpentries-like lesson to simplify readability. Please follow the links below:
 
+- [Calculate Genotype Probabilites](https://smcclatchy.github.io/qtl-mapping/calc-genoprob.html)
+    - [Performing a Genome Scan with Linear Mix Models](https://smcclatchy.github.io/qtl-mapping/perform-genome-scan-lmm.html)
+- [Using Permutations to Determine Significance Thresholds](https://smcclatchy.github.io/qtl-mapping/perform-perm-test.html)
+    - [Finding LOD Peaks](https://smcclatchy.github.io/qtl-mapping/find-lod-peaks.html)
+- [Identify SNPs in a QTL](https://smcclatchy.github.io/qtl-mapping/integrating-gene-expression.html)
 
+Following are notes for each of the steps above (without the code).
 
+---
 
+## [Calculate Genotype Probabilites](https://smcclatchy.github.io/qtl-mapping/calc-genoprob.html)
 
+**Purpose of Genotype Probabilities**
+- Genetic markers are not present at every base in the genome, so we infer missing genotypes using known marker data.
+- This helps in QTL mapping by filling in gaps between observed markers.
 
+**Key Steps in Genotype Probability Calculation**
+- Uses recombination frequencies to estimate genotype probabilities at unobserved locations.
+- Requires a genetic map (marker positions and recombination rates).
+- Accounts for cross type (e.g., F2, backcross), as different breeding designs affect recombination patterns.
 
+**Why Genotype Probabilities Matter**
+- More accurate QTL detection by refining genotype estimates between markers.
+- Helps in linkage mapping by considering how alleles segregate in a population.
+- Reduces errors due to missing or sparse marker data.
 
+**Considerations**
+- High marker density improves genotype probability estimates.
+- Recombination frequency calculations are critical for accuracy.
+- Genotype probabilities are later used in QTL scans to detect trait-marker associations.
 
+### [Performing a Genome Scan with Linear Mix Models](https://smcclatchy.github.io/qtl-mapping/perform-genome-scan-lmm.html)
 
+**Purpose of a Linear Mixed Model (LMM) in Genome Scans**
+- Accounts for population structure and relatedness in QTL mapping.
+- Helps reduce false positives by correcting for genetic background effects.
 
+**Key Concepts in LMM for QTL Mapping**
+- Fixed effects: The genetic marker being tested for association with the trait.
+- Random effects: The genetic background (e.g., kinship or relatedness matrix) to control population structure.
+- Uses a kinship matrix to model relatedness between individuals, preventing spurious associations.
 
+**Why Use LMM in Genome Scans?**
+- In structured populations (e.g., inbred lines, related individuals), ignoring relatedness can lead to incorrect QTL detection.
+- LMM improves statistical power by distinguishing real QTL signals from background noise.
+- Required when working with datasets where individuals aren’t fully independent (e.g., family-based studies).
 
+**Considerations**
+- Requires kinship matrix calculation before running the scan.
+- More computationally intensive than simple genome scans.
+- Used in both quantitative traits and binary trait mapping.
 
+---
 
+## [Using Permutations to Determine Significance Thresholds](https://smcclatchy.github.io/qtl-mapping/perform-perm-test.html)
 
+**Purpose of a Permutation Test in QTL Mapping**
+- Determines the statistical significance of detected QTLs.
+- Prevents false positives by setting a threshold for LOD scores based on randomization.
 
+**Key Concepts in Permutation Testing**
+- Trait values are shuffled randomly among individuals while keeping genotypes unchanged.
+- The genome scan is repeated multiple times (e.g., 1,000 permutations).
+- LOD scores from randomized data are compared to the real data to establish a threshold for significance.
 
-and identifying SNPs in a QTL. 
+**Why Permutation Testing Matters**
+- Adjusts for multiple testing (since genome scans test thousands of markers).
+- Ensures that only strong QTL signals are considered significant.
+- Common practice in QTL studies to validate findings.
 
-## Calculate Genotype Probabilites
-### Performing a Genome Scan with Linear Mix Models
-## Finding LOD Peaks
-## Identify SNPs in a QTL
+**Considerations**
+- More permutations = more reliable threshold, but also higher computation time.
+- The p-value of a QTL is estimated based on how often a random permutation produces an equal or higher LOD score.
+- Different significance levels (e.g., 5%, 1%) can be used depending on study design.
+
+### [Finding LOD Peaks](https://smcclatchy.github.io/qtl-mapping/find-lod-peaks.html)
+
+**Purpose of Finding LOD Peaks**
+- Identifies genomic regions (QTLs) significantly associated with a trait.
+- Uses LOD (Logarithm of the Odds) scores to measure the strength of the association.
+
+**Key Concepts in Finding QTL Peaks**
+- LOD Score Calculation: Compares the likelihood of a QTL being present vs. absent at a given position.
+- Threshold for Significance: Determined using permutation tests to avoid false positives.
+- Peak Detection: The highest LOD scores indicate potential QTL locations.
+
+**Why Identifying LOD Peaks Matters**
+- Helps pinpoint candidate regions in the genome for further study.
+- Peaks above the significance threshold indicate true QTLs rather than random associations.
+- Understanding peak width and height gives insights into effect size and confidence intervals.
+
+**Considerations**
+- Higher LOD scores suggest stronger evidence for a QTL.
+- Multiple peaks may indicate multiple QTLs influencing the trait.
+- Fine-mapping and additional validation are needed to confirm candidate genes.
+
+---
+
+## [Identify SNPs in a QTL](https://smcclatchy.github.io/qtl-mapping/integrating-gene-expression.html)
+
+**Purpose of Integrating Gene Expression Data in QTL Mapping**
+- Links genetic variants (QTLs) to gene expression changes.
+- Helps identify expression QTLs (eQTLs), which influence gene activity.
+
+**Key Concepts in Gene Expression Integration**
+- Expression QTLs (eQTLs): QTLs that regulate gene expression rather than directly affecting a physical trait.
+- Local vs. Distant eQTLs:
+    - Cis-eQTLs: Near the gene they regulate.
+    - Trans-eQTLs: Affect genes far from the QTL location.
+- Statistical Association: Tests whether a genetic variant correlates with changes in gene expression levels.
+
+**Why Integrating Gene Expression Matters**
+- Connects genetic variation to molecular mechanisms behind traits.
+- Helps distinguish causal genes from nearby variants.
+- Can reveal gene regulatory networks influencing complex traits.
+
+**Considerations**
+- Requires both genotype and RNA expression data from the same individuals.
+- Cis-eQTLs are easier to interpret than trans-eQTLs.
+- Additional functional validation (e.g., CRISPR, RNA-seq) may be needed to confirm gene regulatory effects.
