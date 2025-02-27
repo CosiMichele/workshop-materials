@@ -3,7 +3,7 @@
 <br>
 <br>
 <p align="center">
-    <img src="https://www.researchgate.net/profile/Ronald-Sederoff-2/publication/43073276/figure/fig2/AS:601581204549663@1520439544726/QTL-mapping-in-progeny-of-heterozygous-trees-Top-Schematic-representation-of-the-use.png" width="550">
+    <img src="https://raw.githubusercontent.com/CosiMichele/workshop-materials/refs/heads/main/2025/2501-Biosci_series/assets/QTL-mapping-in-progeny-of-heterozygous-trees-Top-Schematic-representation-of-the-use.png" width="550">
 </p>
 <br>
 
