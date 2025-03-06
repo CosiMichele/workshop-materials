@@ -1,5 +1,7 @@
 # Introduction to GWAS
 
+📓 Notebook link: [gwas.ipynb](https://github.com/CosiMichele/workshop-materials/blob/main/2025/2501-Biosci_series/assets/gwas.ipynb) ([raw](https://raw.githubusercontent.com/CosiMichele/workshop-materials/refs/heads/main/2025/2501-Biosci_series/assets/gwas.ipynb))
+
 <br>
 <br>
 <p align="center">
@@ -225,7 +227,11 @@ Step 3 focuses on the following:
             <p align="center">
             <img src="https://raw.githubusercontent.com/CosiMichele/workshop-materials/refs/heads/main/2025/2501-Biosci_series/assets/qq-assoc.jfif" width="400">
             </p>
-            - Downward deviation (right side) → Deflation, meaning fewer significant SNPs than expected.
+            - Downward deviation (right side) = Deflation, meaning fewer significant SNPs than expected.
             <p align="center">
             <img src="https://raw.githubusercontent.com/CosiMichele/workshop-materials/refs/heads/main/2025/2501-Biosci_series/assets/qq-logis.jfif" width="400">
             </p>
+
+---
+
+📓 Notebook link: [gwas.ipynb](https://github.com/CosiMichele/workshop-materials/blob/main/2025/2501-Biosci_series/assets/gwas.ipynb) ([raw](https://raw.githubusercontent.com/CosiMichele/workshop-materials/refs/heads/main/2025/2501-Biosci_series/assets/gwas.ipynb))
