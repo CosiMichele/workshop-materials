@@ -235,3 +235,32 @@ Step 3 focuses on the following:
 ---
 
 📓 Notebook link: [gwas.ipynb](https://github.com/CosiMichele/workshop-materials/blob/main/2025/2501-Biosci_series/assets/gwas.ipynb) ([raw](https://raw.githubusercontent.com/CosiMichele/workshop-materials/refs/heads/main/2025/2501-Biosci_series/assets/gwas.ipynb))
+
+---
+
+### Additional Notes
+
+In the tutorial, there are steps that cover both association (`--assoc`) and logistic (`--logistic`) tests using plink. Both `--assoc` and `--logistic` are association testing methods in PLINK, but they differ in their statistical approach and how they handle covariates.
+
+#### `--assoc`: Basic Association Testing ([Chi-Square Test](https://en.wikipedia.org/wiki/Chi-squared_test))
+
+This method performs a basic association test between each SNP and a binary trait (case-control) using a chi-square test.
+
+How It Works:
+- Compares allele frequencies between cases and controls.
+- Uses a chi-square test to check if a SNP is significantly associated with the phenotype.
+- Does NOT adjust for covariates (e.g., age, sex, population structure).
+
+#### `--logistic`: Logistic Regression Analysis
+
+This method uses logistic regression, which is more advanced than `--assoc`. It allows the inclusion of covariates (e.g., sex, age, principal components for population structure correction).
+
+How It Works:
+- Models the probability of being a case (1) vs. control (0) as a function of SNP genotype and covariates.
+- Uses logistic regression equation:
+    <p>
+    <strong>log(P(Y=1) / 1 - P(Y=1)) = β₀ + β₁x₁ + β₂c₂ + ... + βₙcₙ</strong>
+    </p>
+- P(Y=1): probability of disease (case status)
+- x: SNP genotype (coded as 0, 1, or 2 for allele copies)
+- c: covariates (age, sex, principal components)
