@@ -115,3 +115,23 @@ GWAS and QTL analysis can go hand in hand: **GWAS is best for studying complex t
     - Many traits (e.g., height, yield, disease resistance) are polygenic, meaning they result from multiple genes interacting.
     - QTL studies can identify major-effect loci, while GWAS can help detect smaller-effect loci distributed across the genome.
     - Example: In livestock genetics, QTL mapping is used to find major genes controlling growth, while GWAS helps detect polygenic effects from many small SNPs.
+
+---
+
+## The GWAS pipeline
+
+This is not *set in stone*, there isn't a single catch-them-all pipeline. This workshop follows the general outline of the Marees tutorial and from a bird eye view, these are the "steps":
+
+1. Quality Control (QC): essential to produce reliable GWAS outcome (*like any other research!*).
+2. Association Testing: inferring if there is a connection between SNPs to phenotypic traits.
+3. Vizualization of results (through a Manhattan plot).
+
+Within QC, the original author performs the following:
+
+- Filtering SNPs & Samples: Removing low-quality data based on missingness, **minor allele frequency (MAF)**, and **Hardy-Weinberg Equilibrium (HWE)**.
+- Sex Check: Ensuring consistency between reported and genetic sex.
+- Population Stratification: Addressing ethnic differences using **Multidimensional Scaling (MDS)** and **Principal Component Analysis (PCA)**.
+- Heterozygosity Check: Identifying sample contamination.
+- Relatedness Check: Removing cryptic relatedness using **identity-by-descent (IBD)** measures.
+
+Most of these steps are covered in "Step 1" and "Step 2" in the tutorial.
