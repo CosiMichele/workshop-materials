@@ -3,7 +3,7 @@
 <br>
 <br>
 <p align="center">
-    <img src="https://en.wikipedia.org/wiki/Genome-wide_association_study#/media/File:Manhattan_plot_from_a_GWAS_of_kidney_stone_disease.png" width="550">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Manhattan_plot_from_a_GWAS_of_kidney_stone_disease.png/1920px-Manhattan_plot_from_a_GWAS_of_kidney_stone_disease.png" width="550">
 </p>
 <br>
 
@@ -213,7 +213,7 @@ Step 3 focuses on the following:
         - y-axis = −log<sub>10</sub>(p-value) of p-values, making these look like peaks
         - Uses (previously calculated) Bonferroni correction to help identify significat SNPs.
         <p align="center">
-        <img src="https://raw.githubusercontent.com/CosiMichele/workshop-materials/refs/heads/main/2025/2501-Biosci_series/assets/manhattan.jfif" width="550">
+        <img src="https://raw.githubusercontent.com/CosiMichele/workshop-materials/refs/heads/main/2025/2501-Biosci_series/assets/manhattan.jfif" width="400">
         </p>
     - **QQ (Quantile-Quantile) plot**: compares observed p-values from the GWAS to expected p-values under the null hypothesis (no association). It helps detect inflation or systematic bias in the results.
         - x-axis: Expected -log<sub>10</sub>(p-values) under a uniform distribution.
@@ -223,9 +223,9 @@ Step 3 focuses on the following:
             - Points following the red line = No systematic bias.
             - Upward deviation (left side) = Inflation, meaning an excess of significant SNPs (possible population stratification or confounding).
             <p align="center">
-            <img src="https://raw.githubusercontent.com/CosiMichele/workshop-materials/refs/heads/main/2025/2501-Biosci_series/assets/qq-assoc.jfif" width="550">
+            <img src="https://raw.githubusercontent.com/CosiMichele/workshop-materials/refs/heads/main/2025/2501-Biosci_series/assets/qq-assoc.jfif" width="400">
             </p>
             - Downward deviation (right side) → Deflation, meaning fewer significant SNPs than expected.
             <p align="center">
-            <img src="https://raw.githubusercontent.com/CosiMichele/workshop-materials/refs/heads/main/2025/2501-Biosci_series/assets/qq-logis.jfif" width="550">
+            <img src="https://raw.githubusercontent.com/CosiMichele/workshop-materials/refs/heads/main/2025/2501-Biosci_series/assets/qq-logis.jfif" width="400">
             </p>
