@@ -118,6 +118,67 @@ GWAS and QTL analysis can go hand in hand: **GWAS is best for studying complex t
 
 ---
 
+## Legend
+
+### Extensions
+
+There are a number of terms and file extensions to keep in mind when doing GWAS (it can get pretty complicated!). The following figure from the publication ([Fig. 1](https://onlinelibrary.wiley.com/cms/asset/40f2cc77-cb25-4861-b274-682b83d33270/mpr1608-fig-0001-m.jpg)) covers very well the various reqiuired files and their extensions:
+
+<br>
+<br>
+<p align="center">
+    <img src="https://onlinelibrary.wiley.com/cms/asset/40f2cc77-cb25-4861-b274-682b83d33270/mpr1608-fig-0001-m.jpg" width="550">
+</p>
+<br>
+
+Not all files are used at once, some are results from previous steps during a pipeline, therefore it is important for users to get familiar with the various format types as well as their contents.
+
+### Terms
+
+Here is a list of terms that are used in GWAS (in alphabetical order):
+
+| Term | Definition |
+|---|---|
+| **Clumping** | Identifies and selects the most significant SNP (lowest p-value) in each LD block to reduce correlation while retaining statistically strongest SNPs. | 
+| **Co-heritability**	| Measures the genetic relationship between disorders; SNP-based co-heritability represents the proportion of covariance between disorder pairs explained by SNPs. |
+| **Gene** |A sequence of nucleotides in DNA that codes for a molecule (e.g., a protein). |
+| **Heterozygosity** | Carrying two different alleles of a specific SNP. High heterozygosity may indicate low sample quality, while low heterozygosity may suggest inbreeding. |
+| **Individual-level missingness** | The number of SNPs missing for an individual, which may indicate poor DNA quality or technical issues. |
+| **Linkage disequilibrium (LD)** | Non-random association between alleles at different loci; SNPs are in LD when their allele frequency associations exceed random expectation. |
+| **Minor allele frequency (MAF)**| Frequency of the least common allele at a specific locus; low MAF SNPs are often excluded due to insufficient statistical power. |
+| **Population stratification** | Presence of multiple subpopulations in a study; can lead to false positive or masked associations if not corrected for. |
+| **Pruning** | Selects a subset of SNPs in approximate linkage equilibrium by removing correlated SNPs within a chromosome window; unlike clumping, it does not consider p-values. |
+| **Relatedness** | Measures genetic similarity between individuals; GWAS assumes unrelated individuals, as relatedness can bias SNP effect estimates. |
+| **Sex discrepancy** | Difference between reported and genetically determined sex, usually due to sample mix-ups in the lab; identified using SNPs on sex chromosomes. | 
+| **Single nucleotide polymorphism (SNP)** | A variation in a single nucleotide at a specific genome position, typically with two possible alleles (e.g., A vs. T), leading to three possible genotypes (AA, AT, TT). |
+| **SNP-heritability** | Fraction of phenotypic variance explained by all SNPs in the analysis. |
+| **SNP-level missingness** | The number of individuals missing information on a specific SNP; high missingness can introduce bias. |
+| **Summary statistics** | GWAS results including chromosome number, SNP position, SNP ID (rs identifier), MAF, effect size (odds ratio/beta), standard error, and p-value. Often shared openly for research. |
+| **The Hardy–Weinberg (dis)equilibrium (HWE) law**	| Describes allele and genotype frequency stability over generations under ideal conditions (no selection, mutation, or migration). Deviations may indicate genotyping errors or true genetic associations. |
+
+---
+
+## Experimental Setup
+
+The publication and tutorial focuses on data from the psychiatric field, specifically focusing on polygenic risk score (PRS) -- an estimate of an individual's genetic predisposition to developing a complex disease. PRS combines the effect sizes of multiple SNPs into a single aggregated score that can be used to predict disease risk, and calculated based on the number of risk variants that a person carries, weighted by SNP effect sizes that are derived from an independent large-scaled discovery GWAS.
+
+As such, the score is an indication of the total genetic risk of a specific individual for a particular trait, which can be used for clinical prediction or screening.
+
+The publication duses data originating from an ethnically homogenous dataset, includeding Utah residents with ancestry from Northern and Western Europe (CEU), as the focus for their work is educational. This sort of study forces Quality Control (QC), sex check, filtering, population stratification, relatedness and heterozygosity checks.
+
+Additionally, the publication does use the [1000 genome data](https://www.internationalgenome.org/), a large catalogue for research in human variations across all continents. In this tutorial, steps 1 and 2 are already performed, icluding Multidimensional scaling (MDS) of the 1000 genomes data vs the CEU data (steps 1 and 2 are already carried out because downloading and processing the 1000 genome data is extremely time consuming).
+
+<br>
+<br>
+<p align="center">
+    <img src="https://onlinelibrary.wiley.com/cms/asset/5ddd7681-820d-4e54-9bb7-6a03148355c6/mpr1608-fig-0003-m.jpg" width="550">
+</p>
+<br>
+
+Multidimensional scaling (MDS) plot of 1KG against the CEU of the HapMap data. The black crosses (+ = “OWN”) in the upper left part represent the first two MDS components of the individuals in the HapMap sample (the colored symbols represent the 1KG data
+
+---
+
 ## The GWAS pipeline
 
 This is not *set in stone*, there isn't a single catch-them-all pipeline. This workshop follows the general outline of the Marees tutorial and from a bird eye view, these are the "steps":
@@ -135,3 +196,30 @@ Within QC, the original author performs the following:
 - Relatedness Check: Removing cryptic relatedness using **identity-by-descent (IBD)** measures.
 
 Most of these steps are covered in "Step 1" and "Step 2" in the tutorial.
+
+Step 3 focuses on the following:
+
+- **Multiple testing correlation**. GWAS test millions of SNPs, increasing the risk of false-positive associations. To address this, multiple testing correction methods are applied:
+    - **Bonferroni Correction**: Adjusts the significance threshold by dividing the desired alpha level (e.g., 0.05) by the number of tests performed.
+    - **False Discovery Rate (FDR)**: Controls the expected proportion of false positives among the declared significant results, balancing discovery of true associations and control of false positives.
+    - **Permutation Testing**: Involves repeatedly shuffling phenotype labels and recalculating association statistics to empirically determine the distribution of test statistics under the null hypothesis. This method accounts for the correlation structure among SNPs.
+- **Polygenic Risk Score (PRS) Analysis**. PRS aggregates the effects of multiple SNPs to estimate an individual's genetic predisposition to a trait or disease:
+    - **Calculating PRS**: Combining effect sizes from GWAS summary statistics with individual genotype data to compute a risk score.
+    - **Evaluating PRS Performance**: Assessing the predictive power of PRS by comparing risk scores between cases and controls or correlating them with quantitative traits.
+    - **LD Clumping**: A procedure to select independent SNPs by identifying the most significant SNP in each linkage disequilibrium (LD) block, reducing redundancy due to correlated SNPs.
+- **Generating Manhattan and QQ plots**:
+    - **Manhattan plot**: visualizes the p-values of SNP-trait associations across the genome.
+        - x-axis = chromosomal position
+        - y-axis = −log<sub>10</sub>(p-value) of p-values, making these look like peaks
+        - Uses (previously calculated) Bonferroni correction to help identify significat SNPs.
+        <p align="center">
+        <img src="https://onlinelibrary.wiley.com/cms/asset/5ddd7681-820d-4e54-9bb7-6a03148355c6/mpr1608-fig-0003-m.jpg" width="550">
+        </p>
+    - **QQ (Quantile-Quantile) plot**: compares observed p-values from the GWAS to expected p-values under the null hypothesis (no association). It helps detect inflation or systematic bias in the results.
+        - x-axis: Expected -log<sub>10</sub>(p-values) under a uniform distribution.
+        - y-axis: Observed -log<sub>10</sub>(p-values) from the GWAS.
+        - Diagonal Line (y = x): Represents what the results should look like under the null hypothesis (i.e., no inflation).
+        - how to interpret:
+            - Points following the red line = No systematic bias.
+            - Upward deviation (left side) = Inflation, meaning an excess of significant SNPs (possible population stratification or confounding).
+            - Downward deviation (right side) → Deflation, meaning fewer significant SNPs than expected.
