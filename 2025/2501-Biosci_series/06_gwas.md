@@ -127,7 +127,7 @@ There are a number of terms and file extensions to keep in mind when doing GWAS 
 <br>
 <br>
 <p align="center">
-    <img src="https://onlinelibrary.wiley.com/cms/asset/40f2cc77-cb25-4861-b274-682b83d33270/mpr1608-fig-0001-m.jpg" width="550">
+    <img src="https://raw.githubusercontent.com/CosiMichele/workshop-materials/refs/heads/main/2025/2501-Biosci_series/assets/extensions_gwas.jpg" width="550">
 </p>
 <br>
 
@@ -171,7 +171,7 @@ Additionally, the publication does use the [1000 genome data](https://www.intern
 <br>
 <br>
 <p align="center">
-    <img src="https://onlinelibrary.wiley.com/cms/asset/5ddd7681-820d-4e54-9bb7-6a03148355c6/mpr1608-fig-0003-m.jpg" width="550">
+    <img src="https://raw.githubusercontent.com/CosiMichele/workshop-materials/refs/heads/main/2025/2501-Biosci_series/assets/mds.jpg" width="550">
 </p>
 <br>
 
