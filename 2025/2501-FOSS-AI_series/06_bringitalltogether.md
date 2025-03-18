@@ -55,11 +55,11 @@ Here's the general overview of what we are going to be doing today:
 
 ```mermaid
 graph LR;
-    Accessing JetStream2 VMs-->Creating a virtual evironment;
-    Creating a virtual evironment-->Installing required packages;
-    Installing required packages-->Training YOLO;
-    Annotate/Access Annotations (Roboflow)-->Training YOLO;
-    Traning YOLO-->Deploy trained weights on image/video;
+    'Accessing JetStream2 VMs'-->'Creating a virtual evironment';
+    'Creating a virtual evironment'-->Installing required packages';
+    'Installing required packages'-->'Training YOLO';
+    'Annotate/Access Annotations (Roboflow)'-->'Training YOLO';
+    'Traning YOLO'-->'Deploy trained weights on image/video';
 ```
 
 ---
