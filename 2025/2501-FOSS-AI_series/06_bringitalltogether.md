@@ -55,11 +55,20 @@ Here's the general overview of what we are going to be doing today:
 
 ```mermaid
 graph LR;
-    'Accessing JetStream2 VMs'-->'Creating a virtual evironment';
-    'Creating a virtual evironment'-->Installing required packages';
-    'Installing required packages'-->'Training YOLO';
-    'Annotate/Access Annotations (Roboflow)'-->'Training YOLO';
-    'Traning YOLO'-->'Deploy trained weights on image/video';
+    id1["Accessing JetStream2 VMs"]
+    id2["Creating a virtual evironment"]
+    id3["Installing required packages"]
+    id4["Training YOLO"]
+    id5["Annotate/Access Annotations (Roboflow)"]
+    id6["Deploy trained weights on image/video"]
+    id7["Obtain YOLOv11"]
+
+    id1-->id2;
+    id2-->id3;
+    id3-->id4;
+    id5-->id4;
+    id7-->id4;
+    id4-->id6;
 ```
 
 ---
