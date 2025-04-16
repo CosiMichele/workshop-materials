@@ -34,12 +34,7 @@ Each script should:
 
 ## Resources
 
-<br>
-<p align="center">
-    <img src="" width="500">
-</p>
-<br>
-
+[![](https://raw.githubusercontent.com/CosiMichele/workshop-materials/refs/heads/main/2025/2504-KEYS-assessment/assets/software-carp-overview.png)](https://software-carpentry.org/lessons/index.html)
 
 Each [Software Carpentry lesson](https://software-carpentry.org/lessons/index.html) comes with its own data:
 - [Shell/CLI](https://swcarpentry.github.io/shell-novice/) provides you with [`shell-lesson-data.zip`](https://swcarpentry.github.io/shell-novice/data/shell-lesson-data.zip)
