@@ -1,16 +1,14 @@
 # KEYS Computational Proficiency Assessment 
 
-Welcome to Your Intro Computing Skills Assessment
+Welcome to the Computing Skills Assessment. Over the past few weeks, you were asked to complete the following Software Carpentries modules:
 
-## Goal
+- [Shell (also referred to as Command Line or CLI)](https://swcarpentry.github.io/shell-novice/)
+- [Python](https://swcarpentry.github.io/python-novice-gapminder/index.html)
+- [R](https://swcarpentry.github.io/r-novice-gapminder/)
 
 This is **not a test** of how much you already know — it's a way for us to understand how you work with the basic tools of modern science computing:
 
-- The **Command Line (CLI)**
-- **Python**
-- **R**
-
-You’ll complete **one small script** for each language. Each script should show that you've practiced the **core skills** introduced in the corresponding [Carpentries lesson](https://carpentries.org/lessons/).
+You’ll complete **one small script** for each language. Each script should show that you've practiced the **core skills** introduced in the corresponding Carpentries lesson.
 
 We want to see **your thinking and your style** — not a copy-paste answer or something fancy from ChatGPT.
 
@@ -30,22 +28,32 @@ Each script should:
 - Work when run from the terminal.
 - Contain **only material found in the Carpentries lesson** for that language.
 - Include **comments** explaining your thought process (`# why did you use this command?`).
-- Be your own work — no AI-generated code allowed.
+- Be your own work
 
 ---
 
-## Resources: Carpentries Lessons
+## Resources
 
-Use these exact resources to guide your script writing:
+<br>
+<p align="center">
+    <img src="" width="500">
+</p>
+<br>
 
-1. **Command Line (CLI)**:  
-   [_The Unix Shell_](https://swcarpentry.github.io/shell-novice/)
-2. **Python**:  
-   [_Plotting and Programming in Python_](https://swcarpentry.github.io/python-novice-gapminder/)
-3. **R**:  
-   [_R for Social Scientists_](https://datacarpentry.org/r-socialsci/)  
-   or  
-   [_R for Ecologists_](https://datacarpentry.org/R-ecology-lesson/)
+
+Each [Software Carpentry lesson](https://software-carpentry.org/lessons/index.html) comes with its own data:
+- [Shell/CLI](https://swcarpentry.github.io/shell-novice/) provides you with [`shell-lesson-data.zip`](https://swcarpentry.github.io/shell-novice/data/shell-lesson-data.zip)
+- Python is broken down into two parts:
+  - [Programming with Python](https://swcarpentry.github.io/python-novice-inflammation/) provides:
+    - [`python-novice-inflammation-data.zip`](https://swcarpentry.github.io/python-novice-inflammation/data/python-novice-inflammation-data.zip)
+    - [`python-novice-inflammation-code.zip`](https://swcarpentry.github.io/python-novice-inflammation/files/code/python-novice-inflammation-code.zip)
+  - [Plotting and programming with Python](https://swcarpentry.github.io/python-novice-gapminder/) provides:
+    - [`python-novice-gapminder-data.zip`](https://swcarpentry.github.io/python-novice-gapminder/files/python-novice-gapminder-data.zip)
+- The R lesson is also comes in two parts:
+  - [Programming with R](https://swcarpentry.github.io/r-novice-inflammation/) provides:
+    - [`r-novice-inflammation-data.zip`](https://swcarpentry.github.io/r-novice-inflammation/data/r-novice-inflammation-data.zip)
+  - [R for Reproducible Scientific Analysis](https://swcarpentry.github.io/r-novice-gapminder/) provides:
+    - [`gapminder_data.csv`](https://swcarpentry.github.io/r-novice-gapminder/data/gapminder_data.csv)
 
 ---
 
