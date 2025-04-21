@@ -26,8 +26,9 @@ Submit the following **3 scripts**:
 
 Each script should:
 - Work when run from the terminal.
+  - In the case of R, the script can be executed in RStudio.
 - Contain **only material found in the Carpentries lesson** for that language.
-- Include **comments** explaining your thought process (`# why did you use this command?`).
+- Include **comments** explaining your thought process (for example `# The following command appends extracted lines to a new file` or `# remove empty values`).
 - Be your own work
 
 ---
@@ -36,52 +37,56 @@ Each script should:
 
 [![](https://raw.githubusercontent.com/CosiMichele/workshop-materials/refs/heads/main/2025/2504-KEYS-assessment/assets/software-carp-overview.png)](https://software-carpentry.org/lessons/index.html)
 
-Each [Software Carpentry lesson](https://software-carpentry.org/lessons/index.html) comes with its own data:
-- [Shell/CLI](https://swcarpentry.github.io/shell-novice/) provides you with [`shell-lesson-data.zip`](https://swcarpentry.github.io/shell-novice/data/shell-lesson-data.zip)
-- Python is broken down into two parts:
-  - [Programming with Python](https://swcarpentry.github.io/python-novice-inflammation/) provides:
+Each [**Software Carpentry lesson**](https://software-carpentry.org/lessons/index.html) comes with its own data:
+- [**Shell/CLI**](https://swcarpentry.github.io/shell-novice/) provides you with [`shell-lesson-data.zip`](https://swcarpentry.github.io/shell-novice/data/shell-lesson-data.zip)
+- **Python** is broken down into two parts:
+  - [*Programming with Python*](https://swcarpentry.github.io/python-novice-inflammation/) provides:
     - [`python-novice-inflammation-data.zip`](https://swcarpentry.github.io/python-novice-inflammation/data/python-novice-inflammation-data.zip)
     - [`python-novice-inflammation-code.zip`](https://swcarpentry.github.io/python-novice-inflammation/files/code/python-novice-inflammation-code.zip)
-  - [Plotting and programming with Python](https://swcarpentry.github.io/python-novice-gapminder/) provides:
+  - [P*lotting and programming with Python*](https://swcarpentry.github.io/python-novice-gapminder/) provides:
     - [`python-novice-gapminder-data.zip`](https://swcarpentry.github.io/python-novice-gapminder/files/python-novice-gapminder-data.zip)
-- The R lesson is also comes in two parts:
-  - [Programming with R](https://swcarpentry.github.io/r-novice-inflammation/) provides:
+- The **R** lesson is also comes in two parts:
+  - [*Programming with R*](https://swcarpentry.github.io/r-novice-inflammation/) provides:
     - [`r-novice-inflammation-data.zip`](https://swcarpentry.github.io/r-novice-inflammation/data/r-novice-inflammation-data.zip)
-  - [R for Reproducible Scientific Analysis](https://swcarpentry.github.io/r-novice-gapminder/) provides:
+  - [*R for Reproducible Scientific Analysis*](https://swcarpentry.github.io/r-novice-gapminder/) provides:
     - [`gapminder_data.csv`](https://swcarpentry.github.io/r-novice-gapminder/data/gapminder_data.csv)
 
 ---
 
-## Example Task Prompts
+## Tasks
 
-We will provide you with prompts like these. Each is small but meaningful:
+### Shell/CLI
 
-- CLI:  
-  > Write a script that lists all `.txt` files in a directory and saves the filenames to `txt_files.txt`.
+Write a script that lists all `.txt` files in a directory and saves the filenames to `txt_files.txt`.
 
-- Python:  
-  > Using only Gapminder data (provided), write a script that prints the average life expectancy for a given continent.
+#### Example Script
 
-- R:  
-  > Read in a CSV, calculate the mean of one column, and plot a simple graph using base R.
+### Python
 
-We'll provide input data when needed. Don’t worry about doing something huge — we want clear, correct, and thoughtful code.
+ Using only Gapminder data (provided), write a script that prints the average life expectancy for a given continent.
+
+#### Example Script
+
+### R
+
+Read in a CSV, calculate the mean of one column, and plot a simple graph using base R.
+
+#### Example Script
 
 ---
 
 ## How It Will Be Assessed
 
-Each script will be reviewed using this rubric:
+Each script will be reviewed using the following criteria:
 
-| Criteria                        | Points |
-|---------------------------------|--------|
-| Uses only material from lesson  | ✅     |
-| Script runs without error       | ✅     |
-| Output is correct               | ✅     |
-| Code is commented/explained     | ✅     |
-| Code shows original thinking    | ✅     |
 
-We will **automatically test** your scripts, so please:
+- Uses only material from lesson
+- Script runs without error     
+- Output is correct             
+- Code is commented/explained   
+- Code shows original thinking  
+
+We will **automatically test** (i.e. executed through the Shell (`<script>.sh`, `<script>.py`) and RStudio (`<script>.R`)) your scripts, so please:
 - **Name your files correctly**
 - **Don’t hardcode file paths or absolute paths**
 - **Keep it simple and clean**
@@ -90,7 +95,7 @@ We will **automatically test** your scripts, so please:
 
 ## A Note on AI
 
-We want to see how **you** think. Submitting code written by AI (ChatGPT, Copilot, etc.) **goes against the spirit of this assessment**.
+We want to see how **you** think. Submitting code written by AI (ChatGPT, Copilot, Claude, Perplexity, etc.) **goes against the spirit of this assessment**.
 
 This is about **building skill, not getting the answer** — and we’re looking forward to seeing your work!
 
@@ -98,5 +103,5 @@ This is about **building skill, not getting the answer** — and we’re looking
 
 ## How to Submit
 
-Please upload your 3 script files in a `.zip` folder named:
+Please upload your 3 script files in a `.zip` folder to D2L.
 
