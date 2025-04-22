@@ -43,7 +43,7 @@ Each [**Software Carpentry lesson**](https://software-carpentry.org/lessons/inde
   - [*Programming with Python*](https://swcarpentry.github.io/python-novice-inflammation/) provides:
     - [`python-novice-inflammation-data.zip`](https://swcarpentry.github.io/python-novice-inflammation/data/python-novice-inflammation-data.zip)
     - [`python-novice-inflammation-code.zip`](https://swcarpentry.github.io/python-novice-inflammation/files/code/python-novice-inflammation-code.zip)
-  - [P*lotting and programming with Python*](https://swcarpentry.github.io/python-novice-gapminder/) provides:
+  - [*Plotting and programming with Python*](https://swcarpentry.github.io/python-novice-gapminder/) provides:
     - [`python-novice-gapminder-data.zip`](https://swcarpentry.github.io/python-novice-gapminder/files/python-novice-gapminder-data.zip)
 - The **R** lesson is also comes in two parts:
   - [*Programming with R*](https://swcarpentry.github.io/r-novice-inflammation/) provides:
