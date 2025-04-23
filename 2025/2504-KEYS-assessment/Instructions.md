@@ -118,16 +118,16 @@ In case you do are not able to access the files, you can [dowload this zip file 
 >   ```
 
 From the extracted files, find:
-- `haiku.txt` (`shell-lesson-data/exercise-data/writing/haiku.txt`)
-- `gapminder_gdp_europe.csv` (`data/gapminder_gdp_europe.csv`)
+- `haiku.txt` (found in `shell-lesson-data/exercise-data/writing/haiku.txt`)
+- `gapminder_gdp_europe.csv` (found in `data/gapminder_gdp_europe.csv`)
 
 For the 3 exercies, you should only need 3 files:
 
-| Comp. Language | Input File | Name of Script |
+| Comp. Language | Input File | Name of Script to Submit |
 |:---:|:---:|:---:|
-| Shell/CLI | `haiku.txt` | `cli_task.sh` |
-| Python | `gapminder_gdp_europe.csv` | `python_task.py` |
-| R | `gapminder_data.csv` | `r_task.R` |  
+| Shell/CLI | **`haiku.txt`** | `cli_task.sh` |
+| Python | **`gapminder_gdp_europe.csv`** | `python_task.py` |
+| R | **`gapminder_data.csv`** | `r_task.R` |  
 
 
 ---
