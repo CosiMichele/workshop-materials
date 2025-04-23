@@ -60,60 +60,62 @@ In case you do are not able to access the files, you can [dowload this zip file 
 - `gapminder_data.csv` (needed for the R task)
 
 
-**NOTE**: in order to access the files within, please extract the contents from the zip file first (how do decompress: [Win](https://support.microsoft.com/en-us/windows/zip-and-unzip-files-8d28fa72-f2f9-712f-67df-f80cf89fd4e5), [Mac](https://support.apple.com/guide/mac-help/zip-and-unzip-files-and-folders-on-mac-mchlp2528/mac), [Ubuntu](stions/86849/how-to-unzip-a-zip-file-from-the-terminal)). Follow this up by extracting the compressed files within as well (`shell-lesson-data.zip` and `python-novice-gapminder-data.zip`) using the same method of decompression.
-
-- `shell-lesson-data.zip` extracts:
-  ```
-  └── shell-lesson-data/
-      ├── exercise-data/
-      │   ├── alkanes/
-      │   │   ├── cubane.pdb
-      │   │   ├── ethane.pdb
-      │   │   ├── methane.pdb
-      │   │   ├── octane.pdb
-      │   │   ├── pentane.pdb
-      │   │   └── propane.pdb
-      │   ├── animal-counts/
-      │   │   └── animals.csv
-      │   ├── creatures/
-      │   │   ├── basilisk.dat
-      │   │   ├── minotaur.dat
-      │   │   └── unicorn.dat
-      │   ├── numbers.txt
-      │   └── writing/
-      │       ├── LittleWomen.txt
-      │       └── haiku.txt <---------- Use this one!!
-      └── north-pacific-gyre/         
-          ├── NENE01729A.txt
-          ├── NENE01729B.txt
-          ├── NENE01736A.txt
-          ├── NENE01751A.txt
-          ├── NENE01751B.txt
-          ├── NENE01812A.txt
-          ├── NENE01843A.txt
-          ├── NENE01843B.txt
-          ├── NENE01971Z.txt
-          ├── NENE01978A.txt
-          ├── NENE01978B.txt
-          ├── NENE02018B.txt
-          ├── NENE02040A.txt
-          ├── NENE02040B.txt
-          ├── NENE02040Z.txt
-          ├── NENE02043A.txt
-          ├── NENE02043B.txt
-          ├── goodiff.sh
-          └── goostats.sh
-  ```
-- `python-novice-gapminder-data.zip` extracts:
-  ```
-  └── data/
-     ├── gapminder_all.csv
-     ├── gapminder_gdp_africa.csv
-     ├── gapminder_gdp_americas.csv
-     ├── gapminder_gdp_asia.csv
-     ├── gapminder_gdp_europe.csv <---- Use this one!!
-     └── gapminder_gdp_oceania.csv
-  ```
+>[!Note]
+> **Folder structure** 
+> In order to access the files within, please extract the contents from the zip file first >(how do decompress: [Win](https://support.microsoft.com/en-us/windows/zip-and-unzip-files-8d28fa72-f2f9-712f-67df-f80cf89fd4e5), [Mac](https://support.apple.com/guide/mac-help/zip-and-unzip-files-and-folders-on-mac-mchlp2528/mac), [Ubuntu](stions/86849/how-to-unzip-a-zip-file-from-the-terminal)). Follow this up by extracting the compressed files within as well (`shell-lesson-data.zip` and `python-novice-gapminder-data.zip`) using the same method of decompression.
+> 
+> - `shell-lesson-data.zip` extracts:
+>   ```
+>   └── shell-lesson-data/
+>       ├── exercise-data/
+>       │   ├── alkanes/
+>       │   │   ├── cubane.pdb
+>       │   │   ├── ethane.pdb
+>       │   │   ├── methane.pdb
+>       │   │   ├── octane.pdb
+>       │   │   ├── pentane.pdb
+>       │   │   └── propane.pdb
+>       │   ├── animal-counts/
+>       │   │   └── animals.csv
+>       │   ├── creatures/
+>       │   │   ├── basilisk.dat
+>       │   │   ├── minotaur.dat
+>       │   │   └── unicorn.dat
+>       │   ├── numbers.txt
+>       │   └── writing/
+>       │       ├── LittleWomen.txt
+>       │       └── haiku.txt <---------- Use this one!!
+>       └── north-pacific-gyre/         
+>           ├── NENE01729A.txt
+>           ├── NENE01729B.txt
+>           ├── NENE01736A.txt
+>           ├── NENE01751A.txt
+>           ├── NENE01751B.txt
+>           ├── NENE01812A.txt
+>           ├── NENE01843A.txt
+>           ├── NENE01843B.txt
+>           ├── NENE01971Z.txt
+>           ├── NENE01978A.txt
+>           ├── NENE01978B.txt
+>           ├── NENE02018B.txt
+>           ├── NENE02040A.txt
+>           ├── NENE02040B.txt
+>           ├── NENE02040Z.txt
+>           ├── NENE02043A.txt
+>           ├── NENE02043B.txt
+>           ├── goodiff.sh
+>           └── goostats.sh
+>   ```
+> - `python-novice-gapminder-data.zip` extracts:
+>   ```
+>   └── data/
+>      ├── gapminder_all.csv
+>      ├── gapminder_gdp_africa.csv
+>      ├── gapminder_gdp_americas.csv
+>      ├── gapminder_gdp_asia.csv
+>      ├── gapminder_gdp_europe.csv <---- Use this one!!
+>      └── gapminder_gdp_oceania.csv
+>   ```
 
 From the extracted files, find:
 - `haiku.txt` (`shell-lesson-data/exercise-data/writing/haiku.txt`)
