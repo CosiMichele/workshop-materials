@@ -142,10 +142,10 @@ For the Shell exercise, use the `haiku.txt` file obtainable from [`shell-lesson-
 
 **Write a script that:** 
 
-**1. Finds and navigates to the `haiku.txt` file**
-**2. Print its location to the terminal**
-**3. Count the words of the file**
-**4. Append data at the end of the file and print the final product**
+1. **Finds and navigates to the `haiku.txt` file**
+2. **Print its location to the terminal**
+3. **Count the words of the file**
+4. **Append data at the end of the file and print the final product**
 
 </u>
 
