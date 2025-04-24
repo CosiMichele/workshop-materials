@@ -138,19 +138,27 @@ For the 3 exercies, you should only need 3 files:
 
 Write a script that lists all `.txt` files in a directory and saves the filenames to `txt_files.txt`.
 
-#### Example Script
+#### Example Task and Script
 
 ### Python
 
  Using only Gapminder data (provided), write a script that prints the average life expectancy for a given continent.
 
-#### Example Script
+#### Example Task and Script
+
+```{python}
+import pandas as pd
+
+data_oceania = pd.read_csv('data/gapminder_gdp_europe.csv')
+print(data_oceania)
+```
+
 
 ### R
 
 Read in a CSV, calculate the mean of one column, and plot a simple graph using base R.
 
-#### Example Script
+#### Example Task and Script
 
 ---
 
