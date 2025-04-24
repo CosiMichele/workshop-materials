@@ -146,7 +146,7 @@ Write a script that lists all `.txt` files in a directory and saves the filename
 
 #### Example Task and Script
 
-```{python}
+```python
 import pandas as pd
 
 data_oceania = pd.read_csv('data/gapminder_gdp_europe.csv')
