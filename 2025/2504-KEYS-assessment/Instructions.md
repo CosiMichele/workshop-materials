@@ -142,15 +142,47 @@ Write a script that lists all `.txt` files in a directory and saves the filename
 
 ### Python
 
- Using only Gapminder data (provided), write a script that prints the average life expectancy for a given continent.
+ Using only Europe Gapminder data (`data/gapminder_gdp_europe.csv`), write a script that **list all countries where GDP in 1952 was less than 5000 and are above 5000 in 2007. Plot the GDP per capita over time.**
+
+This task should take roughly 20 lines of code, with ~5 are needed for the plotting and 2 for importing.
+
+**NOTE:** make sure that this code is executable from the parent folder of `data/` (e.g., `Documents/data/gapminder_gdp_europe.csv`).
 
 #### Example Task and Script
 
-```python
-import pandas as pd
+In this example, we are asked to plot the GDP per capita over time for selected countries. We use 15 lines of code, 2 of which are loading libraries, 5 of which are plotting-related. All the commands used are present in the [Plotting and programming with Python](https://swcarpentry.github.io/python-novice-gapminder/) Software Carpentry page.
 
-data_oceania = pd.read_csv('data/gapminder_gdp_europe.csv')
-print(data_oceania)
+Feel free to execute the code yourself!
+
+```python
+
+# Load libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load the dataset
+data = pd.read_csv('data/gapminder_gdp_europe.csv')
+
+# Set of countries to plot
+countries_to_plot = ['Germany', 'France', 'Italy', 'Spain']
+
+# Loop through each country and plot its data
+for country in countries_to_plot:
+    country_data = data[data['country'] == country]
+    # Extract year labels and values (skip the 'country' column)
+    years = country_data.columns[1:]
+    values = country_data.iloc[0, 1:]
+    plt.plot(years, values, label=country)
+
+# Add labels and title
+plt.xlabel('Year')
+plt.ylabel('GDP per Capita')
+plt.title('GDP Per Capita Over Time')
+plt.legend()
+plt.xticks(rotation=45)
+
+# Show the plot
+plt.show()
 ```
 
 
