@@ -18,11 +18,11 @@ We want to see **your thinking and your style** — not a copy-paste answer or s
 
 Submit the following **3 scripts**:
 
-| Language | Filename             | Format       |
-|----------|----------------------|--------------|
-| CLI      | `cli_task.sh`        | Bash script  |
-| Python   | `python_task.py`     | Python script|
-| R        | `r_task.R`           | R script     |
+| Language | Filename | Format |
+|:---:|:---:|:---:|
+| :shell: Shell/CLI | **`cli_task.sh`** | Bash script |
+| :snake: Python | **`python_task.py`** | Python script |
+| :registered: R | **`r_task.R`** | R script |
 
 Each script should:
 - Work when run from the terminal.
@@ -33,7 +33,7 @@ Each script should:
 
 ---
 
-## Resources
+## :globe_with_meridians: Resources
 
 [![](https://raw.githubusercontent.com/CosiMichele/workshop-materials/refs/heads/main/2025/2504-KEYS-assessment/assets/software-carp-overview.png)](https://software-carpentry.org/lessons/index.html)
 
@@ -125,36 +125,149 @@ For the 3 exercies, you should only need 3 files:
 
 | Comp. Language | Input File | Name of Script to Submit |
 |:---:|:---:|:---:|
-| Shell/CLI | **`haiku.txt`** | `cli_task.sh` |
-| Python | **`gapminder_gdp_europe.csv`** | `python_task.py` |
-| R | **`gapminder_data.csv`** | `r_task.R` |  
+| :shell: Shell/CLI | **`haiku.txt`** | `cli_task.sh` |
+| :snake: Python | **`gapminder_gdp_europe.csv`** | `python_task.py` |
+| :registered: R | **`gapminder_data.csv`** | `r_task.R` |  
 
 
 ---
 
-## Tasks
+## :notebook: Tasks
 
-### Shell/CLI
+### :shell: Shell/CLI
 
-Write a script that lists all `.txt` files in a directory and saves the filenames to `txt_files.txt`.
+For the Shell exercise, use the `haiku.txt` file obtainable from [`shell-lesson-data.zip`](https://swcarpentry.github.io/shell-novice/data/shell-lesson-data.zip), within the [Shell/CLI](https://swcarpentry.github.io/shell-novice/) lesson.
 
-#### Example Script
+<u>
 
-### Python
+**Write a script that:** 
 
- Using only Gapminder data (provided), write a script that prints the average life expectancy for a given continent.
+1. **Finds and navigates to the `haiku.txt` file**
+2. **Print its location to the terminal**
+3. **Count the words of the file**
+4. **Append data at the end of the file and print the final product**
 
-#### Example Script
+</u>
 
-### R
+This task is completely doable through material found in the [Shell/CLI](https://swcarpentry.github.io/shell-novice/) carpentry lesson, with ~10 lines.
 
-Read in a CSV, calculate the mean of one column, and plot a simple graph using base R.
+#### :shell: Example Task and Script
 
-#### Example Script
+In this example task, we extract lines with a keyword ("not"), count matching words, append summary, and print the file. It covers navigation (slightly), finding files and searching within the file and appending. You may find yourself using some of these commands!
+
+```bash
+#!/bin/bash
+
+# Find haiku.txt starting from current directory
+file_path=$(find . -name "haiku.txt" | head -n 1)
+
+# Navigate to its directory
+cd "$(dirname "$file_path")"
+
+# Print absolute path
+echo "haiku.txt found at: $(pwd)/haiku.txt"
+
+# Define keyword to search
+keyword="not"
+
+# Count how many times the keyword appears
+keyword_count=$(grep -o "$keyword" haiku.txt | wc -l)
+
+# Extract and append keyword context
+echo "" >> haiku.txt
+echo "---- Keyword Summary ----" >> haiku.txt
+echo "Keyword '$keyword' appears $keyword_count times" >> haiku.txt
+echo "Summary generated on: $(date)" >> haiku.txt
+echo "--------------------------" >> haiku.txt
+
+# Show updated file
+cat haiku.txt
+```
 
 ---
 
-## How It Will Be Assessed
+### :snake: Python
+
+ Using only Europe Gapminder data (`data/gapminder_gdp_europe.csv`), <u>**write a script that lists all countries where GDP in 1952 was less than 5000 and are above 5000 in 2007. Plot the GDP per capita over time.**</u>
+
+This task should take roughly 20 lines of code, with ~5 are needed for the plotting and 2 for importing.
+
+**NOTE:** make sure that this code is executable from the parent folder of `data/` (e.g., `Documents/data/gapminder_gdp_europe.csv`).
+
+#### :snake: Python Example Task and Script
+
+In this example, we are asked to plot the GDP per capita over time for selected countries. We use 15 lines of code, 2 of which are loading libraries, 5 of which are plotting-related. All the commands used are present in the [Plotting and programming with Python](https://swcarpentry.github.io/python-novice-gapminder/) Software Carpentry page.
+
+Feel free to execute the code yourself!
+
+```python
+
+# Load libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load the dataset
+data = pd.read_csv('data/gapminder_gdp_europe.csv')
+
+# Set of countries to plot
+countries_to_plot = ['Germany', 'France', 'Italy', 'Spain']
+
+# Loop through each country and plot its data
+for country in countries_to_plot:
+    country_data = data[data['country'] == country]
+    # Extract year labels and values (skip the 'country' column)
+    years = country_data.columns[1:]
+    values = country_data.iloc[0, 1:]
+    plt.plot(years, values, label=country)
+
+# Add labels and title
+plt.xlabel('Year')
+plt.ylabel('GDP per Capita')
+plt.title('GDP Per Capita Over Time')
+plt.legend()
+plt.xticks(rotation=45)
+
+# Show the plot
+plt.show()
+```
+
+---
+
+### :registered: R
+
+ Using the Gapminder data provided by [R for Reproducible Scientific Analysis](https://swcarpentry.github.io/r-novice-gapminder/) ([`gapminder_data.csv`](https://swcarpentry.github.io/r-novice-gapminder/data/gapminder_data.csv)), <u>**write a script that plots a line graph of the top 10 countries with lowest life expectanct in 1952, and their respective life expectancy progress over time**</u>
+
+This task should take ~15 lines of code. All of the code required is accessible through the [R for Reproducible Scientific Analysis](https://swcarpentry.github.io/r-novice-gapminder/) Software Carpentry lesson.
+
+Ensure that the code can be viewed and executed in RStudio using `gapminder_data.csv`.
+
+#### :registered: R Example Task and Script
+
+In this example, we are creating 2 boxplots comparing the GDP per capita of the African countries vs European countries in the year 2007. Hint: some of the functions used here will be useful in the assigned task.
+
+```r
+# Load tidyverse
+library(tidyverse)
+setwd("~/")
+
+# Read data
+gapminder <- read.csv("gapminder_data.csv")
+
+# Filter for data in 2007 for two selected continents
+gapminder_2007 <- gapminder %>%
+  filter(year == 2007, continent %in% c("Africa", "Europe"))
+
+# Plot GDP per capita comparison using boxplot
+ggplot(data = gapminder_2007, aes(x = continent, y = gdpPercap)) +
+  geom_boxplot() +
+  labs(title = "GDP per Capita in 2007: Africa vs. Europe",
+       x = "Continent", y = "GDP per Capita")
+
+```
+
+---
+
+## :white_check_mark: How It Will Be Assessed
 
 Each script will be reviewed using the following criteria:
 
@@ -172,7 +285,7 @@ We will **automatically test** (i.e. executed through the Shell (`<script>.sh`, 
 
 ---
 
-## A Note on AI
+## :heavy_exclamation_mark: A Note on AI
 
 We want to see how **you** think. Submitting code written by AI (ChatGPT, Copilot, Claude, Perplexity, etc.) **goes against the spirit of this assessment**.
 
@@ -182,5 +295,5 @@ This is about **building skill, not getting the answer** — and we’re looking
 
 ## How to Submit
 
-Please upload your 3 script files in a `.zip` folder to D2L.
+Please upload your 3 script files individually or in a compressed `.zip` folder to D2L.
 
