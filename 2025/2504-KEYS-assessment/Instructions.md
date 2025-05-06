@@ -62,7 +62,7 @@ In case you do are not able to access the files, you can [dowload this zip file 
 
 >[!Note]
 > **Folder structure** 
-> In order to access the files within, please extract the contents from the zip file first >(how do decompress: [Win](https://support.microsoft.com/en-us/windows/zip-and-unzip-files-8d28fa72-f2f9-712f-67df-f80cf89fd4e5), [Mac](https://support.apple.com/guide/mac-help/zip-and-unzip-files-and-folders-on-mac-mchlp2528/mac), [Ubuntu](stions/86849/how-to-unzip-a-zip-file-from-the-terminal)). Follow this up by extracting the compressed files within as well (`shell-lesson-data.zip` and `python-novice-gapminder-data.zip`) using the same method of decompression.
+> In order to access the files within, please extract the contents from the zip file first >(how do decompress: [Win](https://support.microsoft.com/en-us/windows/zip-and-unzip-files-8d28fa72-f2f9-712f-67df-f80cf89fd4e5), [Mac](https://support.apple.com/guide/mac-help/zip-and-unzip-files-and-folders-on-mac-mchlp2528/mac), [Ubuntu](https://askubuntu.com/questions/86849/how-to-unzip-a-zip-file-from-the-terminal)). Follow this up by extracting the compressed files within as well (`shell-lesson-data.zip` and `python-novice-gapminder-data.zip`) using the same method of decompression.
 > 
 > - `shell-lesson-data.zip` extracts:
 >   ```
