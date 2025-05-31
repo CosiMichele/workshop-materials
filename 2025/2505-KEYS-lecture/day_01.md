@@ -368,11 +368,11 @@ The Mandelbrot set is important in mathematics because it is an example of how *
 
 ### Goals
 
-https://github.com/danyaal/mandelbrot
-https://github.com/jlesuffleur/gpu_mandelbrot/blob/master/mandelbrot.py
+In this repository, you will find 2 Mandelbrot-related scripts:
 
-In this repository, you will find 4 scripts:
+- [`mandelbrot.py`](https://github.com/CosiMichele/workshop-materials/blob/main/2025/2505-KEYS-lecture/mandelbrot.py)
+- [`mandelbrot.ipynb`](https://github.com/CosiMichele/workshop-materials/blob/main/2025/2505-KEYS-lecture/mandelbrot.ipynb)
 
-The idea of these scripts it to stress test the CPU of your machines and showing how much quicker the HPC is at complex mathematical processes. Feel free to use it on your computer and/or HPC!
+Use either script to generate a mandelbrot on the HPC!
 
 ![footer](https://upload.wikimedia.org/wikipedia/commons/2/21/Mandel_zoom_00_mandelbrot_set.jpg)
