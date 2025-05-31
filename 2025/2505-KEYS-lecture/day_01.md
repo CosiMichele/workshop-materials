@@ -27,9 +27,9 @@
 ---
 ---
 
-## Bioinformatics and the Need for Compute
+## Science the Need for Compute
 
-The field of bioinformatics has become increasingly reliant on computational power. The volume and complexity of biological data (e.g., genome sequences, protein structures and molecular simulations) requires advanced computational resources for data extrapolation and analysis.
+Scientific fields ranging from physics to biology have become increasingly reliant on computational power. The volume and complexity of biological data (e.g., genome sequences, protein structures and molecular simulations) requires advanced computational resources for data extrapolation and analysis.
 
 To effectively tackle the problem, scientists can access resources such as [High Performance Computing](https://en.wikipedia.org/wiki/High-performance_computing) (HPC) systems or [cloud based computing](https://en.wikipedia.org/wiki/Cloud_computing) to tackle the issue at hand.
 
@@ -321,11 +321,25 @@ The above example will request an interactive node with 8 cores, 16GB RAM, "char
 <br>
 
 ---
+
+## A Friendly Interface for the HPC
+
+In case the commmand line is presenting a challenge, the HPC can also be reached through Open On Demand: https://ood.hpc.arizona.edu/.
+
+This gives a "point and click" experience for users, allowing to launch:
+- A Cloud Shell
+- Jupyter Notebook GUI
+- RStudio GUI
+- MatLab GUI
+- Stata GUI
+- VSCode GUI
+
+One can also view and upload (albeit slower than transferring through command line) and manage data, as well as viewing running jobs. 
+
+---
 ---
 
-
-
-# Mendelbrot CPU Stress Test
+## Mendelbrot on the HPC
 
 ([Content home](https://github.com/CosiMichele/mandelbrot-generator))
 
@@ -342,17 +356,17 @@ If the result stays bounded (doesn't go to infinity), the point $c$ is part of t
 
 This process creates intricate and beautiful patterns that are self-similar at different scales, meaning you can zoom in indefinitely and see similar structures at every level.
 
-## Significance
+### Significance
 
 The Mandelbrot set is important in mathematics because it is an example of how **simple rules can create incredibly complex and detailed structures**. It has applications in various fields, such as physics, biology, and computer graphics, helping scientists and engineers model complex systems. Historically, the Mandelbrot set was first visualized in the 1980s with the advent of computer graphics, revolutionizing the way people think about mathematical sets and chaos theory. Benoît Mandelbrot's work on fractals has opened up new areas of research and has had a lasting impact on both theoretical and applied mathematics.
 
-### Further Explanations by Experts 
+#### Further Explanations by Experts 
 
 - [Mandelbrot Zoom Sequence](https://www.youtube.com/watch?v=b005iHf8Z3g)
 - [The Mandelbrot Set](https://www.youtube.com/watch?v=NGMRB4O922I)
 - [What's so special about the Mandelbrot Set?](https://www.youtube.com/watch?v=FFftmWSzgmk)
 
-## Goals
+### Goals
 
 https://github.com/danyaal/mandelbrot
 https://github.com/jlesuffleur/gpu_mandelbrot/blob/master/mandelbrot.py
