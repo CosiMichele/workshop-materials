@@ -733,6 +733,8 @@ This is the model we are going to use for training and testing.
 
 ## Annotations and Training
 
+Label bean pics: 
+
 Here you can find bean images that have already been annotated: https://universe.roboflow.com/test-fdsxz/beans-dijdm/dataset/1
 
 1. Log in and click "download YOLOv11"
