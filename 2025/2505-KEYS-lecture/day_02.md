@@ -714,7 +714,7 @@ pip install opencv-python
 Most of these can be installed in a single liner:
 
 ```
-pip install torch numpy notebook opencv-python numpy ultralytics
+pip install torch numpy opencv-python ultralytics
 ```
 
 ### Obtaining YOLOv11
