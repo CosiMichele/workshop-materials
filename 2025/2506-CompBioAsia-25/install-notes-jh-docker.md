@@ -36,6 +36,7 @@ Required for functionality:
     - widgetsnbextension 
     - jupyter_contrib_nbextensions 
     - nodejs
+    - biobb_amber>=5.0.4 (bioconda)
 
 Additional functionality:
 - `entry.sh`
@@ -46,3 +47,5 @@ See `Dockerfile` for more details. Docker container was built with `docker build
 
 ## Running Training
 
+Notes:
+- 5th box is `add_h('abl_imatinib_heavy.pdb', 'abl_imatinib_amber.pdb', chimerax='chimerax', mode='amber')`. Should be `add_h('abl_imatinib_heavy.pdb', 'abl_imatinib_amber.pdb', chimera='chimerax', mode='amber')`
