@@ -43,3 +43,6 @@ Additional functionality:
 
 ## Building Docker
 See `Dockerfile` for more details. Docker container was built with `docker build .` and pushed to Dockerhub as `cosimichele/jupyter-amber:gpu-250608`, where it can be pulled and deployed with [CACAO](https://cacao.jetstream-cloud.org/).
+
+## Running Training
+
