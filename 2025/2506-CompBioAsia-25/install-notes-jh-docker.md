@@ -36,6 +36,7 @@ Required for functionality:
     - widgetsnbextension 
     - jupyter_contrib_nbextensions 
     - nodejs
+    - ambertools
     - biobb_amber (bioconda)
 
 Additional functionality:
@@ -49,4 +50,52 @@ See `Dockerfile` for more details. Docker container was built with `docker build
 
 Notes:
 - 5th box is `add_h('abl_imatinib_heavy.pdb', 'abl_imatinib_amber.pdb', chimerax='chimerax', mode='amber')`. Should be `add_h('abl_imatinib_heavy.pdb', 'abl_imatinib_amber.pdb', chimera='chimerax', mode='amber')`
-- `add_h` function in `cba_tools.py` is buggy. Suggested workaround?
+- `add_h` function in `cba_tools.py` is buggy. Suggested workaround for `add_h`:
+    ```
+    def add_h(inpdb, outpdb, chimera='chimerax', mode='amber'):
+    '''
+    Add hydrogen atoms to a PDB format file, using ChimeraX (not Chimera)
+
+    Args:
+        inpdb (str): name of input PDB file
+        outpdb (str): name of output PDB file
+        chimera (str): command to invoke ChimeraX
+        mode (str): Adjust residue names for chosen software
+                    (only 'amber' is currently supported).
+    '''
+    check_available(chimera)
+    fh = FileHandler()
+    script = fh.create('script')
+
+    # ChimeraX-compatible syntax
+    script.write_text(
+        'open infile.pdb\n'
+        'addh\n'
+        'save outfile.pdb format pdb\n'
+        'exit\n'
+    )
+
+    addh = SubprocessKernel(f"{chimera} --nogui < script")
+    addh.set_inputs(['script', 'infile.pdb'])
+    addh.set_outputs(['outfile.pdb'])
+    addh.set_constant('script', script)
+
+    infile = fh.load(inpdb)
+    addh_result = addh.run(infile)
+
+    if addh_result is None:
+        raise RuntimeError("ChimeraX failed to generate outfile.pdb")
+
+    if mode == 'amber':
+        check_available('pdb4amber')
+        pdb4amber = SubprocessKernel('pdb4amber -i infile.pdb -o outfile.pdb')
+        pdb4amber.set_inputs(['infile.pdb'])
+        pdb4amber.set_outputs(['outfile.pdb'])
+        amberpdb = pdb4amber.run(addh_result)
+        amberpdb.save(outpdb)
+    else:
+        addh_result.save(outpdb)
+
+    print(f'Hydrated structure written to {outpdb}')
+    ```
+    - Code runs. Need to check output
