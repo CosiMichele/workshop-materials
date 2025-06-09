@@ -36,7 +36,7 @@ Required for functionality:
     - widgetsnbextension 
     - jupyter_contrib_nbextensions 
     - nodejs
-    - biobb_amber>=5.0.4 (bioconda)
+    - biobb_amber (bioconda)
 
 Additional functionality:
 - `entry.sh`
