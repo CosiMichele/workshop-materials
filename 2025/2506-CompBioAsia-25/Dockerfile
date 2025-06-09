@@ -31,10 +31,15 @@ RUN apt-get update --yes && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+# Install Chimerax
+COPY chimerax-candidate.deb /opt/chimerax-candidate.deb
+RUN sudo dpkg -i /opt/chimerax-candidate.deb || true && \
+    sudo apt-get update && \
+    sudo apt-get install -f -y && \
+    rm /opt/chimerax-candidate.deb
+
 USER jovyan
 WORKDIR /home/jovyan
-
-RUN mamba
 
 # Install required software
 RUN mamba install -c conda-forge numpy cudatoolkit pdbfixer nglview openmm mdtraj ipywidgets=7.7.2 gitpython nbconvert nbformat requests packaging rich jax parmed netCDF4 openbabel widgetsnbextension jupyter_contrib_nbextensions nodejs -y
