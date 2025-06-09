@@ -46,6 +46,6 @@ RUN jupyter lab build
 
 EXPOSE 8888
 
-COPY entry.sh /bin
+#COPY entry.sh /bin
 
-ENTRYPOINT ["bash", "/bin/entry.sh"]
+#ENTRYPOINT ["bash", "/bin/entry.sh"]
