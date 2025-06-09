@@ -6,6 +6,9 @@ USER root
 RUN apt update && \
     apt install -y lsb-release apt-transport-https curl libfreetype6-dev pkg-config libx11-dev gcc less software-properties-common apt-utils glances htop nano vim nvtop
 
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs
+
 # Install and configure jupyter lab.
 COPY jupyter_notebook_config.json /opt/conda/etc/jupyter/jupyter_notebook_config.json
 
@@ -31,8 +34,10 @@ RUN apt-get update --yes && \
 USER jovyan
 WORKDIR /home/jovyan
 
+RUN mamba
+
 # Install required software
-RUN mamba install -c conda-forge numpy cudatoolkit pdbfixer nglview openmm mdtraj ipywidgets=7.7.2 gitpython nbconvert nbformat requests packaging rich jax parmed<4 netCDF4 openbabel widgetsnbextension jupyter_contrib_nbextensions -y
+RUN mamba install -c conda-forge numpy cudatoolkit pdbfixer nglview openmm mdtraj ipywidgets=7.7.2 gitpython nbconvert nbformat requests packaging rich jax parmed netCDF4 openbabel widgetsnbextension jupyter_contrib_nbextensions nodejs -y
 RUN pip install crossflow nglview[lab]
 RUN nglview enable
 
