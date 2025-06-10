@@ -37,6 +37,7 @@ Required for functionality:
     - jupyter_contrib_nbextensions 
     - nodejs
     - ambertools
+    - rdkit
     - biobb_amber (bioconda)
 
 Additional functionality:

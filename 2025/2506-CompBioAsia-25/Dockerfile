@@ -42,7 +42,7 @@ USER jovyan
 WORKDIR /home/jovyan
 
 # Install required software
-RUN mamba install -c conda-forge numpy cudatoolkit pdbfixer nglview openmm mdtraj ipywidgets=7.7.2 gitpython nbconvert nbformat requests packaging rich jax parmed netCDF4 openbabel widgetsnbextension jupyter_contrib_nbextensions nodejs ambertools -y
+RUN mamba install -c conda-forge numpy cudatoolkit pdbfixer nglview openmm mdtraj ipywidgets=7.7.2 gitpython nbconvert nbformat requests packaging rich jax parmed netCDF4 openbabel widgetsnbextension jupyter_contrib_nbextensions nodejs ambertools rdkit -y
 RUN pip install crossflow nglview[lab]
 RUN nglview enable
 
