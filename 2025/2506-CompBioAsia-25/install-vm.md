@@ -1,4 +1,4 @@
-# Software Installation for Compbio 2025
+# Software Installation for Compbio Asia 2025
 
 ## Required sofware
 
