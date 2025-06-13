@@ -84,24 +84,9 @@ Building with flavour `g3.small`, Ubuntu 24.
     - Allow for anyone to write/install software (not Best Practice, but for this purpose _it's ok_): `sudo chmod -R 777 /opt/tools/miniconda3`
 5. Install **Python (3.11)**: `conda install python=3.11`
 6. Install [**Base**](#base) packages (non GPU): `conda install -c conda-forge pandas matplotlib numpy gemmi -y`
-7. Install **`nvcc`**: `sudo apt install cuda-toolkit`
-   - Note, this output:
-   ```
-   Restarting services...
-    systemctl restart nvidia-persistenced.service
-    Job for nvidia-persistenced.service failed because the control process exited with error code.
-    See "systemctl status nvidia-persistenced.service" and "journalctl -xeu nvidia-persistenced.service" for details.
-
-    No containers need to be restarted.
-
-    No user sessions are running outdated binaries.
-
-    No VM guests are running outdated hypervisor (qemu) binaries on this host.
-   ```
-   Still works, no issues observed.
-8. Install **Pytorch**: `pip install torch --index-url https://download.pytorch.org/whl/cu118`
-9. Install **tmux**: `sudo apt install tmux`
-10. Install **nvtop**: `sudo apt install nvtop`
+7. Install **Pytorch**: `pip install torch --index-url https://download.pytorch.org/whl/cu118`
+8. Install **tmux**: `sudo apt install tmux`
+9. Install **nvtop**: `sudo apt install nvtop`
 
 Base image complete, snapshot created: `compbio-base-00-250612`.
 
