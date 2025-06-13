@@ -119,6 +119,8 @@ CPU image complete, snapshot created: `compbio-cpu-00-250612`.
 
 Building using snapshot `compbio-base-00-250612` and an `g3.small` flavour.
 
+Note: downloading Amber files may take some time depending on network availability.
+
 1. Manually Download **Ambertools25** (`ambertools25.tar.bz2`) from https://ambermd.org/GetAmber.php
     - This was done on a personal computer and transferred to the VM via `sftp` (`sftp put ambertools25.tar.bz2`)
 2. Manually Download **AMBER24** (`pmemd24.tar.bz2`) from https://ambermd.org/GetAmber.php
