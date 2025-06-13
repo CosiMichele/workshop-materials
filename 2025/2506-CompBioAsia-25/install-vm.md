@@ -58,7 +58,7 @@ Building with flavour `g3.small`, Ubuntu 24.
     - Execute installation: `cd /opt/tools && sudo chmod 777 ./miniconda.sh && sudo ./miniconda.sh` 
         - Select installation location: `/opt/tools/miniconda3`
         - Selected "yes" for conda initialization upon startup
-        - Set up conda startup for any user:
+        - Set up conda startup for any user; Create `/etc/profile.d/conda.sh` and add:
         ```
         #!/bin/bash
         # System-wide Conda initialization + auto-activate base
@@ -77,9 +77,9 @@ Building with flavour `g3.small`, Ubuntu 24.
         unset __conda_setup
 
         # Explicitly activate the base environment
-        conda activate init
+        conda init
         ```
-            - Make executable `sudo chmod +x /etc/profile.d/conda.sh`
+        - Make executable `sudo chmod +x /etc/profile.d/conda.sh`
         - Add to `/etc/bash.bashrc` with `sudo vim /etc/bash.bashrc`:
         ```
         # >>> Force Conda base activation for all users >>>
@@ -91,9 +91,23 @@ Building with flavour `g3.small`, Ubuntu 24.
     - Allow for anyone to write/install software (not Best Practice, but for this purpose _it's ok_): `sudo chmod -R 777 /opt/tools/miniconda3`
 5. Install **Python (3.11)**: `conda install python=3.11`
 6. Install [**Base**](#base) packages (non GPU): `conda install -c conda-forge pandas matplotlib numpy gemmi -y`
-7. Install `nvcc`: 
-7. Install Pytorch:
-    - 
+7. Install **`nvcc`**: `sudo apt install cuda-toolkit`
+   - Note, this output:
+   ```
+   Restarting services...
+    systemctl restart nvidia-persistenced.service
+    Job for nvidia-persistenced.service failed because the control process exited with error code.
+    See "systemctl status nvidia-persistenced.service" and "journalctl -xeu nvidia-persistenced.service" for details.
+
+    No containers need to be restarted.
+
+    No user sessions are running outdated binaries.
+
+    No VM guests are running outdated hypervisor (qemu) binaries on this host.
+   ```
+   Still works, no issues observed.
+8. Install Pytorch:
+9. Install tmux:
 
 ### CPU-only
 ### GPU
