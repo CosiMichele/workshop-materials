@@ -121,4 +121,5 @@ Building using snapshot `compbio-base-00-250612` and an `g3.small` flavour.
 
 1. Manually Download **Ambertools25** (`ambertools25.tar.bz2`) from https://ambermd.org/GetAmber.php
     - This was done on a personal computer and transferred to the VM via `sftp` (`sftp put ambertools25.tar.bz2`)
-2. 
+2. Manually Download **AMBER24** (`pmemd24.tar.bz2`) from https://ambermd.org/GetAmber.php
+    - This was done on a personal computer and transferred to the VM via `sftp` (`sftp put pmemd24.tar.bz2`)
