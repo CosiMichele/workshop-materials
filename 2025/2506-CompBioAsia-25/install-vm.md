@@ -54,11 +54,11 @@ Building with flavour `g3.small`, Ubuntu 24.
 2. Create tools directory: `mkdir /opt/tools`
 3. Make it so that everyone can write to `tools`: `sudo chmod -R 777 /opt/tools`
 4. **Conda** installation:
-    - Download miniconda: ` wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /opt/tools/miniconda.sh`
+    - Download miniconda: `sudo wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /opt/tools/miniconda.sh`
     - Execute installation: `cd /opt/tools && sudo chmod 777 ./miniconda.sh && sudo ./miniconda.sh` 
         - Select installation location: `/opt/tools/miniconda3`
         - Selected "yes" for conda initialization upon startup
-        - Set up conda startup for any user; Create `/etc/profile.d/conda.sh` and add:
+        - Set up conda startup for any user; Create `sudo /etc/profile.d/conda.sh` and add:
         ```
         #!/bin/bash
         # System-wide Conda initialization + auto-activate base
@@ -80,13 +80,6 @@ Building with flavour `g3.small`, Ubuntu 24.
         conda init
         ```
         - Make executable `sudo chmod +x /etc/profile.d/conda.sh`
-        - Add to `/etc/bash.bashrc` with `sudo vim /etc/bash.bashrc`:
-        ```
-        # >>> Force Conda base activation for all users >>>
-        export PATH="/opt/tools/miniconda3/bin:$PATH"
-        conda init
-        # <<< End Conda base activation <<<
-        ```
     - Clean up: `sudo rm /opt/tools/miniconda.sh`
     - Allow for anyone to write/install software (not Best Practice, but for this purpose _it's ok_): `sudo chmod -R 777 /opt/tools/miniconda3`
 5. Install **Python (3.11)**: `conda install python=3.11`
@@ -106,8 +99,41 @@ Building with flavour `g3.small`, Ubuntu 24.
     No VM guests are running outdated hypervisor (qemu) binaries on this host.
    ```
    Still works, no issues observed.
-8. Install Pytorch:
-9. Install tmux:
+8. Install **Pytorch**: `pip install torch --index-url https://download.pytorch.org/whl/cu118`
+9. Install **tmux**: `sudo apt install tmux`
+10. Install **nvtop**: `sudo apt install nvtop`
+
+Base image complete, snapshot created: `compbio-base-00-250612`.
 
 ### CPU-only
+
+Building using snapshot `compbio-base-00-250612` and an `m3.medium` flavour.
+
+1. Install **HMMER**: `sudo apt install hmmer`
+2. Install **MMseq2**: `conda install -c conda-forge -c bioconda mmseqs2`
+3. Install **nail**:
+    - Install `rustup`: 
+    ```
+    sudo env CARGO_HOME=/opt/tools/rust/cargo RUSTUP_HOME=/opt/tools/rust/rustup \
+     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sudo env \
+     CARGO_HOME=/opt/tools/rust/cargo RUSTUP_HOME=/opt/tools/rust/rustup sh -s -- -y
+    ```
+    - Add to system-wide PATH: `sudo nano /etc/profile.d/rust.sh` and add
+    ```
+    export CARGO_HOME=/opt/tools/rust/cargo
+    export RUSTUP_HOME=/opt/tools/rust/rustup
+    export PATH=$CARGO_HOME/bin:$PATH
+    ```
+    - Make executable: `sudo chmod +x /etc/profile.d/rust.sh` and source `source /etc/profile.d/rust.sh`
+    - Make folder writable by anyone (again, _it's ok_): `sudo chmod 777 -R /opt/tools/rust`
+    - Install **nail**: `cargo install nail`
+
+CPU image complete, snapshot created: `compbio-cpu-00-250612`.
+
 ### GPU
+
+Building using snapshot `compbio-base-00-250612` and an `g3.small` flavour.
+
+1. Manually Download **Ambertools25** (`ambertools25.tar.bz2`) from https://ambermd.org/GetAmber.php
+    - This was done on a personal computer and transferred to the VM via `sftp` (`sftp put ambertools25.tar.bz2`)
+2. 
