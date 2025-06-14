@@ -1,5 +1,19 @@
 # Software Installation for Compbio Asia 2025
 
+Table of Content:
+- [Required software](#required-sofware)
+- [NOTES FOR OPERATORS](#notes-for-operators)
+- [Installation](#Installation)
+    - [Base](#base)
+    - [CPU-only](#cpu-only)
+    - [GPU](#gpu)
+        - [AMBER24](#amber24)
+        - [AmberTools25](#ambertools25)
+        - [AutoDock Vina](#autodock-vina)
+- [Data](#data)
+
+---
+
 ## Required sofware
 
 | Software | Version | Instructions/Documentation/Github | Notes |
@@ -33,7 +47,7 @@ These notes are going to be in reverse chronological order (i.e., latest date co
 
 - **2025-06-14**:
     - All VMs requested have been created.
-    - **Base** image: **`compbio-base-01-250613`** (Ubuntu 22)
+    - **Base** image: **`compbio-base-01-250613`** (Ubuntu 22, 37G available disk space)
         - Contains the following software:
             - Conda
                 - Python=3.11
@@ -43,14 +57,14 @@ These notes are going to be in reverse chronological order (i.e., latest date co
                 - Pytorch (GPU build)
             - tmux
             - nvtop
-    - **CPU-only** image: **`compbio-cpu-00-250612`** (Ubuntu 24) 
+    - **CPU-only** image: **`compbio-cpu-00-250612`** (Ubuntu 24, 34G available disk space) 
         - Contains:
             - Everything from the **Base** installation (note Ubuntu 22 > 24, should not affect operations)
             - rustup
             - nail
             - HMMER
             - mmseqs2
-    - **GPU** image: **`compbio-gpu-00-250614`** (Ubuntu 22)
+    - **GPU** image: **`compbio-gpu-00-250614`** (Ubuntu 22, 27G available disk space)
         - Contains:
             - Everything from the **Base** installation
             - Conda
@@ -386,5 +400,16 @@ AutoDock Vina executes as requested.
 #### Installation Complete
 
 GPU image complete, snapshot created: `compbio-gpu-00-250614`.
+
+---
+
+## Data
+
+Data will be stored in the `/data/` shared storage (4TB disk space). This is a [Manila](https://wiki.openstack.org/wiki/Manila)-type shared storage, where you can find:
+
+- `/data/raw_tools`: raw files for installing tools. **DO NOT TOUCH**.
+- `/data/raw_data`: location for raw data. **Do NOT TOUCH/WRITE**.
+- `/data/tools`: installation location for Amber24, AmberTools25, AutoDock Vina. **DO NOT TOUCH**.
+- `/data/user_dirs`: directory for users to create folders and save files.
 
 ---
