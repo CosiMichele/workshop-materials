@@ -34,7 +34,7 @@ Table of Content:
 | AutoDock Vina ||| OPENCL installation due to infrastructure constraints |
 
 > [!NOTE]
-> Most of tools & dependencies (e.g., **conda**, **CUDA**) are installed in **`/opt/tools`**. **apt install** software is installed in default location. **Amber** and **Ambertools** are installed in **`/data/tools`**.
+> Most of tools & dependencies (e.g., **conda**, **CUDA**) are installed in **`/opt/tools`**. **apt install** software is installed in default location. **Amber**, **Ambertools**, **AutoDock Vina** are installed in **`/data/tools`**.
 > This is because:
 > - **conda**: users might want to install further tools that may impact other attendees.
 > - **CUDA**: requires to be "closer" to the VM and may cause issues if share isn't available.
@@ -78,6 +78,8 @@ These notes are going to be in reverse chronological order (i.e., latest date co
             - Pull on a GPU capable machine: `cosimichele/jupyter-amber:gpu-250609`
         - Alphafold2: TBD
         - Alphafold3: TBD
+    - **Data folder** (4TB):
+        - Data can be deposited in `/data/user_dirs`.
 
 ---
 
