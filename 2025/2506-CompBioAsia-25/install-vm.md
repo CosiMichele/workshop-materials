@@ -3,7 +3,7 @@
 ## Required sofware
 
 | Software | Version | Instructions/Documentation/Github | Notes |
-|---|---|---|
+|---|---|---|---|
 | HMMER | 3.4 |	http://hmmer.org/documentation.html ||
 | MMseqs2 | 17 | https://github.com/soedinglab/MMseqs2 ||
 | nail | 0.3.0 | https://github.com/TravisWheelerLab/nail ||
@@ -17,13 +17,15 @@
 | AlphaFold3 | | https://github.com/google-deepmind/alphafold3 ||
 | AMBERTools25 | 25 | 	https://ambermd.org/GetAmber.php#amber ||
 | AMBER24 | 24 | https://ambermd.org/GetAmber.php#amber ||
-| AutoDock Vina |||| OPENCL installation due to infrastructure constraints |
+| AutoDock Vina ||| OPENCL installation due to infrastructure constraints |
 
 > [!NOTE]
 > Most of tools & dependencies (e.g., **conda**, **CUDA**) are installed in **`/opt/tools`**. **apt install** software is installed in default location. **Amber** and **Ambertools** are installed in **`/data/tools`**.
 > This is because:
 > - **conda**: users might want to install further tools that may impact other attendees.
 > - **CUDA**: requires to be "closer" to the VM and may cause issues if share isn't available.
+
+---
 
 ## NOTES FOR OPERATORS
 
@@ -55,7 +57,7 @@ These notes are going to be in reverse chronological order (i.e., latest date co
                 - scipy
             - AMBER24
             - AmberTools25
-            - AutoDock Vina (OpenCL)
+            - AutoDock Vina (OpenCL) (executed with `autodock_gpu_128wi`)
     - Docker Images:
         - **Protein Ligand Prep**:
             - refer to the **`install-notes-jh-docker.md`** document.
@@ -63,6 +65,7 @@ These notes are going to be in reverse chronological order (i.e., latest date co
         - Alphafold2: TBD
         - Alphafold3: TBD
 
+---
 
 ## Installation
 
@@ -380,7 +383,7 @@ AutoDock Vina with GPU support should be installed by compiling from source.
 AutoDock Vina executes as requested.
 
 
-## Installation Complete
+#### Installation Complete
 
 GPU image complete, snapshot created: `compbio-gpu-00-250614`.
 
