@@ -2,28 +2,67 @@
 
 ## Required sofware
 
-| Software | Version | Instructions/Documentation/Github |
+| Software | Version | Instructions/Documentation/Github | Notes |
 |---|---|---|
-| HMMER | 3.4 |	http://hmmer.org/documentation.html |
-| MMseqs2 | 17 | https://github.com/soedinglab/MMseqs2 |
-| nail | 0.3.0 | https://github.com/TravisWheelerLab/nail |
-| Pytorch | 2.7 | https://pytorch.org/ |
-| Python |3.11 | |
-| Gemmi || https://gemmi.readthedocs.io/en/latest/install.html#python-module |
-| Pandas |||
-| Matplotlib |||
-| Numpy	|||
-| AlphaFold3 | | https://github.com/google-deepmind/alphafold3 |
-| AMBERTools25 | 25 | 	https://ambermd.org/GetAmber.php#amber |
-| AMBER24 | 24 | https://ambermd.org/GetAmber.php#amber |
-| AutoDock Vina |||
+| HMMER | 3.4 |	http://hmmer.org/documentation.html ||
+| MMseqs2 | 17 | https://github.com/soedinglab/MMseqs2 ||
+| nail | 0.3.0 | https://github.com/TravisWheelerLab/nail ||
+| Pytorch | 2.7 | https://pytorch.org/ ||
+| Python |3.11 | ||
+| Gemmi || https://gemmi.readthedocs.io/en/latest/install.html#python-module ||
+| Pandas ||||
+| Matplotlib ||||
+| Numpy	||||
 | AlphaFold2 |||
+| AlphaFold3 | | https://github.com/google-deepmind/alphafold3 ||
+| AMBERTools25 | 25 | 	https://ambermd.org/GetAmber.php#amber ||
+| AMBER24 | 24 | https://ambermd.org/GetAmber.php#amber ||
+| AutoDock Vina |||| OPENCL installation due to infrastructure constraints |
 
 > [!NOTE]
-> Most of tools & dependencies (e.g., **conda**, **CUDA**) are installed in **`/opt/tools`**. **Amber** and **Ambertools** are installed in **`/data/tools`**.
+> Most of tools & dependencies (e.g., **conda**, **CUDA**) are installed in **`/opt/tools`**. **apt install** software is installed in default location. **Amber** and **Ambertools** are installed in **`/data/tools`**.
 > This is because:
 > - **conda**: users might want to install further tools that may impact other attendees.
 > - **CUDA**: requires to be "closer" to the VM and may cause issues if share isn't available.
+
+## NOTES FOR OPERATORS
+
+These notes are going to be in reverse chronological order (i.e., latest date comes first, oldest date comes last). These notes are expected to grow overtime. For installation notes, skip to the [Installation](#installation) section.
+
+- **2025-06-14**:
+    - All VMs requested have been created.
+    - **Base** image: **`compbio-base-01-250613`** (Ubuntu 22)
+        - Contains the following software:
+            - Conda
+                - Python=3.11
+                - Matplotlib
+                - Numpy
+                - Gemmi
+                - Pytorch (GPU build)
+            - tmux
+            - nvtop
+    - **CPU-only** image: **`compbio-cpu-00-250612`** (Ubuntu 24) 
+        - Contains:
+            - Everything from the **Base** installation (note Ubuntu 22 > 24, should not affect operations)
+            - rustup
+            - nail
+            - HMMER
+            - mmseqs2
+    - **GPU** image: **`compbio-gpu-00-250614`** (Ubuntu 22)
+        - Contains:
+            - Everything from the **Base** installation
+            - Conda
+                - scipy
+            - AMBER24
+            - AmberTools25
+            - AutoDock Vina (OpenCL)
+    - Docker Images:
+        - **Protein Ligand Prep**:
+            - refer to the **`install-notes-jh-docker.md`** document.
+            - Pull on a GPU capable machine: `cosimichele/jupyter-amber:gpu-250609`
+        - Alphafold2: TBD
+        - Alphafold3: TBD
+
 
 ## Installation
 
@@ -127,7 +166,7 @@ Building using snapshot `compbio-base-01-250613` and an `g3.small` flavour.
 
 Note: downloading Amber files may take some time depending on network availability.
 
-**AMBER24** and **Ambertools25** have their own subsections as both tools require extra care.
+**AMBER24**, **Ambertools25**, **AutoDock Vina** have their own subsections as both tools require extra care.
 
 These tools require both CUDA drivers and NVIDIA Toolkit.
 
@@ -225,12 +264,12 @@ Logout and log back in, test with `nvidia-smi` and `nvcc --version`.
     STOP PMEMD Terminated Abnormally!
     ```
 
-#### Ambertools25
+#### AmberTools25
 
 >[!IMPORTANT]
 > **Critical**: Follow the installation instructions in the [manual](https://ambermd.org/doc12/Amber25.pdf) found at https://ambermd.org/GetAmber.php
 
-1. Manually Download **Ambertools25** (`ambertools25.tar.bz2`) from https://ambermd.org/GetAmber.php
+1. Manually Download **AmberTools25** (`ambertools25.tar.bz2`) from https://ambermd.org/GetAmber.php
     - This was done on a personal computer and transferred to the VM via `sftp` (`sftp put ambertools25.tar.bz2`)
 2. Move `ambertools25.tar.bz2` to `/opt/tools` with `sudo mv ambertools25.tar.bz2 /opt/tools/`, and extract: `sudo bunzip2 ambertools25.tar.bz2 && sudo tar -xvf ambertools25.tar`. Results with `ambertools25_src` folder; `cd ambertools25_src`.
 3. Open the `build` directory with `cd build` and edit `run_cmake` to reflect the following changes (lines 40-45):
@@ -245,7 +284,104 @@ Logout and log back in, test with `nvidia-smi` and `nvcc --version`.
         -DDOWNLOAD_MINICONDA=FALSE \
         2>&1 | tee  cmake.log
     ```
-4. Install scipy: `conda install scipy`
+4. Install **scipy**: `conda install scipy`
 5. Execute the cmake install: `sudo ./run_cmake`
 6. Install: `make install`
+7. Add to `amber.sh` file that allow for Amber to be executed for everyone: `sudo nano /etc/profile.d/amber.sh`
+    - Add: 
+    ```
+    source /data/tools/ambertools25/amber.sh
+    export AMBERSOURCE=/data/tools/ambertools25_src
+    ```
+    The entire file should look like the following:
+    ```
+    source /data/tools/pmemd24/amber.sh
+    export AMBERHOME=/data/tools/pmemd24/
+    source /data/tools/ambertools25/amber.sh
+    export AMBERSOURCE=/data/tools/ambertools25_src
+    ```
+    - Log out and log back in (close and reopen the VM)
+    - Doing `pdb4amber` and `tleap` gives output
 
+#### AutoDock Vina
+
+AutoDock Vina with GPU support should be installed by compiling from source.
+
+>[!IMPORTANT]
+> Unfortunately, we are running a GRID A100 ("not a full GPU, only a part of it"; For the nerds: `GRID A100X-8C, based on the NVIDIA A100 architecture = SM_80`). AutoDock Vina fails if asked to be built for a full GPU (i.e., `make DEVICE=GPU TARGETS="80"`).
+>
+> Therefore we need to build using **OPENCL**.
+
+>[!NOTE]
+> AutoDock Vina is executed with **`autodock_gpu_128wi`** from the SHELL.
+
+1. Clone the repository: `cd /data/raw_tools/ && git clone https://github.com/ccsb-scripps/AutoDock-GPU.git && cp -r /data/raw_tools/AutoDock-GPU /data/tools && cd /data/tools`
+2. Export CUDA include and libraries to PATH: `export GPU_INCLUDE_PATH=/usr/local/cuda/include && export GPU_LIBRARY_PATH=/usr/local/cuda/lib64`
+3. Run make: `make DEVICE=OPENCL TARGETS="80"`
+4. Create file that allow for AutoDock to be executed for everyone: `sudo nano /etc/profile.d/autodock.sh`
+    - Add: 
+    ```
+    export  PATH=$PATH:/data/tools/AutoDock-GPU/bin
+    ```
+    - Log out and log back in (close and reopen the VM)
+5. Execute for testing:
+    ```
+    autodock_gpu_128wi --ffile /data/tools/AutoDock-GPU/input/1stp/derived/1stp_protein.maps.fld --lfile /data/tools/AutoDock-GPU/input/1stp/derived/1stp_ligand.pdbqt
+    
+    AutoDock-GPU version: v1.6-7-ga46ab564d2ac5f1a1523f65239b43505a1c29364
+
+    Running 1 docking calculation
+
+    Kernel source used for development:      ./device/calcenergy.cl
+    Kernel string used for building:         ./host/inc/stringify.h
+    Kernel compilation flags:                 -I ./device -I ./common -DN128WI   -cl-mad-enable
+    OpenCL device:                           GRID A100X-8C
+    (Thread 1 is setting up Job #1)
+
+    Running Job #1
+        Using heuristics: (capped) number of evaluations set to 1132076
+        Local-search chosen method is: ADADELTA (ad)
+
+    Executing docking runs, stopping automatically after either reaching 0.15 kcal/mol standard deviation of
+    the best molecules of the last 4 * 5 generations, 42000 generations, or 1132076 evaluations:
+
+    Generations |  Evaluations |     Threshold    |  Average energy of best 10%  | Samples | Best Inter + Intra
+    ------------+--------------+------------------+------------------------------+---------+-------------------
+            0 |          150 |  643.21 kcal/mol |  165.75 +/-  127.32 kcal/mol |       4 |   11.29 kcal/mol
+            5 |        29635 |  643.21 kcal/mol |   18.99 +/-   58.86 kcal/mol |     149 |   -8.81 kcal/mol
+            10 |        56368 |   24.92 kcal/mol |   -8.72 +/-    0.25 kcal/mol |      13 |   -9.21 kcal/mol
+            15 |        82493 |   -8.43 kcal/mol |   -9.04 +/-    0.20 kcal/mol |       9 |   -9.37 kcal/mol
+            20 |       108465 |   -8.70 kcal/mol |   -9.39 +/-    0.18 kcal/mol |       8 |   -9.61 kcal/mol
+            25 |       134048 |   -9.05 kcal/mol |   -9.34 +/-    0.17 kcal/mol |      14 |   -9.63 kcal/mol
+            30 |       159781 |   -9.16 kcal/mol |   -9.63 +/-    0.07 kcal/mol |       9 |   -9.72 kcal/mol
+            35 |       185166 |   -9.38 kcal/mol |   -9.66 +/-    0.11 kcal/mol |      12 |   -9.92 kcal/mol
+            40 |       210415 |   -9.52 kcal/mol |   -9.74 +/-    0.14 kcal/mol |      12 |   -9.97 kcal/mol
+            45 |       235930 |   -9.56 kcal/mol |   -9.77 +/-    0.14 kcal/mol |       9 |  -10.00 kcal/mol
+            50 |       261203 |   -9.54 kcal/mol |   -9.83 +/-    0.13 kcal/mol |      10 |  -10.02 kcal/mol
+            55 |       286668 |   -9.64 kcal/mol |   -9.88 +/-    0.12 kcal/mol |      10 |  -10.03 kcal/mol
+            60 |       312079 |   -9.70 kcal/mol |   -9.86 +/-    0.11 kcal/mol |      13 |  -10.03 kcal/mol
+            65 |       337489 |   -9.74 kcal/mol |   -9.91 +/-    0.06 kcal/mol |      12 |  -10.03 kcal/mol
+    ------------+--------------+------------------+------------------------------+---------+-------------------
+
+                                    Finished evaluation after reaching
+                                    -9.87 +/-    0.11 kcal/mol combined.
+                                45 samples, best inter + intra   -10.03 kcal/mol.
+
+
+    Job #1 took 0.229 sec after waiting 0.165 sec for setup
+
+    (Thread 1 is processing Job #1)
+    Run time of entire job set (1 file): 0.418 sec
+    Processing time: 0.024 sec
+
+    All jobs (1) ran without errors.
+    ```
+
+AutoDock Vina executes as requested.
+
+
+## Installation Complete
+
+GPU image complete, snapshot created: `compbio-gpu-00-250614`.
+
+---
