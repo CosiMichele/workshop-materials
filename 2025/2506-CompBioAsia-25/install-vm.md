@@ -211,6 +211,19 @@ Logout and log back in, test with `nvidia-smi` and `nvcc --version`.
     --   Fortran: GNU 11.4.0 (/usr/bin/gfortran)
     ```
 4. Install: `make install`
+5. Create file that allow for Amber to be executed for everyone: `sudo nano /etc/profile.d/amber.sh`
+    - Add: 
+    ```
+    source /data/tools/pmemd24/amber.sh
+    export AMBERHOME=/data/tools/pmemd24/
+    ```
+    - Source: `source /etc/profile.d/amber.sh`
+    - Doing `pmemd.cuda` runs.
+    ```
+
+      Unit  115 Error on OPEN: mdin                                                                                                                                                                                                                                                         
+    STOP PMEMD Terminated Abnormally!
+    ```
 
 #### Ambertools25
 
@@ -232,6 +245,7 @@ Logout and log back in, test with `nvidia-smi` and `nvcc --version`.
         -DDOWNLOAD_MINICONDA=FALSE \
         2>&1 | tee  cmake.log
     ```
-4. Install nvidia-cuda-toolkit: `conda install -c "nvidia/label/cuda-12.2.0" cuda-toolkit`
-6. Execute the cmake install: `sudo ./run_cmake`
+4. Install scipy: `conda install scipy`
+5. Execute the cmake install: `sudo ./run_cmake`
+6. Install: `make install`
 
