@@ -10,6 +10,7 @@ Table of Content:
         - [AMBER24](#amber24)
         - [AmberTools25](#ambertools25)
         - [AutoDock Vina](#autodock-vina)
+    - [Docker Images](#docker-images)
 - [Data](#data)
 
 ---
@@ -44,6 +45,9 @@ Table of Content:
 ## NOTES FOR OPERATORS
 
 These notes are going to be in reverse chronological order (i.e., latest date comes first, oldest date comes last). These notes are expected to grow overtime. For installation notes, skip to the [Installation](#installation) section.
+
+- **2025-06-15**:
+    - Added Docker section to this file.
 
 - **2025-06-14**:
     - All VMs requested have been created.
@@ -404,9 +408,10 @@ AutoDock Vina executes as requested.
 GPU image complete, snapshot created: `compbio-gpu-00-250614`.
 
 
-### Docker
+### Docker Images
 
-Please refer to 
+- **Amber MD Prep**: please refer to [Installation for Amber MD Prep](https://github.com/CosiMichele/workshop-materials/blob/main/2025/2506-CompBioAsia-25/amber_docker/install-notes-jh-amber-docker.md)(`install-notes-jh-amber-docker.md`).
+
 ---
 
 ## Data
