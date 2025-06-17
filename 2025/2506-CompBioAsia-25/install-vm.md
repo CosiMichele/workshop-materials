@@ -46,6 +46,78 @@ Table of Content:
 
 These notes are going to be in reverse chronological order (i.e., latest date comes first, oldest date comes last). These notes are expected to grow overtime. For installation notes, skip to the [Installation](#installation) section.
 
+- **2025-06-16**:
+    - UPDATED SNAPSHOTS ARE: 
+        - GPU: **`compbio-gpu-01-250616`**
+        - CPU: **`compbio-cpu-01-250616`**
+    - Made changes to CPU and GPU machines to address group ownership:
+        - A new group is created: `sudo groupadd compbio-shared` (ran once in GPU and CPU new snapshots **DOES NOT REQUIRE TO BE EXECUTED AGAIN**)
+        - Set ownership and permissions on `/data/user_dirs` (**DOES NOT REQUIRE TO BE EXECUTED AGAIN**):
+            ```
+            sudo chown -R root:compbio-shared /data/user_dirs       # Sets group ownership recursively
+            sudo chmod -R g+rwX /data/user_dirs                     # Adds group read/write for files and execute on directories
+            sudo find /data/user_dirs -type d -exec chmod g+s {} +  # Enables setgid bit on all directories so new files inherit group
+            ```
+        - Created `/etc/profile.d/add_to_compbio_shared.sh` that automatically runs at login (and made executable with `sudo chmod +x /etc/profile.d/add_to_compbio_shared.sh`):
+            ```
+            #!/bin/bash
+
+            # Only for normal users, skip root and system users (UID<1000)
+            if [ "$UID" -ge 1000 ] && [ "$EUID" -ne 0 ]; then
+
+                # If not already in compbio-shared group
+                if ! id -nG "$USER" | grep -qw compbio-shared; then
+                    sudo /usr/local/bin/add-to-compbio-shared "$USER"
+                fi
+
+                # Set umask for group rw permissions on new files/dirs
+                umask 002
+            fi
+            ```
+        - Created a helper script `/usr/local/bin/add-to-compbio-shared` (and made executable with `sudo chmod +x /usr/local/bin/add-to-compbio-shared`):
+            ```
+            #!/bin/bash
+            USER_TO_ADD="$1"
+            if [ -z "$USER_TO_ADD" ]; then
+                echo "Usage: $0 username"
+                exit 1
+            fi
+            if id -nG "$USER_TO_ADD" | grep -qw compbio-shared; then
+                exit 0
+            fi
+            usermod -aG compbio-shared "$USER_TO_ADD"
+            ```
+            - Allow passwordless sudo for the helper script: created file `/etc/sudoers.d/add-to-compbio-shared` (added right permissions with `sudo chmod 440 /etc/sudoers.d/add-to-compbio-shared`):
+                ```
+                ALL ALL=NOPASSWD: /usr/local/bin/add-to-compbio-shared
+                ```
+    - Made small script to delete clutter upon login (`/etc/profile.d/cleanup_home_dirs.sh`, and made executable `sudo chmod +x /etc/profile.d/cleanup_home_dirs.sh`):
+        ```
+        #!/bin/bash
+
+        # Only apply to real user sessions (UID >= 1000, non-root)
+        if [ "$UID" -ge 1000 ] && [ "$EUID" -ne 0 ]; then
+
+        TARGET_DIRS=(Desktop Documents Downloads Music Pictures Public Templates Videos)
+
+        found=false
+
+        for dir in "${TARGET_DIRS[@]}"; do
+            fullpath="$HOME/$dir"
+            if [ -d "$fullpath" ]; then
+            rm -rf "$fullpath"
+            echo "Deleted: $fullpath"
+            found=true
+            fi
+        done
+
+        if ! $found; then
+            echo "Nothing to delete in home"
+        fi
+
+        fi
+        ```
+
 - **2025-06-15**:
     - Added Docker section to this file.
 
