@@ -42,12 +42,13 @@ USER jovyan
 WORKDIR /home/jovyan
 
 # Install required software
-RUN mamba install -c conda-forge -c bioconda python=3.11 numpy cudatoolkit pdbfixer nglview openmm mdtraj ipywidgets=7.7.2 gitpython nbconvert nbformat requests packaging rich jax parmed netCDF4 openbabel widgetsnbextension jupyter_contrib_nbextensions nodejs ambertools rdkit swig boost-cpp libboost sphinx_rtd_theme matplotlib scikit-learn smina -y
+RUN mamba install -c conda-forge -c bioconda python==3.11 numpy cudatoolkit pdbfixer nglview openmm mdtraj ipywidgets=7.7.2 gitpython nbconvert nbformat requests packaging rich jax parmed netCDF4 openbabel widgetsnbextension jupyter_contrib_nbextensions nodejs ambertools rdkit swig boost-cpp libboost sphinx_rtd_theme matplotlib scikit-learn smina -y --no-pin
 RUN pip install crossflow nglview[lab] vina biopandas prody
 RUN nglview enable
 RUN git clone https://github.com/forlilab/Meeko && \ 
     cd Meeko && \
     pip install .
+RUN sudo apt install tmux -y
 
 # Rebuild the Jupyter Lab with new tools
 RUN jupyter lab build
