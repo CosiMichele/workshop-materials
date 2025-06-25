@@ -46,7 +46,7 @@ Table of Content:
 
 These notes are going to be in reverse chronological order (i.e., latest date comes first, oldest date comes last). These notes are expected to grow overtime. For installation notes, skip to the [Installation](#installation) section.
 
-- **2025-06-20**:
+- **2025-06-23**:
     - 
 
 - **2025-06-18**:
@@ -522,44 +522,9 @@ Additionally, conda is installed (see steps above).
     ```
     sudo ln -sf /usr/local/cuda-12.6 /usr/local/cuda
     ```
-    > [!NOTE]
-    > Likely when doing `nvidia-smi` CUDA Version 12.4 is reported. However, when doing `nvcc -V` release 12.6 is showing.
-    > ```
-    > exouser@mentally-stirring-oyster:~$ nvidia-smi 
-    > Sat Jun 21 15:06:35 2025       
-    > +-----------------------------------------------------------------------------------------+
-    > | NVIDIA-SMI 550.144.03             Driver Version: 550.144.03     CUDA Version: 12.4     |
-    > |-----------------------------------------+------------------------+----------------------+
-    > | GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
-    > | Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
-    > |                                         |                        |               MIG M. |
-    > |=========================================+========================+======================|
-    > |   0  NVIDIA H100 80GB HBM3          On  |   00000000:04:00.0 Off |                    0 |
-    > | N/A   36C    P0             72W /  700W |      14MiB /  81559MiB |      0%      Default |
-    > |                                         |                        |             Disabled |
-    > +-----------------------------------------+------------------------+----------------------+
-    >                                                                                         
-    > +-----------------------------------------------------------------------------------------+
-    > | Processes:                                                                              |
-    > |  GPU   GI   CI        PID   Type   Process name                              GPU Memory |
-    > |        ID   ID                                                               Usage      |
-    > |=========================================================================================|
-    > |    0   N/A  N/A      1398      G   /usr/lib/xorg/Xorg                              4MiB |
-    > +-----------------------------------------------------------------------------------------+
-    > exouser@mentally-stirring-oyster:~$ nvcc -V
-    > nvcc: NVIDIA (R) Cuda compiler driver
-    > Copyright (c) 2005-2024 NVIDIA Corporation
-    > Built on Tue_Oct_29_23:50:19_PDT_2024
-    > Cuda compilation tools, release 12.6, V12.6.85
-    > Build cuda_12.6.r12.6/compiler.35059454_0
-    > ```
-    >
-    > This mismatch is normal and expected behavior.
-    > `nvidia-smi` reports the maximum CUDA version supported by the currently loaded NVIDIA driver, not the version of the CUDA toolkit installed.
-    >
-    > The driver version (550.144.03) is from the 12.4 driver series, and although it's compatible with CUDA 12.6, it does not declare that directly.
 2. **cuDNN**:
     - Assuming that the previous steps have been taken, you can install with `sudo apt-get -y install cudnn` (or `sudo apt-get -y install cudnn-cuda-12` for specific version 12).
+
 3. **JAX**:
     - Install using pip: `pip install --upgrade "jax[cuda12]"`
 4. **nvidia-ctk** (following [these instructions](https://github.com/google-deepmind/alphafold3/blob/main/docs/installation.md#installing-nvidia-support-for-docker)):
