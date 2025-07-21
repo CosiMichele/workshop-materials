@@ -563,12 +563,11 @@ Data will be stored in the `/data/` shared storage (4TB disk space). This is a [
 
 ---
 
-
 docker run -it \
-    --volume ./af_input:/root/af_input \
+    --volume ./af_input2:/root/af_input \
     --volume ./af_output:/root/af_output \
-    --volume ./mod_params:/root/models \
-    --volume ./public_databases:/root/public_databases \
+    --volume /data/raw_data/af3_models:/root/models \
+    --volume /data/raw_data/af3_public_databases:/root/public_databases \
     --gpus all \
     alphafold3 \
     python run_alphafold.py \
