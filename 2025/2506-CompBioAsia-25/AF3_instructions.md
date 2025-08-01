@@ -15,21 +15,18 @@ Table of Contents:
 
 ## Installation Requirements
 
-**Hardware**:
-
+- **Hardware**:
     - Access to  NVIDIA A100 80 GB GPU or NVIDIA H100 80 GB GPU
     - 1TB disk space
     - 64GB RAM
 
-**Software**:
-
+- **Software**:
     - CUDA 12.6
       - Note: AF3 potentially *may* work with CUDA 12.4, but 12.6 is recommended.
     - cuDNN
     - JAX
 
-**Notes on Models & Databases**:
-
+- **Notes on Models & Databases**:
     - [Model parameters](https://github.com/google-deepmind/alphafold3?tab=readme-ov-file#obtaining-model-parameters) can only be acquired by requested access. Please contact the AF3 team.
     - Databases require ~630GB of space; please ensure there is enough disk space to download and decompress data.
 
