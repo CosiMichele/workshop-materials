@@ -1,5 +1,15 @@
 # Installation for Amber MD Prep
 
+---
+## Note: 2026 Update
+
+2 additional packages have been installed for CompBio 2026 Asia/Australia.
+
+These are [Alphafix](https://github.com/CharlieLaughton/Alphafix.git) amd [CBAtools](https://github.com/CompBioAsia/CBAtools.git) installed in the Dockerfile as
+- `RUN pip install git+https://github.com/CharlieLaughton/Alphafix.git`
+- `RUN pip install git+https://github.com/CompBioAsia/CBAtools.git`
+---
+
 See https://github.com/CompBioAsia/Amber-md-prep (private, requires access)
 
 ## Required Tools

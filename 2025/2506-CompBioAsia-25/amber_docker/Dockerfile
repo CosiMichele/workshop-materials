@@ -49,6 +49,8 @@ RUN git clone https://github.com/forlilab/Meeko && \
     cd Meeko && \
     pip install .
 RUN sudo apt install tmux -y
+RUN pip install git+https://github.com/CharlieLaughton/Alphafix.git
+RUN pip install git+https://github.com/CompBioAsia/CBAtools.git
 
 # Rebuild the Jupyter Lab with new tools
 RUN jupyter lab build
