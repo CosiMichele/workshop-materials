@@ -1,6 +1,22 @@
 # Installation for Amber MD Prep
 
-See https://github.com/CompBioAsia/Amber-md-prep and https://github.com/CompBioAsia/OpenMM-md-run
+See https://github.com/CompBioAsia/Amber-md-prep and https://github.com/CompBioAsia/OpenMM-md-run.
+
+Docker image: **cosimichele/jupyter-amber:gpu-260609**
+
+---
+## Note: 2026 Update
+
+2 additional packages have been installed for CompBio 2026 Asia/Australia.
+
+These are [Alphafix](https://github.com/CharlieLaughton/Alphafix.git) and [CBAtools](https://github.com/CompBioAsia/CBAtools.git) installed through the Dockerfile as
+- `RUN pip install git+https://github.com/CharlieLaughton/Alphafix.git`
+- `RUN pip install git+https://github.com/CompBioAsia/CBAtools.git`
+- `RUN pip install --upgrade parmed`
+
+---
+
+See https://github.com/CompBioAsia/Amber-md-prep (private, requires access)
 
 ## Required Tools
 
@@ -45,10 +61,4 @@ Additional functionality:
 - `jupyter_notebook_config.json`
 
 ## Building Docker
-See `Dockerfile` for more details. Docker container was built with `docker build .` and pushed to Dockerhub as **`cosimichele/jupyter-amber:gpu-250609`**, where it can be pulled and deployed with [CACAO](https://cacao.jetstream-cloud.org/).
-
-## Running Training
-
-Notes:
-- (2025-06-15) Running **protein-ligand-prep**,  cell 3 looks for file `ligand_PH7.pdb`, should be `ligand_pH7.pdb`
-- (2025-06-15) **openMM-md-run** runs end to end.
+See `Dockerfile` for more details. Docker container was built with `docker build .` and pushed to Dockerhub as **`cosimichele/jupyter-amber:gpu-260609`**, where it can be pulled and deployed with [CACAO](https://cacao.jetstream-cloud.org/).

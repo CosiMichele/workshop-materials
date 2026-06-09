@@ -11,6 +11,7 @@ This repository is where I create/modify some of my own workshop materials.
   - [Summer 2025 University of Arizona KEYS Internship Computational Assessment & Lecture Materials](https://keys.arizona.edu/) (2504-KEYS-assessment, 2505-KEYS-lecture)
   - [Cambium-NRT Data Science Training](https://cambium.arizona.edu/) (2505-CAMBIUM-NRT)
   - [CompBio Asia 2025 VM Instructions](https://compbioasia.net/) (2506-CompBioAsia-25)
+    - Contains updates for CompBio Asia 2026
   - [Public Health & AI Summer School](https://publichealth.arizona.edu/ai/summer-school) (2506-PHealth-AI)
 - 2024:
   - [UA DataLab's Data Tapas: Git/GitHub](https://datascience.arizona.edu/events/data-science-tapas-savor-tools-data-mastery) (2402-DataTapas_git)
