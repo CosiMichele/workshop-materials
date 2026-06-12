@@ -4,6 +4,8 @@ This repository is where I create/modify some of my own workshop materials.
 
 ## Materials
 
+- 2026:
+  - [CompbBio Asia 2026](https://github.com/CosiMichele/workshop-materials/tree/main/2026/2606-CompBioAsia-26) 
 - 2025:
   - [AI for Bioinformatics: Practical Skills for the Modern Researcher](https://github.com/ua-datalab/Bioinformatics/wiki) (2501-Biosci_series, 2507-Biosci_series)
   - [Functional Open Science Skills for AI/ML Applications](https://github.com/ua-datalab/FOSS_AI-ML/wiki) (2501-FOSS-AI_series)
