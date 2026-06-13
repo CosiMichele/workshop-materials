@@ -35,7 +35,16 @@ USER jovyan
 WORKDIR /home/jovyan    
 
 RUN pip install notebook-intelligence
+RUN curl -fsSL https://claude.ai/install.sh | bash && \
+    echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+
+# Ollama installation requires GPUs
+#USER root
+#RUN  curl -fsSL https://ollama.com/install.sh | sh
+#USER jovyan
+
 RUN pip install --upgrade jupyterlab jupyterlab-git
+RUN pip install huggingface chatlas
 
 # Rebuild the Jupyter Lab with new tools
 RUN jupyter lab build
