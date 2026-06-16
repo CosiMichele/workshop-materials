@@ -50,42 +50,51 @@ RUN pip install --no-dependencies e3nn==0.5.5 opt_einsum_fx
 RUN pip install git+https://github.com/sokrypton/ColabDesign.git
 RUN pip install git+https://github.com/Biohub/esm.git@main
 
+USER root
+
 # Clone RFdiffusion repository
-RUN git clone https://github.com/sokrypton/RFdiffusion.git
+RUN cd /opt && git clone https://github.com/sokrypton/RFdiffusion.git
 
 # Install SE3Transformer
-RUN cd RFdiffusion/env/SE3Transformer && pip install . && cd ../
+RUN cd /opt/RFdiffusion/env/SE3Transformer && pip install . && cd ../
 
 # Download ananas tool
-RUN wget -qnc https://files.ipd.uw.edu/krypton/ananas -O ananas && \
-    chmod +x ananas
+RUN wget -qnc https://files.ipd.uw.edu/krypton/ananas -O /opt/ananas && \
+    chmod +x /opt/ananas
 
 # Create params directory
-RUN mkdir -p params
+RUN mkdir -p /opt/params
 
 # Download RFdiffusion parameters
-RUN mkdir -p RFdiffusion/models && \
-    aria2c -q -x 16 http://files.ipd.uw.edu/pub/RFdiffusion/6f5902ac237024bdd0c176cb93063dc4/Base_ckpt.pt -o RFdiffusion/models/Base_ckpt.pt && \
-    aria2c -q -x 16 http://files.ipd.uw.edu/pub/RFdiffusion/e29311f6f1bf1af907f9ef9f44b8328b/Complex_base_ckpt.pt -o RFdiffusion/models/Complex_base_ckpt.pt && \
-    aria2c -q -x 16 http://files.ipd.uw.edu/pub/RFdiffusion/f572d396fae9206628714fb2ce00f72e/Complex_beta_ckpt.pt -o RFdiffusion/models/Complex_beta_ckpt.pt
+RUN mkdir -p /opt/RFdiffusion/models && \
+    aria2c -q -x 16 http://files.ipd.uw.edu/pub/RFdiffusion/6f5902ac237024bdd0c176cb93063dc4/Base_ckpt.pt -o /opt/RFdiffusion/models/Base_ckpt.pt && \
+    aria2c -q -x 16 http://files.ipd.uw.edu/pub/RFdiffusion/e29311f6f1bf1af907f9ef9f44b8328b/Complex_base_ckpt.pt -o /opt/RFdiffusion/models/Complex_base_ckpt.pt && \
+    aria2c -q -x 16 http://files.ipd.uw.edu/pub/RFdiffusion/f572d396fae9206628714fb2ce00f72e/Complex_beta_ckpt.pt -o /opt/RFdiffusion/models/Complex_beta_ckpt.pt
 
 # Download AlphaFold parameters
-RUN cd params && \
+RUN cd /opt/params && \
     aria2c -q -x 16 \
     --allow-overwrite=true \
     --auto-file-renaming=false \
     https://storage.googleapis.com/alphafold/alphafold_params_2022-12-06.tar && \
     tar -xf alphafold_params_2022-12-06.tar && \
-    rm alphafold_params_2022-12-06.tar && cd ~
+    rm alphafold_params_2022-12-06.tar
 
-# Download schedules
+# Download schedules and move
 RUN aria2c -q -x 16 https://files.ipd.uw.edu/krypton/schedules.zip -o schedules.zip && \
     unzip -q schedules.zip && \
-    rm schedules.zip
+    rm schedules.zip && \
+    mv ~/opt/RFdiffusion/models/* /opt/RFdiffusion/models && \
+    rm -r ~/opt && \
+    mv ~/RFdiffusion/schedules/ /opt/RFdiffusion/schedules && \
+    rm -r ~/RFdiffusion
 
 # Set environment variables
 ENV DGLBACKEND=pytorch
-ENV PYTHONPATH=/home/jovyan/RFdiffusion:$PYTHONPATH
+ENV PYTHONPATH=/opt/RFdiffusion:$PYTHONPATH
+
+USER jovyan
+WORKDIR /home/jovyan
 
 # Rebuild the Jupyter Lab with new tools
 RUN jupyter lab build
