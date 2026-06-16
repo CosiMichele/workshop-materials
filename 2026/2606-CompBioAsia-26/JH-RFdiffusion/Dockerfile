@@ -6,8 +6,11 @@ USER root
 RUN apt update && \
     apt install -y lsb-release apt-transport-https curl libfreetype6-dev pkg-config libx11-dev gcc less software-properties-common apt-utils glances htop nano vim nvtop unzip wget
 
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
-    apt-get install -y nodejs
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs && \
+    npm install -g npm@latest && \
+    node --version && \
+    npm --version
 
 # Install and configure jupyter lab.
 COPY jupyter_notebook_config.json /opt/conda/etc/jupyter/jupyter_notebook_config.json
@@ -67,18 +70,22 @@ RUN mkdir -p RFdiffusion/models && \
     aria2c -q -x 16 http://files.ipd.uw.edu/pub/RFdiffusion/f572d396fae9206628714fb2ce00f72e/Complex_beta_ckpt.pt -o RFdiffusion/models/Complex_beta_ckpt.pt
 
 # Download AlphaFold parameters
-RUN aria2c -q -x 16 https://storage.googleapis.com/alphafold/alphafold_params_2022-12-06.tar -o params/alphafold_params_2022-12-06.tar && \
-    tar -xf params/alphafold_params_2022-12-06.tar -C params && \
-    rm params/alphafold_params_2022-12-06.tar
+RUN cd params && \
+    aria2c -q -x 16 \
+    --allow-overwrite=true \
+    --auto-file-renaming=false \
+    https://storage.googleapis.com/alphafold/alphafold_params_2022-12-06.tar && \
+    tar -xf alphafold_params_2022-12-06.tar && \
+    rm alphafold_params_2022-12-06.tar && cd ~
 
 # Download schedules
 RUN aria2c -q -x 16 https://files.ipd.uw.edu/krypton/schedules.zip -o schedules.zip && \
     unzip -q schedules.zip && \
-    rm /app/schedules.zip
+    rm schedules.zip
 
 # Set environment variables
 ENV DGLBACKEND=pytorch
-ENV PYTHONPATH=~/RFdiffusion:$PYTHONPATH
+ENV PYTHONPATH=/home/jovyan/RFdiffusion:$PYTHONPATH
 
 # Rebuild the Jupyter Lab with new tools
 RUN jupyter lab build
