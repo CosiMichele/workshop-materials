@@ -4,7 +4,7 @@ USER root
 
 # Install a few dependencies for text and monitoring instances
 RUN apt update && \
-    apt install -y lsb-release apt-transport-https curl libfreetype6-dev pkg-config libx11-dev gcc less software-properties-common apt-utils glances htop nano vim nvtop unzip wget
+    apt install -y lsb-release apt-transport-https curl libfreetype6-dev pkg-config libx11-dev gcc less software-properties-common apt-utils glances htop nano vim nvtop unzip wget zlib1g
 
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs && \
@@ -17,6 +17,9 @@ COPY jupyter_notebook_config.json /opt/conda/etc/jupyter/jupyter_notebook_config
 
 # Install aria2
 RUN apt-get install -y aria2
+
+# Install JAX with CUDA support
+RUN pip install "jax[cuda12_pip]==0.4.34"
 
 # Add sudo to jovyan user
 RUN apt update && \
@@ -47,7 +50,7 @@ RUN pip install huggingface jedi omegaconf hydra-core icecream pyrsistent pynvml
 RUN pip install git+https://github.com/NVIDIA/dllogger#egg=dllogger
 RUN pip install --no-dependencies dgl -f https://data.dgl.ai/wheels/torch-2.4/cu124/repo.html
 RUN pip install --no-dependencies e3nn==0.5.5 opt_einsum_fx
-RUN pip install git+https://github.com/sokrypton/ColabDesign.git
+RUN pip install --no-dependencies git+https://github.com/sokrypton/ColabDesign.git
 RUN pip install git+https://github.com/Biohub/esm.git@main
 
 USER root
@@ -59,8 +62,10 @@ RUN cd /opt && git clone https://github.com/sokrypton/RFdiffusion.git
 RUN cd /opt/RFdiffusion/env/SE3Transformer && pip install . && cd ../
 
 # Download ananas tool
-RUN wget -qnc https://files.ipd.uw.edu/krypton/ananas -O /opt/ananas && \
-    chmod +x /opt/ananas
+# ananas is currently unavailable (404)
+#RUN wget -qnc https://files.ipd.uw.edu/krypton/ananas -O /opt/ananas && \
+COPY ananas /opt/ananas
+RUN  chmod +x /opt/ananas
 
 # Create params directory
 RUN mkdir -p /opt/params
